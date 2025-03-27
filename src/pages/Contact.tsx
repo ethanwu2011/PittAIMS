@@ -1,8 +1,11 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 const Contact: React.FC = () => {
+  const { toast } = useToast();
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -10,6 +13,7 @@ const Contact: React.FC = () => {
     message: ""
   });
   
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -19,10 +23,39 @@ const Contact: React.FC = () => {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Simulate form submission
+    
+    // Validate form
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    // Simulate form submission with a delay
     setTimeout(() => {
+      toast({
+        title: "Message Sent!",
+        description: "We'll get back to you as soon as possible.",
+      });
+      
       setSubmitted(true);
+      setIsSubmitting(false);
       setFormData({
         name: "",
         email: "",
@@ -30,6 +63,10 @@ const Contact: React.FC = () => {
         message: ""
       });
     }, 1000);
+  };
+
+  const handleSendAnother = () => {
+    setSubmitted(false);
   };
 
   return (
@@ -46,7 +83,7 @@ const Contact: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
             {/* Contact Form */}
             <div className="section-fade-in">
-              <div className="neumorph-card p-6 md:p-8 rounded-2xl">
+              <div className="neumorph-card p-6 md:p-8 rounded-2xl border-l-4 border-yellow-500">
                 {submitted ? (
                   <div className="text-center py-8">
                     <svg 
@@ -59,7 +96,7 @@ const Contact: React.FC = () => {
                       strokeWidth="2" 
                       strokeLinecap="round" 
                       strokeLinejoin="round" 
-                      className="mx-auto text-primary mb-4"
+                      className="mx-auto text-yellow-500 mb-4"
                     >
                       <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                       <polyline points="22 4 12 14.01 9 11.01"></polyline>
@@ -69,7 +106,7 @@ const Contact: React.FC = () => {
                       Thank you for reaching out. We'll get back to you as soon as possible.
                     </p>
                     <Button
-                      onClick={() => setSubmitted(false)}
+                      onClick={handleSendAnother}
                       className="bg-primary hover:bg-primary/90 text-primary-foreground"
                     >
                       Send Another Message
@@ -82,7 +119,7 @@ const Contact: React.FC = () => {
                       <div className="space-y-4">
                         <div>
                           <label htmlFor="name" className="block text-sm font-medium mb-1">
-                            Name
+                            Name <span className="text-red-500">*</span>
                           </label>
                           <input
                             id="name"
@@ -91,13 +128,13 @@ const Contact: React.FC = () => {
                             required
                             value={formData.name}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 bg-card border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                            className="w-full px-4 py-2 bg-card border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
                           />
                         </div>
                         
                         <div>
                           <label htmlFor="email" className="block text-sm font-medium mb-1">
-                            Email
+                            Email <span className="text-red-500">*</span>
                           </label>
                           <input
                             id="email"
@@ -106,13 +143,13 @@ const Contact: React.FC = () => {
                             required
                             value={formData.email}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 bg-card border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                            className="w-full px-4 py-2 bg-card border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
                           />
                         </div>
                         
                         <div>
                           <label htmlFor="subject" className="block text-sm font-medium mb-1">
-                            Subject
+                            Subject <span className="text-red-500">*</span>
                           </label>
                           <select
                             id="subject"
@@ -120,7 +157,7 @@ const Contact: React.FC = () => {
                             required
                             value={formData.subject}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 bg-card border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                            className="w-full px-4 py-2 bg-card border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
                           >
                             <option value="">Select a subject</option>
                             <option value="General Inquiry">General Inquiry</option>
@@ -134,7 +171,7 @@ const Contact: React.FC = () => {
                         
                         <div>
                           <label htmlFor="message" className="block text-sm font-medium mb-1">
-                            Message
+                            Message <span className="text-red-500">*</span>
                           </label>
                           <textarea
                             id="message"
@@ -143,16 +180,25 @@ const Contact: React.FC = () => {
                             required
                             value={formData.message}
                             onChange={handleChange}
-                            className="w-full px-4 py-2 bg-card border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                            className="w-full px-4 py-2 bg-card border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
                           ></textarea>
                         </div>
                         
                         <div>
                           <Button
                             type="submit"
-                            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-2 button-glow"
+                            disabled={isSubmitting}
+                            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-2 button-glow relative"
                           >
-                            Send Message
+                            {isSubmitting ? (
+                              <>
+                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Sending...
+                              </>
+                            ) : "Send Message"}
                           </Button>
                         </div>
                       </div>
@@ -166,10 +212,13 @@ const Contact: React.FC = () => {
             <div className="section-fade-in lg:mt-10" style={{ animationDelay: "100ms" }}>
               <div className="space-y-8">
                 <div>
-                  <h3 className="text-xl font-semibold mb-3">Email Us</h3>
+                  <h3 className="text-xl font-semibold mb-3 flex items-center">
+                    <span className="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
+                    Email Us
+                  </h3>
                   <a 
                     href="mailto:etw46@pitt.edu" 
-                    className="flex items-center text-primary hover:text-primary/80 transition-colors"
+                    className="flex items-center text-primary hover:text-yellow-500 transition-colors"
                   >
                     <svg 
                       xmlns="http://www.w3.org/2000/svg" 
@@ -191,7 +240,10 @@ const Contact: React.FC = () => {
                 </div>
                 
                 <div>
-                  <h3 className="text-xl font-semibold mb-3">Location</h3>
+                  <h3 className="text-xl font-semibold mb-3 flex items-center">
+                    <span className="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
+                    Location
+                  </h3>
                   <p className="flex items-start text-muted-foreground">
                     <svg 
                       xmlns="http://www.w3.org/2000/svg" 
@@ -217,7 +269,10 @@ const Contact: React.FC = () => {
                 </div>
                 
                 <div>
-                  <h3 className="text-xl font-semibold mb-3">Meeting Times</h3>
+                  <h3 className="text-xl font-semibold mb-3 flex items-center">
+                    <span className="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
+                    Meeting Times
+                  </h3>
                   <p className="flex items-start text-muted-foreground">
                     <svg 
                       xmlns="http://www.w3.org/2000/svg" 
@@ -243,28 +298,31 @@ const Contact: React.FC = () => {
                 </div>
                 
                 <div className="neumorph-card p-6 rounded-2xl">
-                  <h3 className="text-xl font-semibold mb-3">Connect with Us</h3>
+                  <h3 className="text-xl font-semibold mb-3 flex items-center">
+                    <span className="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
+                    Connect with Us
+                  </h3>
                   <div className="flex space-x-4">
-                    <a href="#" className="p-3 bg-card hover:bg-card/80 rounded-full transition-colors">
+                    <a href="#" className="p-3 bg-card hover:bg-yellow-500/10 hover:text-yellow-500 rounded-full transition-colors">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
                         <rect x="2" y="9" width="4" height="12"></rect>
                         <circle cx="4" cy="4" r="2"></circle>
                       </svg>
                     </a>
-                    <a href="#" className="p-3 bg-card hover:bg-card/80 rounded-full transition-colors">
+                    <a href="#" className="p-3 bg-card hover:bg-yellow-500/10 hover:text-yellow-500 rounded-full transition-colors">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
                       </svg>
                     </a>
-                    <a href="#" className="p-3 bg-card hover:bg-card/80 rounded-full transition-colors">
+                    <a href="#" className="p-3 bg-card hover:bg-yellow-500/10 hover:text-yellow-500 rounded-full transition-colors">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                         <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                         <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                       </svg>
                     </a>
-                    <a href="#" className="p-3 bg-card hover:bg-card/80 rounded-full transition-colors">
+                    <a href="#" className="p-3 bg-card hover:bg-yellow-500/10 hover:text-yellow-500 rounded-full transition-colors">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                       </svg>
@@ -273,7 +331,10 @@ const Contact: React.FC = () => {
                 </div>
                 
                 <div>
-                  <h3 className="text-xl font-semibold mb-3">Join Our Mailing List</h3>
+                  <h3 className="text-xl font-semibold mb-3 flex items-center">
+                    <span className="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
+                    Join Our Mailing List
+                  </h3>
                   <p className="text-muted-foreground mb-4">
                     Stay updated with our latest events, workshops, and opportunities.
                   </p>
@@ -281,10 +342,16 @@ const Contact: React.FC = () => {
                     <input 
                       type="email" 
                       placeholder="Your email address" 
-                      className="flex-grow px-4 py-2 bg-card border border-r-0 border-border rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="flex-grow px-4 py-2 bg-card border border-r-0 border-border rounded-l-md focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
                     />
                     <Button
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-l-none"
+                      className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-l-none"
+                      onClick={() => {
+                        toast({
+                          title: "Subscribed!",
+                          description: "You've been added to our mailing list.",
+                        });
+                      }}
                     >
                       Subscribe
                     </Button>

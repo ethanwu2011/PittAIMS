@@ -33,6 +33,10 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
     --radius: 0.5rem;
+    
+    /* Pitt Colors */
+    --pitt-gold: 43 100% 50%;
+    --pitt-blue: 211 83% 20%;
   }
 }
 
@@ -66,6 +70,10 @@
 
   .text-gradient {
     @apply bg-gradient-to-r from-primary via-blue-400 to-cyan-400 bg-clip-text text-transparent;
+  }
+
+  .pitt-gradient {
+    @apply bg-gradient-to-r from-yellow-500 via-yellow-400 to-blue-700 bg-clip-text text-transparent;
   }
 
   .text-balance {
@@ -113,6 +121,18 @@
 
   .gradient-mask-b {
     mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  }
+  
+  .gold-accent {
+    @apply border-l-4 border-yellow-500;
+  }
+  
+  .gold-hover {
+    @apply transition-colors duration-300;
+  }
+  
+  .gold-hover:hover {
+    @apply text-yellow-500;
   }
 }
 
