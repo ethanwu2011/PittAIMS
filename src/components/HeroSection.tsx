@@ -1,25 +1,25 @@
 
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const patternRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
       if (!sectionRef.current) return;
       const scrollY = window.scrollY;
-      const sectionHeight = sectionRef.current.offsetHeight;
-      const parallaxRate = scrollY * 0.3;
       
       if (textRef.current) {
-        textRef.current.style.transform = `translateY(${parallaxRate * 0.3}px)`;
+        textRef.current.style.transform = `translateY(${scrollY * 0.1}px)`;
       }
       
       if (patternRef.current) {
-        patternRef.current.style.transform = `translateY(${parallaxRate * 0.1}px)`;
+        patternRef.current.style.transform = `translateY(${scrollY * 0.05}px)`;
       }
     };
 
@@ -58,7 +58,7 @@ const HeroSection: React.FC = () => {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-4 md:mb-6 animate-fade-down" style={{ animationDelay: "0.1s" }}>
-            <span className="text-gradient">Pitt AI in Medicine Society</span>
+            <span className="text-gradient">Pitt <span className="text-yellow-500">AI</span> in Medicine Society</span>
           </h1>
           
           <div className="h-[2.5rem] md:h-[3rem] mb-6 md:mb-8 overflow-hidden animate-fade-down" style={{ animationDelay: "0.2s" }}>
@@ -82,10 +82,17 @@ const HeroSection: React.FC = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-down" style={{ animationDelay: "0.4s" }}>
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-6 rounded-lg shadow-lg button-glow">
+            <Button 
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-6 rounded-lg shadow-lg button-glow border border-yellow-500/20"
+              onClick={() => navigate("/contact")}
+            >
               Join Our Community
             </Button>
-            <Button variant="outline" className="bg-card border-border hover:bg-card/80 px-6 py-6 rounded-lg">
+            <Button 
+              variant="outline" 
+              className="bg-card border-yellow-500 hover:bg-yellow-500/10 hover:text-yellow-500 px-6 py-6 rounded-lg"
+              onClick={() => navigate("/research")}
+            >
               Explore Projects
             </Button>
           </div>
@@ -99,20 +106,13 @@ const HeroSection: React.FC = () => {
               <div className="text-muted-foreground/60 hover:text-muted-foreground transition-colors">
                 <span className="font-semibold text-lg">Pitt Med</span>
               </div>
-              <div className="text-muted-foreground/60 hover:text-muted-foreground transition-colors">
-                <span className="font-semibold text-lg">NIH All of Us</span>
-              </div>
             </div>
           </div>
         </div>
       </div>
       
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-8 h-12 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-2">
-          <div className="w-1 h-2 rounded-full bg-muted-foreground/70"></div>
-        </div>
-      </div>
+      {/* Yellow accent divider */}
+      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent"></div>
     </section>
   );
 };

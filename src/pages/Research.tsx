@@ -81,7 +81,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         {link && (
           <Button 
             variant="ghost" 
-            className="px-0 text-primary hover:text-primary/90 hover:bg-transparent"
+            className="px-0 text-primary hover:text-yellow-500 hover:bg-transparent"
           >
             View Project
             <svg
@@ -125,14 +125,6 @@ const Research: React.FC = () => {
       link: "#"
     },
     {
-      title: "NIH All of Us Data Analysis for Health Disparities",
-      description: "Using the All of Us dataset to identify and quantify healthcare disparities in treatment outcomes and access to care across demographic groups.",
-      tags: ["Health Equity", "Data Analysis", "Population Health"],
-      image: "https://via.placeholder.com/400x200?text=All+of+Us+Project",
-      collaborators: ["Daniel Park", "Dr. Hooman Rashidi", "NIH Collaborators"],
-      link: "#"
-    },
-    {
       title: "ML-Based Prediction of Antibiotic Resistance",
       description: "Machine learning algorithms to predict antibiotic resistance patterns based on patient factors, microbiology data, and hospital environmental factors.",
       tags: ["Antibiotic Resistance", "Predictive Modeling", "Infectious Disease"],
@@ -160,28 +152,70 @@ const Research: React.FC = () => {
 
   return (
     <div className="pt-24 pb-20">
+      {/* Introduction Section */}
       <section className="mb-16">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="section-fade-in text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Research Projects</h1>
-            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-              Exploring the frontiers of AI in medicine through innovative research and collaboration
-            </p>
+          <div className="section-fade-in max-w-4xl mx-auto mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center">Research at Pitt AIMs</h1>
+            <div className="neumorph-card p-8 rounded-2xl border-l-4 border-yellow-500">
+              <p className="text-lg mb-4">
+                At Pitt AI in Medicine Society, we're dedicated to fostering innovative research at the intersection of artificial intelligence and healthcare. Our mission is to serve as the computational backbone for medical research initiatives throughout the University of Pittsburgh and UPMC.
+              </p>
+              <p className="text-lg mb-4">
+                We actively seek collaborations with clinicians, researchers, and other computational teams to tackle challenging problems in healthcare. Our members bring expertise in machine learning, natural language processing, computer vision, and data science to support projects that have real-world impact on patient care.
+              </p>
+              <p className="text-lg">
+                Whether you're looking for computational support for your medical research or you're a student interested in applying AI skills to healthcare problems, we welcome your involvement. Our collaborative approach emphasizes practical applications, ethical considerations, and rigorous methodology.
+              </p>
+            </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {projects.map((project, index) => (
-              <ProjectCard
-                key={index}
-                title={project.title}
-                description={project.description}
-                tags={project.tags}
-                image={project.image}
-                collaborators={project.collaborators}
-                link={project.link}
-                delay={index * 100}
-              />
-            ))}
+          <div className="section-fade-in text-center mb-12 mt-16">
+            <h2 className="text-3xl font-bold mb-4">Our Research Focus Areas</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-5xl mx-auto">
+              <div className="neumorph-card p-6 rounded-2xl border-t-4 border-yellow-500">
+                <h3 className="text-xl font-semibold mb-3">Clinical NLP</h3>
+                <p className="text-muted-foreground">
+                  Extracting insights from unstructured medical text, clinical notes, and healthcare literature to support decision-making.
+                </p>
+              </div>
+              
+              <div className="neumorph-card p-6 rounded-2xl border-t-4 border-primary" style={{ animationDelay: "100ms" }}>
+                <h3 className="text-xl font-semibold mb-3">Medical Imaging AI</h3>
+                <p className="text-muted-foreground">
+                  Developing computer vision solutions for diagnostic imaging, disease detection, and treatment planning.
+                </p>
+              </div>
+              
+              <div className="neumorph-card p-6 rounded-2xl border-t-4 border-yellow-500" style={{ animationDelay: "200ms" }}>
+                <h3 className="text-xl font-semibold mb-3">Predictive Analytics</h3>
+                <p className="text-muted-foreground">
+                  Creating models to forecast patient outcomes, disease progression, and treatment responses.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="section-fade-in text-center mb-12">
+            <h2 className="text-3xl font-bold mb-8">Current Projects</h2>
+            <p className="text-muted-foreground text-lg max-w-3xl mx-auto mb-10">
+              Explore our ongoing research initiatives where we're applying AI to solve important challenges in medicine
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {projects.map((project, index) => (
+                <ProjectCard
+                  key={index}
+                  title={project.title}
+                  description={project.description}
+                  tags={project.tags}
+                  image={project.image}
+                  collaborators={project.collaborators}
+                  link={project.link}
+                  delay={index * 100}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -196,12 +230,13 @@ const Research: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
-                className="bg-primary hover:bg-primary/90 text-primary-foreground button-glow"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground button-glow border border-yellow-500/20"
               >
                 Apply to Join a Project
               </Button>
               <Button
                 variant="outline"
+                className="border-yellow-500/50 hover:bg-yellow-500/10 hover:text-yellow-500"
               >
                 Propose New Research
               </Button>
@@ -224,11 +259,11 @@ const Research: React.FC = () => {
             <div className="section-fade-in neumorph-card p-6 rounded-2xl">
               <h3 className="text-xl font-semibold mb-3">Datasets</h3>
               <ul className="space-y-2 text-muted-foreground">
-                <li>• NIH All of Us Research Program</li>
                 <li>• MIMIC Critical Care Database</li>
                 <li>• UK Biobank</li>
                 <li>• Cancer Imaging Archive</li>
                 <li>• Pitt Clinical Data Warehouse</li>
+                <li>• PhysioNet Databases</li>
               </ul>
             </div>
             
