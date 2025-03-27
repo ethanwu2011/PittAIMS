@@ -75,6 +75,10 @@
   .pitt-gradient {
     @apply bg-gradient-to-r from-yellow-500 via-yellow-400 to-blue-700 bg-clip-text text-transparent;
   }
+  
+  .gold-gradient {
+    @apply bg-gradient-to-r from-yellow-600 via-yellow-500 to-yellow-400 bg-clip-text text-transparent;
+  }
 
   .text-balance {
     text-wrap: balance;
@@ -113,6 +117,19 @@
   .animated-border:hover::after {
     @apply w-full;
   }
+  
+  .animated-border-yellow {
+    @apply relative;
+  }
+
+  .animated-border-yellow::after {
+    content: "";
+    @apply absolute bottom-0 left-0 w-0 h-px bg-yellow-500 transition-all duration-300;
+  }
+
+  .animated-border-yellow:hover::after {
+    @apply w-full;
+  }
 
   .pattern-dots {
     background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
@@ -133,6 +150,26 @@
   
   .gold-hover:hover {
     @apply text-yellow-500;
+  }
+  
+  .gold-shimmer {
+    @apply relative overflow-hidden;
+  }
+  
+  .gold-shimmer::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/10 to-transparent -translate-x-full;
+    animation: shimmer 2s infinite;
+  }
+  
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  
+  .gold-dot {
+    @apply inline-block w-2 h-2 rounded-full bg-yellow-500 mx-1;
   }
 }
 
