@@ -1,0 +1,263 @@
+
+import React, { useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+
+interface ProjectCardProps {
+  title: string;
+  description: string;
+  tags: string[];
+  image?: string;
+  collaborators: string[];
+  link?: string;
+  delay: number;
+}
+
+const ProjectCard: React.FC<ProjectCardProps> = ({ 
+  title, 
+  description, 
+  tags, 
+  image, 
+  collaborators, 
+  link, 
+  delay 
+}) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setTimeout(() => {
+            cardRef.current?.classList.add("fade-in-view");
+          }, delay);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => {
+      if (cardRef.current) observer.unobserve(cardRef.current);
+    };
+  }, [delay]);
+
+  return (
+    <div
+      ref={cardRef}
+      className="section-fade-in neumorph-card rounded-2xl overflow-hidden hover:translate-y-[-5px] transition-all duration-300"
+    >
+      {image && (
+        <div className="h-48 overflow-hidden bg-primary/5">
+          <img 
+            src={image} 
+            alt={title} 
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = "https://via.placeholder.com/400x200?text=Project+Image";
+            }}
+          />
+        </div>
+      )}
+      <div className="p-6">
+        <div className="flex flex-wrap gap-2 mb-4">
+          {tags.map((tag, index) => (
+            <span 
+              key={index} 
+              className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <h3 className="text-xl font-semibold mb-2">{title}</h3>
+        <p className="text-muted-foreground text-sm mb-4">{description}</p>
+        <div className="mb-4">
+          <p className="text-sm text-muted-foreground font-medium mb-1">Collaborators:</p>
+          <p className="text-sm">{collaborators.join(", ")}</p>
+        </div>
+        {link && (
+          <Button 
+            variant="ghost" 
+            className="px-0 text-primary hover:text-primary/90 hover:bg-transparent"
+          >
+            View Project
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="ml-1"
+            >
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const Research: React.FC = () => {
+  const projects = [
+    {
+      title: "Pitt Med 3RC LLM for Clinical Documentation",
+      description: "Development of a large language model specifically trained on clinical notes to assist with documentation, retrieval, and summarization of patient information.",
+      tags: ["NLP", "LLM", "Clinical Notes"],
+      image: "https://via.placeholder.com/400x200?text=3RC+LLM+Project",
+      collaborators: ["Dr. Sarah Chen", "Michael Rodriguez", "UPMC Health NLP Lab"],
+      link: "#"
+    },
+    {
+      title: "AI-Assisted Retinal Disease Classification",
+      description: "CNN-based system for automated detection and classification of retinal diseases from optical coherence tomography (OCT) and fundus images.",
+      tags: ["Computer Vision", "Deep Learning", "Ophthalmology"],
+      image: "https://via.placeholder.com/400x200?text=Retinal+Disease+Project",
+      collaborators: ["Dr. Jay Chhablani", "Emily Thompson", "Dept. of Ophthalmology"],
+      link: "#"
+    },
+    {
+      title: "NIH All of Us Data Analysis for Health Disparities",
+      description: "Using the All of Us dataset to identify and quantify healthcare disparities in treatment outcomes and access to care across demographic groups.",
+      tags: ["Health Equity", "Data Analysis", "Population Health"],
+      image: "https://via.placeholder.com/400x200?text=All+of+Us+Project",
+      collaborators: ["Daniel Park", "Dr. Hooman Rashidi", "NIH Collaborators"],
+      link: "#"
+    },
+    {
+      title: "ML-Based Prediction of Antibiotic Resistance",
+      description: "Machine learning algorithms to predict antibiotic resistance patterns based on patient factors, microbiology data, and hospital environmental factors.",
+      tags: ["Antibiotic Resistance", "Predictive Modeling", "Infectious Disease"],
+      image: "https://via.placeholder.com/400x200?text=Antibiotic+Resistance+Project",
+      collaborators: ["Dr. Sarah Chen", "Dept. of Infectious Disease", "Pitt School of Pharmacy"],
+      link: "#"
+    },
+    {
+      title: "Federated Learning for Privacy-Preserving Medical Analysis",
+      description: "Implementation of federated learning techniques to enable multi-institutional collaboration without sharing sensitive patient data.",
+      tags: ["Federated Learning", "Privacy", "Multi-institutional"],
+      image: "https://via.placeholder.com/400x200?text=Federated+Learning+Project",
+      collaborators: ["Michael Rodriguez", "UPMC IT Security Team", "Partner Institutions"],
+      link: "#"
+    },
+    {
+      title: "Natural Language Understanding for Clinical Decision Support",
+      description: "Development of NLP tools to extract relevant information from clinical notes and literature to support evidence-based clinical decision making.",
+      tags: ["NLP", "Decision Support", "Evidence-Based Medicine"],
+      image: "https://via.placeholder.com/400x200?text=Clinical+Decision+Support+Project",
+      collaborators: ["Emily Thompson", "Dr. Hooman Rashidi", "Clinical Informatics Team"],
+      link: "#"
+    }
+  ];
+
+  return (
+    <div className="pt-24 pb-20">
+      <section className="mb-16">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="section-fade-in text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Research Projects</h1>
+            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+              Exploring the frontiers of AI in medicine through innovative research and collaboration
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {projects.map((project, index) => (
+              <ProjectCard
+                key={index}
+                title={project.title}
+                description={project.description}
+                tags={project.tags}
+                image={project.image}
+                collaborators={project.collaborators}
+                link={project.link}
+                delay={index * 100}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Research Opportunities */}
+      <section className="py-12 bg-gradient-to-b from-background to-card/30">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="section-fade-in max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl font-bold mb-4">Join Our Research Community</h2>
+            <p className="text-muted-foreground mb-8">
+              We're always looking for passionate students and collaborators to join our research projects. Whether you're experienced in AI or just starting out, there's a place for you in our community.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                className="bg-primary hover:bg-primary/90 text-primary-foreground button-glow"
+              >
+                Apply to Join a Project
+              </Button>
+              <Button
+                variant="outline"
+              >
+                Propose New Research
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Research Resources */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="section-fade-in text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Research Resources</h2>
+            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+              Tools and resources to support your AI in medicine research journey
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="section-fade-in neumorph-card p-6 rounded-2xl">
+              <h3 className="text-xl font-semibold mb-3">Datasets</h3>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>• NIH All of Us Research Program</li>
+                <li>• MIMIC Critical Care Database</li>
+                <li>• UK Biobank</li>
+                <li>• Cancer Imaging Archive</li>
+                <li>• Pitt Clinical Data Warehouse</li>
+              </ul>
+            </div>
+            
+            <div className="section-fade-in neumorph-card p-6 rounded-2xl" style={{ animationDelay: "100ms" }}>
+              <h3 className="text-xl font-semibold mb-3">Computing Resources</h3>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>• Pitt Center for Research Computing</li>
+                <li>• GPU Access Program</li>
+                <li>• Cloud Computing Credits</li>
+                <li>• Collaborative Coding Environments</li>
+                <li>• Version Control Systems</li>
+              </ul>
+            </div>
+            
+            <div className="section-fade-in neumorph-card p-6 rounded-2xl" style={{ animationDelay: "200ms" }}>
+              <h3 className="text-xl font-semibold mb-3">Mentorship & Support</h3>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>• Faculty Mentor Matching</li>
+                <li>• Peer Research Networks</li>
+                <li>• Grant Application Assistance</li>
+                <li>• IRB Navigation Support</li>
+                <li>• Publication Guidance</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Research;
