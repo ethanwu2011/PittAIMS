@@ -27,10 +27,6 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
-      - name: Create missing directories
-        run: |
-          mkdir -p public/aimmedico-connect-images
-          echo "Created missing directory: public/aimmedico-connect-images"
       - name: Build
         run: npm run build
       - name: Verify dist directory
@@ -50,7 +46,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: dist
 
   deploy:
     environment:
