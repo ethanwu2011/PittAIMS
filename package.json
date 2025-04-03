@@ -2,7 +2,7 @@
   "name": "pittaims",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://ethanwu2011.github.io/PittAIMS",
+  "homepage": "https://pittaims.com",
   "type": "module",
   "scripts": {
     "dev": "vite",
