@@ -112,7 +112,7 @@ const Research: React.FC = () => {
       description: "Development of a large language model specifically trained on clinical notes to assist with documentation, retrieval, and summarization of patient information.",
       tags: ["NLP", "LLM", "Clinical Notes"],
       image: "https://via.placeholder.com/400x200?text=3RC+LLM+Project",
-      collaborators: ["Dr. Sarah Chen", "Michael Rodriguez", "UPMC Health NLP Lab"],
+      collaborators: ["TBD"],
       link: "#"
     },
     {
@@ -120,7 +120,7 @@ const Research: React.FC = () => {
       description: "CNN-based system for automated detection and classification of retinal diseases from optical coherence tomography (OCT) and fundus images.",
       tags: ["Computer Vision", "Deep Learning", "Ophthalmology"],
       image: "https://via.placeholder.com/400x200?text=Retinal+Disease+Project",
-      collaborators: ["Dr. Jay Chhablani", "Emily Thompson", "Dept. of Ophthalmology"],
+      collaborators: ["TBD"],
       link: "#"
     },
     {
@@ -128,7 +128,7 @@ const Research: React.FC = () => {
       description: "Machine learning algorithms to predict antibiotic resistance patterns based on patient factors, microbiology data, and hospital environmental factors.",
       tags: ["Antibiotic Resistance", "Predictive Modeling", "Infectious Disease"],
       image: "https://via.placeholder.com/400x200?text=Antibiotic+Resistance+Project",
-      collaborators: ["Dr. Sarah Chen", "Dept. of Infectious Disease", "Pitt School of Pharmacy"],
+      collaborators: ["TBD"],
       link: "#"
     },
     {
@@ -136,7 +136,7 @@ const Research: React.FC = () => {
       description: "Implementation of federated learning techniques to enable multi-institutional collaboration without sharing sensitive patient data.",
       tags: ["Federated Learning", "Privacy", "Multi-institutional"],
       image: "https://via.placeholder.com/400x200?text=Federated+Learning+Project",
-      collaborators: ["Michael Rodriguez", "UPMC IT Security Team", "Partner Institutions"],
+      collaborators: ["TBD"],
       link: "#"
     },
     {
@@ -144,7 +144,7 @@ const Research: React.FC = () => {
       description: "Development of NLP tools to extract relevant information from clinical notes and literature to support evidence-based clinical decision making.",
       tags: ["NLP", "Decision Support", "Evidence-Based Medicine"],
       image: "https://via.placeholder.com/400x200?text=Clinical+Decision+Support+Project",
-      collaborators: ["Emily Thompson", "Dr. Hooman Rashidi", "Clinical Informatics Team"],
+      collaborators: ["TBD"],
       link: "#"
     }
   ];

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 
 interface TestimonialProps {
@@ -78,19 +77,19 @@ const TestimonialsSection: React.FC = () => {
 
   const testimonials = [
     {
-      quote: "The Pitt AIMs workshops have been instrumental in helping me understand how AI can be applied to my ophthalmology research. The community is supportive and the resources are excellent.",
-      name: "Dr. Jay Chhablani",
-      role: "Faculty Advisor, Ophthalmology"
-    },
-    {
-      quote: "As a medical student with limited coding background, the Python bootcamps organized by Pitt AIMs gave me the confidence to start working with healthcare datasets and pursue research in this exciting field.",
-      name: "Sarah Johnson",
+      quote: "Pitt AIMs has been instrumental in helping me understand the intersection of AI and medicine. The workshops and mentorship have given me the confidence to pursue research in this exciting field.",
+      name: "Neha Devineni",
       role: "MD Candidate, Class of 2024"
     },
     {
-      quote: "The journal club discussions have broadened my understanding of how AI can address disparities in healthcare. It's a fantastic environment to learn and grow with like-minded peers.",
-      name: "Dr. Hooman Rashidi",
-      role: "Faculty Advisor, Pathology"
+      quote: "The community at Pitt AIMs is incredibly supportive. Through their coding bootcamps and journal clubs, I've developed both technical skills and a deeper understanding of AI's potential in healthcare.",
+      name: "Jeff Ding",
+      role: "MD Candidate, Class of 2024"
+    },
+    {
+      quote: "Being part of Pitt AIMs has opened my eyes to the transformative potential of AI in medicine. The collaborative environment and hands-on learning opportunities have been invaluable to my medical education.",
+      name: "Joanna Yao",
+      role: "MD Candidate, Class of 2024"
     }
   ];
 
