@@ -66,7 +66,7 @@ const About: React.FC = () => {
       name: "Shaila Fye",
       role: "Co-Founder",
       description: "Medical student with expertise in computational medicine. Her work focuses on AI solutions for clinical decision support and medical imaging analysis.",
-      image: "/images/founders/shaila fye headshot .heic"
+      image: "/images/founders/shaila-fye.jpg"
     },
     {
       name: "Isuru Herath",
