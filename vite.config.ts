@@ -26,4 +26,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   publicDir: 'public',
+  optimizeDeps: {
+    exclude: ['aimmedico-connect-images']
+  }
 }));
