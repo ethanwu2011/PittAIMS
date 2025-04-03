@@ -60,25 +60,25 @@ const About: React.FC = () => {
       name: "Ethan Wu",
       role: "Co-Founder",
       description: "MD-PhD student at Pitt-CMU specializing in Machine Learning. His research focuses on interpretable and deep learning models for precision medicine and idiopathic disease mechanisms.",
-      image: "/aimmedico-connect-images/founders/ethan-wu.jpeg"
+      image: "/images/founders/ethan-wu.jpeg"
     },
     {
       name: "Shaila Fye",
       role: "Co-Founder",
       description: "Medical student with expertise in computational medicine. Her work focuses on AI solutions for clinical decision support and medical imaging analysis.",
-      image: "/aimmedico-connect-images/founders/shaila-fye.jpg"
+      image: "/images/founders/shaila fye headshot .heic"
     },
     {
       name: "Isuru Herath",
       role: "Co-Founder",
       description: "MD-PhD student at Pitt-CMU specializing in AI and machine learning. His research focuses on foundational models and transformers in healthcare applications.",
-      image: "/aimmedico-connect-images/founders/isuru-herath.jpeg"
+      image: "/images/founders/C2085EEB-12EB-43ED-A11B-5BD10A1C758DHerath, Isuru.jpeg"
     },
     {
       name: "Josh Pantanowitz",
       role: "Co-Founder",
       description: "Medical student specializing in AI ethics and education. His work focuses on responsible AI implementation and developing frameworks for ethical healthcare AI.",
-      image: "/aimmedico-connect-images/founders/josh-pantanowitz.JPG"
+      image: "/images/founders/IMG_0168.JPG"
     }
   ];
 
