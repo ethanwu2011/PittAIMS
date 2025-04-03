@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from "react";
 
 interface ProfileCardProps {
@@ -58,28 +57,28 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ name, role, image, bio, delay
 const About: React.FC = () => {
   const founders = [
     {
-      name: "Dr. Emily Thompson",
-      role: "Co-Founder & President",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", 
-      bio: "MD-PhD student specializing in computational neuroscience at UPMC. Emily's research focuses on neural network models for predicting treatment responses in neurological disorders."
+      name: "Ethan Wu",
+      role: "Co-Founder",
+      description: "MD-PhD student at Pitt-CMU specializing in Machine Learning. His research focuses on interpretable and deep learning models for precision medicine and idiopathic disease mechanisms.",
+      image: "/aimmedico-connect-images/founders/ethan-wu.jpeg"
     },
     {
-      name: "Michael Rodriguez",
-      role: "Co-Founder & Technical Lead",
-      image: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-      bio: "Medical student at Pitt Med with a background in computer science. Michael has contributed to several open-source healthcare AI projects and leads the technical workshops."
+      name: "Shaila Fye",
+      role: "Co-Founder",
+      description: "Medical student with expertise in computational medicine. Her work focuses on AI solutions for clinical decision support and medical imaging analysis.",
+      image: "/aimmedico-connect-images/founders/shaila-fye.jpg"
     },
     {
-      name: "Dr. Sarah Chen",
-      role: "Co-Founder & Faculty Advisor",
-      image: "https://images.unsplash.com/photo-1629747490241-624f07d70e1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-      bio: "Assistant Professor of Biomedical Informatics at Pitt Med with expertise in machine learning for genomics and personalized medicine. Dr. Chen guides research directions and mentors students."
+      name: "Isuru Herath",
+      role: "Co-Founder",
+      description: "MD-PhD student at Pitt-CMU specializing in AI and machine learning. His research focuses on foundational models and transformers in healthcare applications.",
+      image: "/aimmedico-connect-images/founders/isuru-herath.jpeg"
     },
     {
-      name: "Daniel Park",
-      role: "Co-Founder & Educational Director",
-      image: "https://images.unsplash.com/photo-1531384441138-2736e62e0919?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-      bio: "MD student at Pitt Med with prior experience in educational technology. Daniel coordinates the curriculum for workshops and ensures content is accessible to students of all technical backgrounds."
+      name: "Josh Pantanowitz",
+      role: "Co-Founder",
+      description: "Medical student specializing in AI ethics and education. His work focuses on responsible AI implementation and developing frameworks for ethical healthcare AI.",
+      image: "/aimmedico-connect-images/founders/josh-pantanowitz.JPG"
     }
   ];
 
@@ -154,25 +153,37 @@ const About: React.FC = () => {
       </section>
       
       {/* Founders Section */}
-      <section className="py-16 bg-gradient-to-b from-background to-card/30">
+      <section className="py-20">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="section-fade-in text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Founders</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Meet the dedicated individuals who established and continue to guide Pitt AIMs
+          <div className="section-fade-in text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Our Founders</h2>
+            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+              Meet the team behind Pitt AIMs, bringing together expertise from medicine, machine learning, and healthcare innovation
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {founders.map((founder, index) => (
-              <ProfileCard
+              <div 
                 key={index}
-                name={founder.name}
-                role={founder.role}
-                image={founder.image}
-                bio={founder.bio}
-                delay={index * 100}
-              />
+                className="section-fade-in neumorph-card p-6 rounded-2xl text-center"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-yellow-500/20">
+                  <img 
+                    src={founder.image} 
+                    alt={founder.name}
+                    className="w-full h-full object-cover transform scale-105"
+                    style={{ imageRendering: 'auto', backfaceVisibility: 'hidden' }}
+                    onError={(e) => {
+                      e.currentTarget.src = "https://via.placeholder.com/200x200?text=Founder+Photo";
+                    }}
+                  />
+                </div>
+                <h3 className="text-xl font-semibold mb-1">{founder.name}</h3>
+                <p className="text-yellow-500 mb-4">{founder.role}</p>
+                <p className="text-muted-foreground text-sm">{founder.description}</p>
+              </div>
             ))}
           </div>
         </div>

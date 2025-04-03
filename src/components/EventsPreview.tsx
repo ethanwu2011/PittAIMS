@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -105,19 +104,19 @@ const EventsPreview: React.FC = () => {
   const upcomingEvents = [
     {
       title: "Python for Medical Data Analysis",
-      date: "Oct 15, 2023",
+      date: "Oct 15, 2025",
       description: "Introduction to Python libraries specifically for healthcare data analysis and visualization.",
       type: "Bootcamp"
     },
     {
       title: "NIH All of Us Research Dataset Workshop",
-      date: "Oct 22, 2023",
+      date: "Oct 22, 2025",
       description: "Learn how to access and analyze the NIH All of Us research dataset for your projects.",
       type: "Workshop"
     },
     {
       title: "AI Ethics in Clinical Decision Support",
-      date: "Nov 5, 2023",
+      date: "Nov 5, 2025",
       description: "Discussion on ethical considerations when implementing AI in clinical decision support systems.",
       type: "Journal"
     }

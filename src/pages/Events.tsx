@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -42,7 +41,7 @@ const Events: React.FC = () => {
   const events: Event[] = [
     {
       title: "Python for Medical Data Analysis",
-      date: "October 15, 2023",
+      date: "October 15, 2025",
       time: "3:00 PM - 5:00 PM",
       location: "Scaife Hall, Room 101",
       description: "Introduction to Python libraries specifically for healthcare data analysis and visualization. Learn how to use pandas, numpy, and matplotlib for medical data.",
@@ -51,7 +50,7 @@ const Events: React.FC = () => {
     },
     {
       title: "NIH All of Us Research Dataset Workshop",
-      date: "October 22, 2023",
+      date: "October 22, 2025",
       time: "2:00 PM - 4:00 PM",
       location: "Biomedical Science Tower, Room 303",
       description: "Learn how to access and analyze the NIH All of Us research dataset for your projects. This workshop will cover the application process, data structures, and basic analysis techniques.",
@@ -60,7 +59,7 @@ const Events: React.FC = () => {
     },
     {
       title: "AI Ethics in Clinical Decision Support",
-      date: "November 5, 2023",
+      date: "November 5, 2025",
       time: "5:00 PM - 6:30 PM",
       location: "Scaife Hall, Lecture Room A",
       description: "Discussion on ethical considerations when implementing AI in clinical decision support systems. We'll review recent publications and discuss case studies.",
@@ -69,7 +68,7 @@ const Events: React.FC = () => {
     },
     {
       title: "Machine Learning for Medical Imaging",
-      date: "November 15, 2023",
+      date: "November 15, 2025",
       time: "4:00 PM - 6:00 PM",
       location: "Biomedical Science Tower, Room 305",
       description: "Introduction to convolutional neural networks and their applications in medical imaging analysis. Hands-on session with practical examples using PyTorch.",
@@ -78,7 +77,7 @@ const Events: React.FC = () => {
     },
     {
       title: "Healthcare NLP: Text Mining Electronic Health Records",
-      date: "December 3, 2023",
+      date: "December 3, 2025",
       time: "3:00 PM - 5:00 PM",
       location: "Virtual Event (Zoom)",
       description: "Learn techniques for natural language processing on clinical text data. We'll cover text preprocessing, entity recognition, and information extraction from medical documents.",
@@ -87,7 +86,7 @@ const Events: React.FC = () => {
     },
     {
       title: "Research Collaboration Meet & Greet",
-      date: "December 10, 2023",
+      date: "December 10, 2025",
       time: "6:00 PM - 8:00 PM",
       location: "University Club, Ballroom B",
       description: "Networking event to connect students with faculty researchers for potential collaboration on AI in medicine projects. Refreshments will be provided.",
