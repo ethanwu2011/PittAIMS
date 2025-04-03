@@ -2,7 +2,7 @@
   "name": "pittaims",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://ethanwu2011.github.io/aimmedico-connect",
+  "homepage": "https://ethanwu2011.github.io/PittAIMS",
   "type": "module",
   "scripts": {
     "dev": "vite",
