@@ -79,17 +79,17 @@ const TestimonialsSection: React.FC = () => {
     {
       quote: "Pitt AIMs has been instrumental in helping me understand the intersection of AI and medicine. The workshops and mentorship have given me the confidence to pursue research in this exciting field.",
       name: "Neha Devineni",
-      role: "MD Candidate, Class of 2024"
+      role: "MD Candidate, Class of 2028"
     },
     {
       quote: "The community at Pitt AIMs is incredibly supportive. Through their coding bootcamps and journal clubs, I've developed both technical skills and a deeper understanding of AI's potential in healthcare.",
-      name: "Jeff Ding",
-      role: "MD Candidate, Class of 2024"
+      name: "Jeffrey Ding",
+      role: "MD Candidate, Class of 2028"
     },
     {
       quote: "Being part of Pitt AIMs has opened my eyes to the transformative potential of AI in medicine. The collaborative environment and hands-on learning opportunities have been invaluable to my medical education.",
       name: "Joanna Yao",
-      role: "MD Candidate, Class of 2024"
+      role: "MD Candidate, Class of 2028"
     }
   ];
 
