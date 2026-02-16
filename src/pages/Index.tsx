@@ -23,8 +23,8 @@ const Index: React.FC = () => {
           <h2 className="text-xl font-bold text-foreground mb-2">Applied ML in Medicine</h2>
           <p className="text-base text-muted-foreground leading-relaxed mb-4">
             A hands-on summer intensive where students learn machine learning using the NIH
-            All of Us research dataset. Five weeks of real analysis, real code, and a final
-            project on a clinical question you choose.
+            All of Us research dataset. Eight sessions of real analysis, real code, and a
+            final project on a clinical question you choose.
           </p>
           <Link
             to="/course"

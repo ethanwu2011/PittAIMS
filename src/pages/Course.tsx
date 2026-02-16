@@ -44,6 +44,27 @@ const schedule: ScheduleRow[] = [
     theorySegment: "—",
     instructors: "—",
   },
+  {
+    date: "Fri, July 10",
+    format: "In-person",
+    mainFocus: "Feature Selection, Overfitting, Generalization",
+    theorySegment: "Neural Networks",
+    instructors: "Ethan Wu",
+  },
+  {
+    date: "Fri, July 17",
+    format: "In-person",
+    mainFocus: "Project work session",
+    theorySegment: "TBD",
+    instructors: "TBD",
+  },
+  {
+    date: "Fri, July 24",
+    format: "In-person",
+    mainFocus: "Final presentations",
+    theorySegment: "—",
+    instructors: "TBD",
+  },
 ];
 
 const Course: React.FC = () => {
@@ -64,7 +85,7 @@ const Course: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-lg font-semibold text-foreground mb-3">Overview</h2>
           <p className="text-base text-muted-foreground leading-relaxed">
-            A five-week intensive course where you learn machine learning by doing it.
+            An eight-session summer course where you learn machine learning by doing it.
             Using the NIH All of Us research dataset, you'll go from project planning to
             building and evaluating models on real patient data. Each session pairs a
             hands-on focus (6:00–6:45) with a theory segment (6:45–7:30). The course
@@ -109,21 +130,12 @@ const Course: React.FC = () => {
         {/* Assignments */}
         <section className="mb-12">
           <h2 className="text-lg font-semibold text-foreground mb-3">Assignments</h2>
-          <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
-            <div>
-              <p className="font-medium text-foreground">Final project</p>
-              <p>
-                Work solo or in teams of 2 to pick a clinical question, build cohorts from
-                the All of Us dataset, train and evaluate models, and present your findings.
-              </p>
-            </div>
-            <div>
-              <p className="font-medium text-foreground">Weekly notebooks</p>
-              <p>
-                Short coding exercises each week that reinforce the lecture material. These
-                are graded for completion, not correctness.
-              </p>
-            </div>
+          <div className="text-base text-muted-foreground leading-relaxed">
+            <p className="font-medium text-foreground mb-1">Final project</p>
+            <p>
+              Work solo or in teams of 2 to pick a clinical question, build cohorts from
+              the All of Us dataset, train and evaluate models, and present your findings.
+            </p>
           </div>
         </section>
 
