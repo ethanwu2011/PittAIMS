@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { Mail, Phone, Send } from "lucide-react";
+import { Mail, Phone, Send, Clock } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-  Form, 
-  FormControl, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -23,22 +23,23 @@ const formSchema = z.object({
   message: z.string().min(10, { message: "Message must be at least 10 characters." }),
 });
 
+const API_URL = import.meta.env.VITE_API_URL || "/api";
+
 const Contact: React.FC = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
       subject: "",
-      message: ""
+      message: "",
     },
   });
 
   useEffect(() => {
-    // Initialize fade-in animations
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -50,36 +51,32 @@ const Contact: React.FC = () => {
       { threshold: 0.1 }
     );
 
-    document.querySelectorAll(".section-fade-in").forEach((element) => {
-      observer.observe(element);
+    document.querySelectorAll(".section-fade-in").forEach((el) => {
+      observer.observe(el);
     });
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    
+
     try {
-      const response = await fetch('http://localhost:3001/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await fetch(`${API_URL}/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to send message');
+        throw new Error("Failed to send message");
       }
 
       toast({
         title: "Message sent!",
-        description: "Thank you for reaching out. We'll get back to you soon.",
+        description: "Thanks for reaching out. We'll get back to you soon.",
       });
-      
+
       form.reset();
     } catch (error) {
       toast({
@@ -96,73 +93,69 @@ const Contact: React.FC = () => {
     <div className="pt-24 pb-20">
       <div className="container mx-auto px-4 md:px-6">
         <div className="section-fade-in text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
-          <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-            Have questions, ideas, or interested in collaboration? We'd love to hear from you!
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Contact</h1>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Questions, ideas, or interested in collaborating? We'd love to hear from you.
           </p>
         </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          {/* Contact Information */}
-          <div className="section-fade-in">
-            <div className="neumorph-card p-8 rounded-2xl border-l-4 border-yellow-500 mb-8">
-              <h2 className="text-2xl font-semibold mb-6">Contact Information</h2>
-              
-              <div className="space-y-6">
-                <div className="flex items-start">
-                  <div className="mr-4 p-3 bg-yellow-500/10 text-yellow-500 rounded-full">
-                    <Mail size={20} />
-                  </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-4xl mx-auto">
+          {/* Contact Info */}
+          <div className="section-fade-in space-y-6">
+            <div className="border border-border rounded-lg p-6 bg-card">
+              <h2 className="text-lg font-semibold mb-4 text-foreground">Contact Information</h2>
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <Mail className="w-4 h-4 mr-3 text-muted-foreground" />
                   <div>
-                    <h4 className="font-medium">Email</h4>
-                    <a href="mailto:etw46@pitt.edu" className="text-primary hover:text-yellow-500 transition-colors">
+                    <p className="text-sm font-medium text-foreground">Email</p>
+                    <a href="mailto:etw46@pitt.edu" className="text-sm text-primary hover:text-primary/80 transition-colors">
                       etw46@pitt.edu
                     </a>
                   </div>
                 </div>
-                
-                <div className="flex items-start">
-                  <div className="mr-4 p-3 bg-yellow-500/10 text-yellow-500 rounded-full">
-                    <Phone size={20} />
-                  </div>
+                <div className="flex items-center">
+                  <Phone className="w-4 h-4 mr-3 text-muted-foreground" />
                   <div>
-                    <h4 className="font-medium">Phone</h4>
-                    <a href="tel:5712327243" className="text-primary hover:text-yellow-500 transition-colors">
+                    <p className="text-sm font-medium text-foreground">Phone</p>
+                    <a href="tel:5712327243" className="text-sm text-primary hover:text-primary/80 transition-colors">
                       (571) 232-7243
                     </a>
                   </div>
                 </div>
-                
-                <div className="mt-8">
-                  <h4 className="font-medium text-lg mb-2">Ethan Wu</h4>
-                  <p className="text-muted-foreground">Pitt AIMs Founder</p>
+                <div className="pt-2 border-t border-border">
+                  <p className="text-sm font-medium text-foreground">Ethan Wu</p>
+                  <p className="text-xs text-muted-foreground">Pitt AIMs Founder</p>
                 </div>
               </div>
             </div>
-            
-            <div className="neumorph-card p-8 rounded-2xl">
-              <h3 className="text-xl font-semibold mb-4 flex items-center">
-                <span className="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
+
+            <div className="border border-border rounded-lg p-6 bg-card">
+              <h3 className="text-base font-semibold mb-3 text-foreground flex items-center">
+                <Clock className="w-4 h-4 mr-2" />
                 Meeting Times
               </h3>
-              <p className="text-muted-foreground">
-                <span className="block mb-2">
-                  <span className="font-medium text-foreground">General Meetings:</span> Every other Wednesday, 5:00 PM - 6:30 PM
-                </span>
-                <span className="block mb-2">
-                  <span className="font-medium text-foreground">Journal Club:</span> Every other Monday, 5:00 PM - 6:00 PM
-                </span>
-                <span className="block">
-                  <span className="font-medium text-foreground">Workshops:</span> Scheduled throughout the semester (see Events page)
-                </span>
-              </p>
+              <div className="space-y-2 text-sm">
+                <div>
+                  <p className="font-medium text-foreground">General Meetings</p>
+                  <p className="text-muted-foreground">Every other Wednesday, 5:00 - 6:30 PM</p>
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">Journal Club</p>
+                  <p className="text-muted-foreground">Every other Monday, 5:00 - 6:00 PM</p>
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">Workshops</p>
+                  <p className="text-muted-foreground">Scheduled throughout the semester</p>
+                </div>
+              </div>
             </div>
           </div>
-          
+
           {/* Contact Form */}
           <div className="section-fade-in">
-            <div className="neumorph-card p-6 md:p-8 rounded-2xl border-l-4 border-yellow-500">
-              <h2 className="text-2xl font-semibold mb-6">Send Us a Message</h2>
+            <div className="border border-border rounded-lg p-6 bg-card">
+              <h2 className="text-lg font-semibold mb-4 text-foreground">Send a Message</h2>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                   <FormField
@@ -170,54 +163,39 @@ const Contact: React.FC = () => {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>
-                          Name <span className="text-red-500">*</span>
-                        </FormLabel>
+                        <FormLabel className="text-sm">Name</FormLabel>
                         <FormControl>
-                          <Input 
-                            placeholder="Your name" 
-                            {...field} 
-                            className="bg-card border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
-                          />
+                          <Input placeholder="Your name" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>
-                          Email <span className="text-red-500">*</span>
-                        </FormLabel>
+                        <FormLabel className="text-sm">Email</FormLabel>
                         <FormControl>
-                          <Input 
-                            placeholder="Your email address" 
-                            type="email" 
-                            {...field} 
-                            className="bg-card border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
-                          />
+                          <Input placeholder="your@email.com" type="email" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="subject"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>
-                          Subject <span className="text-red-500">*</span>
-                        </FormLabel>
+                        <FormLabel className="text-sm">Subject</FormLabel>
                         <FormControl>
                           <select
                             {...field}
-                            className="w-full px-4 py-2 bg-card border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
+                            className="w-full px-3 py-2 text-sm bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                           >
                             <option value="">Select a subject</option>
                             <option value="General Inquiry">General Inquiry</option>
@@ -231,41 +209,32 @@ const Contact: React.FC = () => {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>
-                          Message <span className="text-red-500">*</span>
-                        </FormLabel>
+                        <FormLabel className="text-sm">Message</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="How can we help you?"
+                            placeholder="How can we help?"
                             {...field}
-                            rows={5}
-                            className="bg-card border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
+                            rows={4}
                           />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  
+
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-2 button-glow relative border border-yellow-500/20"
+                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                   >
                     {isSubmitting ? (
-                      <>
-                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Sending...
-                      </>
+                      "Sending..."
                     ) : (
                       <>
                         <Send className="mr-2 h-4 w-4" /> Send Message
@@ -277,22 +246,25 @@ const Contact: React.FC = () => {
             </div>
           </div>
         </div>
-        
-        <div className="section-fade-in max-w-3xl mx-auto mt-16 text-center">
-          <h2 className="text-2xl font-semibold mb-4">
-            <span className="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
-            Frequently Asked Questions
-          </h2>
-          <div className="neumorph-card p-6 rounded-2xl mt-6">
-            <h3 className="text-xl font-medium mb-2">Do I need prior AI or coding experience?</h3>
-            <p className="text-muted-foreground mb-4">
-              No prior experience is required! We welcome members of all technical backgrounds. Our workshops and coding bootcamps are designed to accommodate beginners, and we provide resources for self-paced learning.
-            </p>
-            
-            <h3 className="text-xl font-medium mb-2 mt-6">How can I get involved in research projects?</h3>
-            <p className="text-muted-foreground">
-              We regularly announce research opportunities during our meetings and via email. You can also express your interest by filling out our research collaboration form, and we'll match you with appropriate projects based on your skills and interests.
-            </p>
+
+        {/* FAQ */}
+        <div className="section-fade-in max-w-2xl mx-auto mt-16">
+          <h2 className="text-2xl font-bold mb-6 text-center text-foreground">FAQ</h2>
+          <div className="space-y-6">
+            <div className="border border-border rounded-lg p-6 bg-card">
+              <h3 className="text-base font-semibold mb-2 text-foreground">Do I need prior AI or coding experience?</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Nope. We welcome everyone regardless of technical background. Our workshops and
+                bootcamps start from the basics, and there are plenty of resources for self-paced learning.
+              </p>
+            </div>
+            <div className="border border-border rounded-lg p-6 bg-card">
+              <h3 className="text-base font-semibold mb-2 text-foreground">How can I get involved in research?</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                We announce research opportunities at meetings and via email. You can also reach out
+                through this form, and we'll match you with projects based on your skills and interests.
+              </p>
+            </div>
           </div>
         </div>
       </div>

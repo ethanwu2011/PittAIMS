@@ -1,42 +1,40 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
 
-    --card: 222 47% 8%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
 
-    --popover: 222 47% 5%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 210 100% 65%;
-    --primary-foreground: 222 47% 8%;
+    --primary: 216 100% 29%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-    --accent: 215 98% 50%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 43 100% 55%;
+    --accent-foreground: 222 47% 11%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 216 100% 29%;
     --radius: 0.5rem;
-    
-    /* Pitt Colors */
-    --pitt-gold: 43 100% 50%;
-    --pitt-blue: 211 83% 20%;
   }
 }
 
@@ -46,40 +44,12 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
 @layer utilities {
-  .glass-effect {
-    @apply backdrop-blur-xl bg-white/5 border border-white/10;
-  }
-
-  .button-glow {
-    @apply relative overflow-hidden;
-  }
-  
-  .button-glow::after {
-    @apply content-[''] absolute top-0 left-0 right-0 bottom-0 bg-primary/20 blur-xl opacity-0 transition-opacity duration-500;
-  }
-  
-  .button-glow:hover::after {
-    @apply opacity-100;
-  }
-
-  .text-gradient {
-    @apply bg-gradient-to-r from-primary via-blue-400 to-cyan-400 bg-clip-text text-transparent;
-  }
-
-  .pitt-gradient {
-    @apply bg-gradient-to-r from-yellow-500 via-yellow-400 to-blue-700 bg-clip-text text-transparent;
-  }
-  
-  .gold-gradient {
-    @apply bg-gradient-to-r from-yellow-600 via-yellow-500 to-yellow-400 bg-clip-text text-transparent;
-  }
-
   .text-balance {
     text-wrap: balance;
   }
@@ -89,118 +59,10 @@
   }
 
   .section-fade-in {
-    @apply opacity-0 translate-y-8 transition-all duration-700 ease-out;
+    @apply opacity-0 translate-y-4 transition-all duration-500 ease-out;
   }
 
   .section-fade-in.fade-in-view {
     @apply opacity-100 translate-y-0;
   }
-
-  .neumorph-card {
-    @apply bg-gradient-to-br from-card/80 to-card shadow-lg;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  }
-
-  .neumorph-card:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
-  }
-
-  .animated-border {
-    @apply relative;
-  }
-
-  .animated-border::after {
-    content: "";
-    @apply absolute bottom-0 left-0 w-0 h-px bg-primary transition-all duration-300;
-  }
-
-  .animated-border:hover::after {
-    @apply w-full;
-  }
-  
-  .animated-border-yellow {
-    @apply relative;
-  }
-
-  .animated-border-yellow::after {
-    content: "";
-    @apply absolute bottom-0 left-0 w-0 h-px bg-yellow-500 transition-all duration-300;
-  }
-
-  .animated-border-yellow:hover::after {
-    @apply w-full;
-  }
-
-  .pattern-dots {
-    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
-
-  .gradient-mask-b {
-    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-  }
-  
-  .gold-accent {
-    @apply border-l-4 border-yellow-500;
-  }
-  
-  .gold-hover {
-    @apply transition-colors duration-300;
-  }
-  
-  .gold-hover:hover {
-    @apply text-yellow-500;
-  }
-  
-  .gold-shimmer {
-    @apply relative overflow-hidden;
-  }
-  
-  .gold-shimmer::after {
-    content: '';
-    @apply absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/10 to-transparent -translate-x-full;
-    animation: shimmer 2s infinite;
-  }
-  
-  @keyframes shimmer {
-    100% {
-      transform: translateX(100%);
-    }
-  }
-  
-  .gold-dot {
-    @apply inline-block w-2 h-2 rounded-full bg-yellow-500 mx-1;
-  }
-}
-
-/* Add scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-secondary/60 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-secondary;
-}
-
-/* Add custom font imports */
-@font-face {
-  font-family: 'InterVariable';
-  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-  font-weight: 100 900;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
-  font-display: swap;
 }

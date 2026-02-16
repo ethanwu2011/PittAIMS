@@ -1,5 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Calendar, MapPin, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Event {
   title: string;
@@ -12,8 +14,8 @@ interface Event {
 }
 
 const Events: React.FC = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
   const [filter, setFilter] = useState("all");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -41,178 +43,172 @@ const Events: React.FC = () => {
   const events: Event[] = [
     {
       title: "Python for Medical Data Analysis",
-      date: "October 15, 2025",
+      date: "March 15, 2026",
       time: "3:00 PM - 5:00 PM",
       location: "Scaife Hall, Room 101",
-      description: "Introduction to Python libraries specifically for healthcare data analysis and visualization. Learn how to use pandas, numpy, and matplotlib for medical data.",
+      description: "Intro to Python libraries for healthcare data analysis and visualization -- pandas, numpy, and matplotlib for medical data.",
       type: "bootcamp",
-      registrationLink: "#"
+      registrationLink: "#",
     },
     {
-      title: "NIH All of Us Research Dataset Workshop",
-      date: "October 22, 2025",
+      title: "NIH All of Us Dataset Workshop",
+      date: "March 22, 2026",
       time: "2:00 PM - 4:00 PM",
       location: "Biomedical Science Tower, Room 303",
-      description: "Learn how to access and analyze the NIH All of Us research dataset for your projects. This workshop will cover the application process, data structures, and basic analysis techniques.",
+      description: "Learn how to access and work with the NIH All of Us research dataset: application process, data structures, and basic analysis.",
       type: "workshop",
-      registrationLink: "#"
+      registrationLink: "#",
     },
     {
       title: "AI Ethics in Clinical Decision Support",
-      date: "November 5, 2025",
+      date: "April 5, 2026",
       time: "5:00 PM - 6:30 PM",
       location: "Scaife Hall, Lecture Room A",
-      description: "Discussion on ethical considerations when implementing AI in clinical decision support systems. We'll review recent publications and discuss case studies.",
+      description: "Discussing ethical considerations around AI in clinical decision support. We'll review recent papers and work through case studies.",
       type: "journal",
-      registrationLink: "#"
+      registrationLink: "#",
     },
     {
       title: "Machine Learning for Medical Imaging",
-      date: "November 15, 2025",
+      date: "April 15, 2026",
       time: "4:00 PM - 6:00 PM",
       location: "Biomedical Science Tower, Room 305",
-      description: "Introduction to convolutional neural networks and their applications in medical imaging analysis. Hands-on session with practical examples using PyTorch.",
+      description: "Intro to CNNs and their use in medical imaging. Hands-on session with PyTorch and real imaging examples.",
       type: "workshop",
-      registrationLink: "#"
+      registrationLink: "#",
     },
     {
-      title: "Healthcare NLP: Text Mining Electronic Health Records",
-      date: "December 3, 2025",
+      title: "Healthcare NLP: Mining Electronic Health Records",
+      date: "May 3, 2026",
       time: "3:00 PM - 5:00 PM",
-      location: "Virtual Event (Zoom)",
-      description: "Learn techniques for natural language processing on clinical text data. We'll cover text preprocessing, entity recognition, and information extraction from medical documents.",
+      location: "Virtual (Zoom)",
+      description: "NLP techniques for clinical text: preprocessing, entity recognition, and information extraction from medical documents.",
       type: "bootcamp",
-      registrationLink: "#"
+      registrationLink: "#",
     },
     {
       title: "Research Collaboration Meet & Greet",
-      date: "December 10, 2025",
+      date: "May 10, 2026",
       time: "6:00 PM - 8:00 PM",
       location: "University Club, Ballroom B",
-      description: "Networking event to connect students with faculty researchers for potential collaboration on AI in medicine projects. Refreshments will be provided.",
+      description: "Connect with faculty researchers for potential collaboration on AI in medicine projects. Refreshments provided.",
       type: "networking",
-      registrationLink: "#"
-    }
+      registrationLink: "#",
+    },
   ];
 
-  const filteredEvents = filter === "all" 
-    ? events 
-    : events.filter(event => event.type === filter);
+  const filteredEvents = filter === "all" ? events : events.filter((e) => e.type === filter);
 
-  const typeMap: Record<string, { label: string, color: string }> = {
-    bootcamp: { label: "Coding Bootcamp", color: "bg-purple-500/10 text-purple-400" },
-    workshop: { label: "Workshop", color: "bg-blue-500/10 text-blue-400" },
-    journal: { label: "Journal Club", color: "bg-green-500/10 text-green-400" },
-    networking: { label: "Networking", color: "bg-orange-500/10 text-orange-400" }
+  const typeMap: Record<string, { label: string; color: string }> = {
+    bootcamp: { label: "Coding Bootcamp", color: "bg-purple-50 text-purple-700" },
+    workshop: { label: "Workshop", color: "bg-blue-50 text-blue-700" },
+    journal: { label: "Journal Club", color: "bg-green-50 text-green-700" },
+    networking: { label: "Networking", color: "bg-orange-50 text-orange-700" },
   };
+
+  const filters = [
+    { key: "all", label: "All Events" },
+    { key: "bootcamp", label: "Bootcamps" },
+    { key: "workshop", label: "Workshops" },
+    { key: "journal", label: "Journal Club" },
+    { key: "networking", label: "Networking" },
+  ];
 
   return (
     <div className="pt-24 pb-20">
-      <section className="mb-16">
+      <section className="mb-12">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="section-fade-in text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Events & Workshops</h1>
-            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-              Join us for hands-on workshops, insightful discussions, and networking opportunities to enhance your AI and healthcare knowledge
+          <div className="section-fade-in text-center mb-10">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Events</h1>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Workshops, bootcamps, and discussions throughout the semester.
             </p>
           </div>
-          
+
           {/* Filters */}
-          <div className="section-fade-in flex flex-wrap gap-3 justify-center mb-12">
-            <Button 
-              variant={filter === "all" ? "default" : "outline"} 
-              onClick={() => setFilter("all")}
-              className={filter === "all" ? "bg-primary text-primary-foreground" : ""}
-            >
-              All Events
-            </Button>
-            {Object.entries(typeMap).map(([key, { label }]) => (
-              <Button 
-                key={key} 
-                variant={filter === key ? "default" : "outline"} 
-                onClick={() => setFilter(key)}
-                className={filter === key ? "bg-primary text-primary-foreground" : ""}
+          <div className="section-fade-in flex flex-wrap gap-2 justify-center mb-10">
+            {filters.map((f) => (
+              <button
+                key={f.key}
+                onClick={() => setFilter(f.key)}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  filter === f.key
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:text-foreground"
+                }`}
               >
-                {label}
-              </Button>
+                {f.label}
+              </button>
             ))}
           </div>
-          
-          {/* Events List */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+
+          {/* Events Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {filteredEvents.map((event, index) => (
-              <div 
-                key={index} 
-                className="section-fade-in neumorph-card p-6 rounded-2xl border border-border/50 hover:border-primary/20 transition-all duration-300"
-                style={{ animationDelay: `${index * 100}ms` }}
+              <div
+                key={index}
+                className="section-fade-in border border-border rounded-lg p-6 bg-card hover:shadow-md transition-shadow duration-200"
               >
-                <div className="flex justify-between items-start mb-4">
-                  <span 
-                    className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                      typeMap[event.type]?.color || "bg-primary/10 text-primary"
+                <div className="flex justify-between items-start mb-3">
+                  <span
+                    className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      typeMap[event.type]?.color || "bg-primary/5 text-primary"
                     }`}
                   >
                     {typeMap[event.type]?.label || event.type}
                   </span>
-                  <div className="text-sm text-muted-foreground text-right">
-                    <div>{event.date}</div>
-                    <div>{event.time}</div>
-                  </div>
                 </div>
-                
-                <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="inline-block mr-1"
-                  >
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
-                  </svg>
-                  {event.location}
-                </p>
-                
-                <p className="text-muted-foreground text-sm mb-6">{event.description}</p>
-                
+
+                <h3 className="text-base font-semibold mb-2 text-foreground">{event.title}</h3>
+
+                <div className="space-y-1 mb-3">
+                  <p className="text-xs text-muted-foreground flex items-center">
+                    <Calendar className="w-3 h-3 mr-1.5" />
+                    {event.date} &middot; {event.time}
+                  </p>
+                  <p className="text-xs text-muted-foreground flex items-center">
+                    <MapPin className="w-3 h-3 mr-1.5" />
+                    {event.location}
+                  </p>
+                </div>
+
+                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{event.description}</p>
+
                 {event.registrationLink && (
-                  <Button 
-                    className="w-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30"
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
                   >
-                    Register Now
+                    Register
                   </Button>
                 )}
               </div>
             ))}
           </div>
-          
+
           {filteredEvents.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-muted-foreground">No events found for this filter. Please try another category.</p>
+              <p className="text-muted-foreground">No events found for this category.</p>
             </div>
           )}
         </div>
       </section>
-      
-      {/* Propose an Event Section */}
-      <section className="py-12 bg-gradient-to-b from-background to-card/30">
+
+      {/* Propose an Event */}
+      <section className="py-12 bg-muted/30">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="section-fade-in max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-4">Have an Event Idea?</h2>
-            <p className="text-muted-foreground mb-8">
-              We welcome suggestions for workshops, speakers, or topics you'd like to see covered in our future events. Let us know your ideas!
+          <div className="section-fade-in max-w-2xl mx-auto text-center">
+            <h2 className="text-2xl font-bold mb-3 text-foreground">Have an event idea?</h2>
+            <p className="text-muted-foreground mb-6">
+              We're always looking for workshop topics, speakers, and new formats. Let us know what you'd like to see.
             </p>
             <Button
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-6 rounded-lg shadow-lg button-glow"
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
+              onClick={() => navigate("/contact")}
             >
               Propose an Event
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
         </div>

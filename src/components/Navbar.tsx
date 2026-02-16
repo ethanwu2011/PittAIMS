@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import LogoAnimation from "./LogoAnimation";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 10);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -21,8 +21,6 @@ const Navbar: React.FC = () => {
     setMobileMenuOpen(false);
   }, [location]);
 
-  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
-
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
@@ -31,44 +29,42 @@ const Navbar: React.FC = () => {
     { name: "Contact", path: "/contact" },
   ];
 
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${
+      className={`fixed w-full z-50 transition-all duration-200 ${
         scrolled
-          ? "bg-background/90 backdrop-blur-lg shadow-md py-3"
-          : "bg-transparent py-5"
+          ? "bg-background/95 backdrop-blur-sm border-b border-border shadow-sm py-3"
+          : "bg-background py-4"
       }`}
     >
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
-          <LogoAnimation />
-          <span className="text-xl font-semibold tracking-tight hidden md:inline-block">
+          <span className="text-xl font-bold tracking-tight text-foreground">
             Pitt AIMs
           </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-6">
+        <div className="hidden md:flex items-center space-x-8">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
-              className={`animated-border text-sm font-medium transition-colors ${
+              className={`text-sm font-medium transition-colors hover:text-primary ${
                 isActive(link.path)
                   ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground"
               }`}
             >
               {link.name}
             </Link>
           ))}
           <Button
-            variant="default"
-            className="bg-primary text-primary-foreground hover:bg-primary/90 button-glow"
+            size="sm"
+            className="bg-primary text-primary-foreground hover:bg-primary/90"
+            onClick={() => navigate("/contact")}
           >
             Join Us
           </Button>
@@ -77,7 +73,8 @@ const Navbar: React.FC = () => {
         {/* Mobile Menu Button */}
         <button
           className="md:hidden text-foreground focus:outline-none"
-          onClick={toggleMobileMenu}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -87,19 +84,9 @@ const Navbar: React.FC = () => {
             stroke="currentColor"
           >
             {mobileMenuOpen ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             )}
           </svg>
         </button>
@@ -107,24 +94,25 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-card/95 backdrop-blur-lg border-t border-border mt-2 animate-fade-down">
-          <div className="container mx-auto px-4 py-3 flex flex-col space-y-3">
+        <div className="md:hidden bg-background border-t border-border animate-fade-down">
+          <div className="container mx-auto px-4 py-3 flex flex-col space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+                className={`py-2 px-3 rounded-md text-sm font-medium transition-colors ${
                   isActive(link.path)
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/30"
+                    ? "bg-primary/5 text-primary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 }`}
               >
                 {link.name}
               </Link>
             ))}
             <Button
-              variant="default"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 mt-2 button-glow"
+              size="sm"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 mt-2"
+              onClick={() => navigate("/contact")}
             >
               Join Us
             </Button>
