@@ -1,38 +1,50 @@
 import React from "react";
 
-interface WeekRow {
-  week: number;
-  topic: string;
-  slides?: string;
-  notebook?: string;
-  recording?: string;
+interface ScheduleRow {
+  date: string;
+  format: string;
+  mainFocus: string;
+  theorySegment: string;
+  instructors: string;
 }
 
-const schedule: WeekRow[] = [
-  { week: 1, topic: "Course intro / Python refresher" },
-  { week: 2, topic: "Data exploration and visualization" },
-  { week: 3, topic: "All of Us Researcher Workbench setup" },
-  { week: 4, topic: "Regression models" },
-  { week: 5, topic: "Decision trees and random forests" },
-  { week: 6, topic: "Neural networks basics" },
-  { week: 7, topic: "Dimensionality reduction (PCA, t-SNE)" },
-  { week: 8, topic: "Model evaluation and validation" },
-  { week: 9, topic: "Interpretability tools" },
-  { week: 10, topic: "Final project kickoff / cohort building" },
-  { week: 11, topic: "Project work sessions" },
-  { week: 12, topic: "Final presentations" },
+const schedule: ScheduleRow[] = [
+  {
+    date: "Fri, June 5",
+    format: "In-person",
+    mainFocus: "Introduction to All of Us & Project Goals",
+    theorySegment: "What is Machine Learning? Key Concepts & Terminology",
+    instructors: "Ethan Wu",
+  },
+  {
+    date: "Fri, June 12",
+    format: "In-person",
+    mainFocus: "Project Planning & Example project presentation",
+    theorySegment: "What is Regression? Linear & Logistic Models",
+    instructors: "Ethan Wu",
+  },
+  {
+    date: "Fri, June 19",
+    format: "In-person",
+    mainFocus: "All of Us Cohort & Dataset Building",
+    theorySegment: "Interpretable Modeling: Training, Testing, and how to prevent overfitting",
+    instructors: "Alexis Cenname, Ethan Wu",
+  },
+  {
+    date: "Fri, June 26",
+    format: "In-person",
+    mainFocus: "Python & Pandas Crash Course",
+    theorySegment: "Decision trees + ML Evaluation: AUC, SHAP",
+    instructors: "Ethan Wu",
+  },
+  {
+    date: "Fri, July 3",
+    format: "Async",
+    mainFocus: "Optional mini Hackathon meetup",
+    theorySegment: "—",
+    instructors: "—",
+  },
 ];
-
-const MaterialLink: React.FC<{ label: string; href?: string }> = ({ label, href }) => {
-  if (href) {
-    return (
-      <a href={href} className="text-primary hover:underline text-sm" target="_blank" rel="noreferrer">
-        {label}
-      </a>
-    );
-  }
-  return <span className="text-muted-foreground/50 text-sm">{label}</span>;
-};
 
 const Course: React.FC = () => {
   return (
@@ -44,7 +56,7 @@ const Course: React.FC = () => {
             Applied Machine Learning in Medicine
           </h1>
           <p className="text-base text-muted-foreground">
-            Spring 2026 &middot; Wednesdays &middot; Scaife Hall
+            Summer 2026 &middot; Fridays 6:00 – 7:30 PM &middot; Scaife Hall
           </p>
         </div>
 
@@ -52,45 +64,45 @@ const Course: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-lg font-semibold text-foreground mb-3">Overview</h2>
           <p className="text-base text-muted-foreground leading-relaxed">
-            A twelve-week course where you learn machine learning by doing it. Using the
-            NIH All of Us research dataset, you'll go from Python fundamentals to building
-            and evaluating models on real patient data. The course ends with a collaborative
-            final project on a clinical question of your choice. Past student projects have
-            been published in peer-reviewed journals.
+            A five-week intensive course where you learn machine learning by doing it.
+            Using the NIH All of Us research dataset, you'll go from project planning to
+            building and evaluating models on real patient data. Each session pairs a
+            hands-on focus (6:00–6:45) with a theory segment (6:45–7:30). The course
+            culminates in a final project on a clinical question of your choice. Past
+            student projects have been published in peer-reviewed journals.
           </p>
         </section>
 
         {/* Schedule */}
         <section className="mb-12">
           <h2 className="text-lg font-semibold text-foreground mb-4">Schedule</h2>
-          <div className="border border-border rounded-lg overflow-hidden">
-            <table className="w-full text-left">
+          <div className="border border-border rounded-lg overflow-hidden overflow-x-auto">
+            <table className="w-full text-left min-w-[600px]">
               <thead>
                 <tr className="bg-muted/50 text-sm text-muted-foreground">
-                  <th className="py-2.5 px-4 font-medium w-16">Wk</th>
-                  <th className="py-2.5 px-4 font-medium">Topic</th>
-                  <th className="py-2.5 px-4 font-medium text-right hidden sm:table-cell">Materials</th>
+                  <th className="py-2.5 px-4 font-medium whitespace-nowrap">Date</th>
+                  <th className="py-2.5 px-4 font-medium">Main Focus<span className="hidden sm:inline"> (6:00–6:45)</span></th>
+                  <th className="py-2.5 px-4 font-medium">ML Theory<span className="hidden sm:inline"> (6:45–7:30)</span></th>
+                  <th className="py-2.5 px-4 font-medium whitespace-nowrap">Instructor(s)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {schedule.map((row) => (
-                  <tr key={row.week} className="text-sm">
-                    <td className="py-3 px-4 text-muted-foreground font-medium">{row.week}</td>
-                    <td className="py-3 px-4 text-foreground">{row.topic}</td>
-                    <td className="py-3 px-4 text-right hidden sm:table-cell">
-                      <span className="inline-flex gap-3">
-                        <MaterialLink label="Slides" href={row.slides} />
-                        <MaterialLink label="Notebook" href={row.notebook} />
-                        <MaterialLink label="Recording" href={row.recording} />
-                      </span>
+                {schedule.map((row, i) => (
+                  <tr key={i} className="text-sm">
+                    <td className="py-3 px-4 text-foreground font-medium whitespace-nowrap align-top">
+                      {row.date}
+                      <span className="block text-xs text-muted-foreground/60 font-normal">{row.format}</span>
                     </td>
+                    <td className="py-3 px-4 text-foreground align-top">{row.mainFocus}</td>
+                    <td className="py-3 px-4 text-muted-foreground align-top">{row.theorySegment}</td>
+                    <td className="py-3 px-4 text-muted-foreground whitespace-nowrap align-top">{row.instructors}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
           <p className="text-xs text-muted-foreground/60 mt-2">
-            Materials will be linked here as the semester progresses.
+            Materials will be linked here as the course progresses.
           </p>
         </section>
 
@@ -101,9 +113,8 @@ const Course: React.FC = () => {
             <div>
               <p className="font-medium text-foreground">Final project</p>
               <p>
-                Teams of 2-4 pick a clinical question, build cohorts from the All of Us
-                dataset, train and evaluate models, and present findings in Week 12. A
-                project proposal is due in Week 10.
+                Work solo or in teams of 2 to pick a clinical question, build cohorts from
+                the All of Us dataset, train and evaluate models, and present your findings.
               </p>
             </div>
             <div>
@@ -140,7 +151,7 @@ const Course: React.FC = () => {
               >
                 Python tutorial
               </a>{" "}
-              -- official docs, good refresher for Weeks 1-2
+              -- official docs, good for getting started
             </li>
             <li>
               <a
@@ -189,7 +200,7 @@ const Course: React.FC = () => {
             <dt className="font-medium text-foreground">Location</dt>
             <dd>Scaife Hall</dd>
             <dt className="font-medium text-foreground">Schedule</dt>
-            <dd>Wednesdays, Spring 2026</dd>
+            <dd>Fridays, 6:00 – 7:30 PM, Summer 2026</dd>
             <dt className="font-medium text-foreground">Capacity</dt>
             <dd>40 students</dd>
             <dt className="font-medium text-foreground">Attendance</dt>
