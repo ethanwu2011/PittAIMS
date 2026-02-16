@@ -9,7 +9,6 @@ import About from "./pages/About";
 import Events from "./pages/Events";
 import Research from "./pages/Research";
 import Course from "./pages/Course";
-import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const App = () => (
@@ -22,7 +21,6 @@ const App = () => (
           <Route path="/events" element={<Events />} />
           <Route path="/research" element={<Research />} />
           <Route path="/course" element={<Course />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>

@@ -1,79 +1,178 @@
 import React from "react";
-import { Link } from "react-router-dom";
+
+interface WeekRow {
+  week: number;
+  topic: string;
+  slides?: string;
+  notebook?: string;
+  recording?: string;
+}
+
+const schedule: WeekRow[] = [
+  { week: 1, topic: "Course intro / Python refresher" },
+  { week: 2, topic: "Data exploration and visualization" },
+  { week: 3, topic: "All of Us Researcher Workbench setup" },
+  { week: 4, topic: "Regression models" },
+  { week: 5, topic: "Decision trees and random forests" },
+  { week: 6, topic: "Neural networks basics" },
+  { week: 7, topic: "Dimensionality reduction (PCA, t-SNE)" },
+  { week: 8, topic: "Model evaluation and validation" },
+  { week: 9, topic: "Interpretability tools" },
+  { week: 10, topic: "Final project kickoff / cohort building" },
+  { week: 11, topic: "Project work sessions" },
+  { week: 12, topic: "Final presentations" },
+];
+
+const MaterialLink: React.FC<{ label: string; href?: string }> = ({ label, href }) => {
+  if (href) {
+    return (
+      <a href={href} className="text-primary hover:underline text-sm" target="_blank" rel="noreferrer">
+        {label}
+      </a>
+    );
+  }
+  return <span className="text-muted-foreground/50 text-sm">{label}</span>;
+};
 
 const Course: React.FC = () => {
   return (
-    <div className="pt-28 pb-20 md:pt-36">
-      <div className="container mx-auto px-4 md:px-6 max-w-2xl">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-2">
-          Applied Machine Learning in Medicine
-        </h1>
-        <p className="text-sm text-muted-foreground mb-8">
-          A course by Pitt AIMs at the University of Pittsburgh School of Medicine
-        </p>
-
-        <div className="space-y-6 text-base text-muted-foreground leading-relaxed">
-          <p>
-            This course gives you hands-on experience with one of the largest patient
-            datasets in the world: the{" "}
-            <strong className="text-foreground">NIH All of Us Research Program</strong>.
-            You'll combine practical coding, foundational ML theory, and project-based
-            learning to explore real clinical questions -- working solo or in teams to
-            build models that matter. Past students have published their work in
-            peer-reviewed journals and conferences.
+    <div className="pt-24 pb-20 md:pt-32">
+      <div className="container mx-auto px-4 md:px-6 max-w-3xl">
+        {/* Header */}
+        <div className="mb-10">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-2">
+            Applied Machine Learning in Medicine
+          </h1>
+          <p className="text-base text-muted-foreground">
+            Spring 2026 &middot; Wednesdays &middot; Scaife Hall
           </p>
+        </div>
 
-          <h2 className="text-xl font-semibold text-foreground pt-2">What you'll learn</h2>
-          <ul className="space-y-2 list-disc pl-5">
+        {/* Overview */}
+        <section className="mb-12">
+          <h2 className="text-lg font-semibold text-foreground mb-3">Overview</h2>
+          <p className="text-base text-muted-foreground leading-relaxed">
+            A twelve-week course where you learn machine learning by doing it. Using the
+            NIH All of Us research dataset, you'll go from Python fundamentals to building
+            and evaluating models on real patient data. The course ends with a collaborative
+            final project on a clinical question of your choice. Past student projects have
+            been published in peer-reviewed journals.
+          </p>
+        </section>
+
+        {/* Schedule */}
+        <section className="mb-12">
+          <h2 className="text-lg font-semibold text-foreground mb-4">Schedule</h2>
+          <div className="border border-border rounded-lg overflow-hidden">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-muted/50 text-sm text-muted-foreground">
+                  <th className="py-2.5 px-4 font-medium w-16">Wk</th>
+                  <th className="py-2.5 px-4 font-medium">Topic</th>
+                  <th className="py-2.5 px-4 font-medium text-right hidden sm:table-cell">Materials</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {schedule.map((row) => (
+                  <tr key={row.week} className="text-sm">
+                    <td className="py-3 px-4 text-muted-foreground font-medium">{row.week}</td>
+                    <td className="py-3 px-4 text-foreground">{row.topic}</td>
+                    <td className="py-3 px-4 text-right hidden sm:table-cell">
+                      <span className="inline-flex gap-3">
+                        <MaterialLink label="Slides" href={row.slides} />
+                        <MaterialLink label="Notebook" href={row.notebook} />
+                        <MaterialLink label="Recording" href={row.recording} />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-muted-foreground/60 mt-2">
+            Materials will be linked here as the semester progresses.
+          </p>
+        </section>
+
+        {/* Assignments */}
+        <section className="mb-12">
+          <h2 className="text-lg font-semibold text-foreground mb-3">Assignments</h2>
+          <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
+            <div>
+              <p className="font-medium text-foreground">Final project</p>
+              <p>
+                Teams of 2-4 pick a clinical question, build cohorts from the All of Us
+                dataset, train and evaluate models, and present findings in Week 12. A
+                project proposal is due in Week 10.
+              </p>
+            </div>
+            <div>
+              <p className="font-medium text-foreground">Weekly notebooks</p>
+              <p>
+                Short coding exercises each week that reinforce the lecture material. These
+                are graded for completion, not correctness.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Resources */}
+        <section className="mb-12">
+          <h2 className="text-lg font-semibold text-foreground mb-3">Resources</h2>
+          <ul className="space-y-2 text-base text-muted-foreground">
             <li>
-              Key machine learning techniques: regression, decision trees, neural networks,
-              PCA/T-SNE, interpretability tools, and model evaluation
+              <a
+                href="https://www.researchallofus.org/data-tools/workbench/"
+                className="text-primary hover:underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                All of Us Researcher Workbench
+              </a>{" "}
+              -- where you'll run all analyses
             </li>
             <li>
-              How to use the All of Us Dataset responsibly through the Researcher Workbench
+              <a
+                href="https://docs.python.org/3/tutorial/"
+                className="text-primary hover:underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Python tutorial
+              </a>{" "}
+              -- official docs, good refresher for Weeks 1-2
             </li>
             <li>
-              The full data science workflow -- from cohort building to analysis to presentation
+              <a
+                href="https://scikit-learn.org/stable/user_guide.html"
+                className="text-primary hover:underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                scikit-learn user guide
+              </a>{" "}
+              -- reference for most models we cover
+            </li>
+            <li>
+              <a
+                href="https://www.kaggle.com/datasets"
+                className="text-primary hover:underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Kaggle datasets
+              </a>{" "}
+              -- additional practice datasets
             </li>
           </ul>
+        </section>
 
-          <h2 className="text-xl font-semibold text-foreground pt-2">Final project</h2>
-          <p>
-            You'll work on a collaborative final project where you pick a real clinical
-            question, build cohorts from the All of Us data, develop and evaluate models,
-            and present your findings. It's the core of the course.
-          </p>
-
-          <h2 className="text-xl font-semibold text-foreground pt-2">Details</h2>
-          <dl className="space-y-2">
-            <div>
-              <dt className="inline font-medium text-foreground">Location: </dt>
-              <dd className="inline">Scaife Hall</dd>
-            </div>
-            <div>
-              <dt className="inline font-medium text-foreground">Capacity: </dt>
-              <dd className="inline">40 students</dd>
-            </div>
-            <div>
-              <dt className="inline font-medium text-foreground">Attendance: </dt>
-              <dd className="inline">Mandatory, but not enforced</dd>
-            </div>
-            <div>
-              <dt className="inline font-medium text-foreground">Contact: </dt>
-              <dd className="inline">
-                Ethan Wu ({" "}
-                <a href="mailto:etw46@pitt.edu" className="text-primary hover:underline">
-                  etw46@pitt.edu
-                </a>
-                {" "})
-              </dd>
-            </div>
-          </dl>
-
-          <h2 className="text-xl font-semibold text-foreground pt-2">Instructors</h2>
-          <ul className="space-y-1.5">
+        {/* Instructors */}
+        <section className="mb-12">
+          <h2 className="text-lg font-semibold text-foreground mb-3">Instructors</h2>
+          <ul className="space-y-1.5 text-base text-muted-foreground">
             <li>
-              <strong className="text-foreground">Ethan Wu</strong> -- Main Instructor, Medical Student
+              <span className="text-foreground font-medium">Ethan Wu</span> -- Main instructor
             </li>
             <li>Dr. Shyam Visweswaran</li>
             <li>Dr. Richard Steinman</li>
@@ -81,17 +180,28 @@ const Course: React.FC = () => {
             <li>Dr. Ansuman Chattopadhyay</li>
             <li>Alexis Cenname, MS</li>
           </ul>
+        </section>
 
-          <div className="pt-4 border-t border-border mt-6">
-            <p>
-              Questions about the course?{" "}
-              <Link to="/contact" className="text-primary hover:underline">
-                Get in touch
-              </Link>
-              .
-            </p>
-          </div>
-        </div>
+        {/* Logistics */}
+        <section className="border-t border-border pt-8">
+          <h2 className="text-lg font-semibold text-foreground mb-3">Logistics</h2>
+          <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-base text-muted-foreground">
+            <dt className="font-medium text-foreground">Location</dt>
+            <dd>Scaife Hall</dd>
+            <dt className="font-medium text-foreground">Schedule</dt>
+            <dd>Wednesdays, Spring 2026</dd>
+            <dt className="font-medium text-foreground">Capacity</dt>
+            <dd>40 students</dd>
+            <dt className="font-medium text-foreground">Attendance</dt>
+            <dd>Expected but not enforced</dd>
+            <dt className="font-medium text-foreground">Contact</dt>
+            <dd>
+              <a href="mailto:etw46@pitt.edu" className="text-primary hover:underline">
+                etw46@pitt.edu
+              </a>
+            </dd>
+          </dl>
+        </section>
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, ArrowRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Calendar, MapPin } from "lucide-react";
 
 interface Event {
   title: string;
@@ -15,7 +14,6 @@ interface Event {
 
 const Events: React.FC = () => {
   const [filter, setFilter] = useState("all");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -200,16 +198,11 @@ const Events: React.FC = () => {
         <div className="container mx-auto px-4 md:px-6">
           <div className="section-fade-in max-w-2xl mx-auto text-center">
             <h2 className="text-2xl font-bold mb-3 text-foreground">Have an event idea?</h2>
-            <p className="text-muted-foreground mb-6">
-              We're always looking for workshop topics, speakers, and new formats. Let us know what you'd like to see.
+            <p className="text-muted-foreground">
+              We're always open to new workshop topics, speakers, and formats.
+              Email us at{" "}
+              <a href="mailto:etw46@pitt.edu" className="text-primary hover:underline">etw46@pitt.edu</a>.
             </p>
-            <Button
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
-              onClick={() => navigate("/contact")}
-            >
-              Propose an Event
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
           </div>
         </div>
       </section>

@@ -17,14 +17,9 @@ const NotFound: React.FC = () => {
         <p className="text-muted-foreground mb-8">
           The page you're looking for doesn't exist or has been moved.
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-            <Link to="/">Return Home</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link to="/contact">Contact Us</Link>
-          </Button>
-        </div>
+        <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+          <Link to="/">Return Home</Link>
+        </Button>
       </div>
     </div>
   );

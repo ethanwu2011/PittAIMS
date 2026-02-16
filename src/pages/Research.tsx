@@ -1,7 +1,4 @@
 import React, { useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 interface ProjectCardProps {
   title: string;
@@ -33,7 +30,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, tags, col
 };
 
 const Research: React.FC = () => {
-  const navigate = useNavigate();
 
   const projects = [
     {
@@ -153,25 +149,11 @@ const Research: React.FC = () => {
         <div className="container mx-auto px-4 md:px-6">
           <div className="section-fade-in max-w-2xl mx-auto text-center">
             <h2 className="text-2xl font-bold mb-3 text-foreground">Get Involved in Research</h2>
-            <p className="text-muted-foreground mb-6">
-              Whether you have experience in AI or are just getting started, we'd like to hear from you.
-              We can match you with a project based on your skills and interests.
+            <p className="text-muted-foreground">
+              Interested in joining a project or proposing new research?
+              Email us at{" "}
+              <a href="mailto:etw46@pitt.edu" className="text-primary hover:underline">etw46@pitt.edu</a>.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button
-                className="bg-primary text-primary-foreground hover:bg-primary/90"
-                onClick={() => navigate("/contact")}
-              >
-                Join a Project
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => navigate("/contact")}
-              >
-                Propose Research
-              </Button>
-            </div>
           </div>
         </div>
       </section>

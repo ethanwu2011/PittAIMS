@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,7 +25,6 @@ const Navbar: React.FC = () => {
     { name: "Events", path: "/events" },
     { name: "Research", path: "/research" },
     { name: "Course", path: "/course" },
-    { name: "Contact", path: "/contact" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -62,13 +59,6 @@ const Navbar: React.FC = () => {
               {link.name}
             </Link>
           ))}
-          <Button
-            size="sm"
-            className="bg-primary text-primary-foreground hover:bg-primary/90"
-            onClick={() => navigate("/contact")}
-          >
-            Join Us
-          </Button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -110,13 +100,6 @@ const Navbar: React.FC = () => {
                 {link.name}
               </Link>
             ))}
-            <Button
-              size="sm"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 mt-2"
-              onClick={() => navigate("/contact")}
-            >
-              Join Us
-            </Button>
           </div>
         </div>
       )}
