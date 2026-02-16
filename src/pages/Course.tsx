@@ -56,14 +56,14 @@ const schedule: ScheduleRow[] = [
     format: "In-person",
     mainFocus: "Project work session",
     theorySegment: "TBD",
-    instructors: "TBD",
+    instructors: "Ethan Wu",
   },
   {
     date: "Fri, July 24",
     format: "In-person",
     mainFocus: "Final presentations",
     theorySegment: "—",
-    instructors: "TBD",
+    instructors: "Ethan Wu",
   },
 ];
 
