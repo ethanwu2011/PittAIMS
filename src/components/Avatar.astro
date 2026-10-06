@@ -1,0 +1,78 @@
+---
+import { initials, type Person } from "../data/people";
+
+interface Props {
+  person: Person;
+  /** Index used to rotate tile colors for people without photos. */
+  index?: number;
+  size?: "sm" | "lg";
+}
+
+const { person, index = 0, size = "lg" } = Astro.props;
+const tones = ["gold", "coral", "sky", "mint"];
+const tone = tones[index % tones.length];
+---
+
+{
+  person.photo ? (
+    <img
+      class:list={["avatar", size]}
+      src={person.photo}
+      alt={person.name}
+      width="480"
+      height="480"
+      loading="lazy"
+      decoding="async"
+    />
+  ) : (
+    <span class:list={["avatar", "tile", size, tone]} aria-hidden="true">
+      {initials(person.name)}
+    </span>
+  )
+}
+
+<style>
+  .avatar {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: 2px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--sky);
+  }
+
+  .sm {
+    border-radius: 999px;
+  }
+
+  .tile {
+    font-weight: 800;
+    font-stretch: 125%;
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    color: var(--navy);
+    letter-spacing: -0.02em;
+  }
+
+  .tile.sm {
+    font-size: 1.4rem;
+  }
+
+  .gold {
+    background: var(--gold);
+  }
+
+  .coral {
+    background: var(--coral-soft);
+  }
+
+  .sky {
+    background: var(--sky);
+  }
+
+  .mint {
+    background: var(--mint);
+  }
+</style>

@@ -1,7 +1,7 @@
 # Pitt AIMs website
 
-Source for [pittaims.com](https://pittaims.com), the site of the Pitt AI in Medicine Society, a
-student-led machine learning research group at the University of Pittsburgh School of Medicine.
+Source for [pittaims.com](https://pittaims.com), the site of Pitt AIMs, the AI in Medicine
+Society: the University of Pittsburgh's student club for AI in medicine.
 
 It's a static site built with [Astro](https://astro.build). Every page is plain HTML at build
 time, so search engines and link previews (iMessage, Slack, LinkedIn) see the real content.
@@ -12,13 +12,19 @@ Most edits are in `src/data/`. You shouldn't need to touch page markup.
 
 | To change… | Edit |
 | --- | --- |
-| Officers, founders, faculty | `src/data/people.ts` |
-| Publications | `src/data/publications.ts` (newest first; put member names in `members` to bold them) |
+| Officers, founders, faculty | `src/data/people.ts` (update `officersTerm` each year) |
+| Headshots | Add a square photo (~480px JPG) to `public/images/people/` and set `photo` in `people.ts`. Anyone without one gets a colored initials tile. |
+| Research spotlights (homepage and /research) | `src/data/spotlights.ts` |
+| Publications | `src/data/publications.ts` (newest first; put member names in `members` to highlight them) |
 | Course dates, schedule, status | `src/data/course.ts` (set `status` to `"Open"`, `"In session"`, or `"Completed"`) |
 | Contact email, press coverage, nav | `src/data/site.ts` |
 
-Page layouts live in `src/pages/`, shared pieces in `src/components/`, and all styling in
-`src/styles/global.css` plus a `<style>` block per page.
+Only use images you have rights to. The PDGrapher figure comes from the
+[PDGrapher repository](https://github.com/mims-harvard/PDGrapher) (MIT License) and is credited on the page.
+
+Page layouts live in `src/pages/`, shared pieces in `src/components/`, and styling in
+`src/styles/global.css` (colors, type, buttons) plus a `<style>` block per page. Icons are
+[Lucide](https://lucide.dev); add one by name in `src/components/Icon.astro`.
 
 ## Running locally
 

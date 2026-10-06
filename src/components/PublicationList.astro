@@ -12,11 +12,11 @@ interface Props {
 const { items, compact = false, hideYear = false } = Astro.props;
 ---
 
-<ol class:list={["rows", "pubs", { compact }]}>
+<ol class:list={["pubs", { compact }]}>
   {
     items.map((p) => (
       <li>
-        <p class="meta">
+        <p class="venue">
           {!hideYear && `${p.year} · `}
           <cite>{p.journal}</cite>
         </p>
@@ -40,7 +40,7 @@ const { items, compact = false, hideYear = false } = Astro.props;
                 <span class="tag">{t}</span>
               ))}
             </div>
-            <p class="meta ids">
+            <p class="ids">
               <a href={doiUrl(p.doi)}>doi:{p.doi}</a>
               {p.pmid && (
                 <>
@@ -57,10 +57,39 @@ const { items, compact = false, hideYear = false } = Astro.props;
 </ol>
 
 <style>
+  .pubs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+
+  .pubs > li {
+    background: var(--white);
+    border: 2px solid var(--line);
+    border-radius: 18px;
+    padding: 20px 22px;
+  }
+
+  .venue {
+    font-size: 13px;
+    font-weight: 700;
+    font-stretch: 112%;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  cite {
+    font-style: normal;
+  }
+
   .pubs h3 {
-    font-size: clamp(1.2rem, 2vw, 1.4rem);
-    line-height: 1.25;
-    margin: 6px 0 6px;
+    font-size: clamp(1.1rem, 1.8vw, 1.28rem);
+    font-stretch: 104%;
+    line-height: 1.3;
+    margin: 6px 0;
   }
 
   .pubs h3 a {
@@ -69,12 +98,8 @@ const { items, compact = false, hideYear = false } = Astro.props;
   }
 
   .pubs h3 a:hover {
-    color: var(--link);
+    color: var(--blue);
     text-decoration: underline;
-  }
-
-  cite {
-    font-style: normal;
   }
 
   .authors {
@@ -84,13 +109,16 @@ const { items, compact = false, hideYear = false } = Astro.props;
 
   .authors strong {
     color: var(--ink);
-    font-weight: 600;
+    font-weight: 700;
+    background: var(--gold-soft);
+    padding: 0 3px;
+    border-radius: 4px;
   }
 
   .summary {
     margin-top: 10px;
     color: var(--ink-2);
-    max-width: 70ch;
+    max-width: 72ch;
   }
 
   .foot {
@@ -102,19 +130,21 @@ const { items, compact = false, hideYear = false } = Astro.props;
     margin-top: 14px;
   }
 
+  .ids {
+    font-size: 13px;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
   .ids a {
     color: var(--ink-3);
   }
 
   .ids a:hover {
-    color: var(--link);
+    color: var(--blue);
   }
 
   .compact > li {
-    padding: 18px 0;
-  }
-
-  .compact h3 {
-    font-size: 1.15rem;
+    padding: 16px 18px;
   }
 </style>

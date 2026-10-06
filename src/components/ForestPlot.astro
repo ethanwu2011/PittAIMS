@@ -13,7 +13,7 @@ interface Props {
   figure: string;
   rows: Row[];
   caption: string;
-  source: { label: string; href: string };
+  source?: { label: string; href: string };
   min?: number;
   max?: number;
 }
@@ -59,43 +59,42 @@ const fmt = (x: number) => x.toFixed(2);
   </div>
   <figcaption>
     <span class="fig">{figure}</span>
-    {caption}{" "}
-    <a href={source.href}>{source.label}</a>
+    {caption}
+    {source && <> <a href={source.href}>{source.label}</a></>}
   </figcaption>
 </figure>
 
 <style>
   .forest {
     margin: 0;
-    border: 1px solid var(--rule);
-    background: var(--paper);
-    padding: 22px 22px 18px;
   }
 
   .plot {
     display: grid;
-    gap: 6px;
+    gap: 4px;
   }
 
   .row {
     display: grid;
-    grid-template-columns: minmax(8.5rem, 38%) minmax(0, 1fr);
+    grid-template-columns: minmax(8.5rem, 40%) minmax(0, 1fr);
     align-items: center;
     gap: 16px;
-    min-height: 52px;
+    min-height: 50px;
   }
 
   .name {
     display: grid;
-    font-size: 14.5px;
-    line-height: 1.3;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.25;
   }
 
   .val {
-    font-family: var(--mono);
-    font-size: 12px;
+    font-size: 12.5px;
+    font-weight: 400;
     color: var(--ink-3);
     white-space: nowrap;
+    font-variant-numeric: tabular-nums;
   }
 
   .track {
@@ -108,15 +107,17 @@ const fmt = (x: number) => x.toFixed(2);
     position: absolute;
     top: -6px;
     bottom: -6px;
-    border-left: 1px dashed var(--rule-strong);
+    border-left: 2px dashed var(--ink-3);
+    opacity: 0.5;
   }
 
   .ci {
     position: absolute;
     top: 50%;
-    height: 2px;
-    background: var(--plot-ink);
+    height: 3px;
+    background: var(--blue);
     transform: translateY(-50%);
+    border-radius: 2px;
   }
 
   .ci::before,
@@ -124,8 +125,8 @@ const fmt = (x: number) => x.toFixed(2);
     content: "";
     position: absolute;
     top: -5px;
-    height: 12px;
-    border-left: 2px solid var(--plot-ink);
+    height: 13px;
+    border-left: 3px solid var(--blue);
   }
 
   .ci::before {
@@ -139,17 +140,18 @@ const fmt = (x: number) => x.toFixed(2);
   .pt {
     position: absolute;
     top: 50%;
-    width: 13px;
-    height: 13px;
+    width: 16px;
+    height: 16px;
     background: var(--gold);
-    border: 2px solid var(--plot-ink);
+    border: 2.5px solid var(--navy);
+    border-radius: 4px;
     transform: translate(-50%, -50%);
   }
 
   .axis {
     min-height: 30px;
-    border-top: 1px solid var(--rule);
-    padding-top: 6px;
+    border-top: 2px solid var(--line);
+    padding-top: 8px;
   }
 
   .axis .track {
@@ -160,49 +162,32 @@ const fmt = (x: number) => x.toFixed(2);
     position: absolute;
     top: 0;
     transform: translateX(-50%);
-    font-family: var(--mono);
-    font-size: 11.5px;
+    font-size: 12px;
     color: var(--ink-3);
-  }
-
-  .tick::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: -7px;
-    height: 5px;
-    border-left: 1px solid var(--rule-strong);
+    font-variant-numeric: tabular-nums;
   }
 
   figcaption {
-    margin-top: 16px;
-    padding-top: 14px;
-    border-top: 1px solid var(--rule);
-    font-size: 13.5px;
+    margin-top: 14px;
+    font-size: 14px;
     line-height: 1.5;
     color: var(--ink-2);
   }
 
   .fig {
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 500;
+    font-weight: 700;
     color: var(--ink);
-    margin-right: 6px;
+    margin-right: 4px;
   }
 
   @media (max-width: 480px) {
-    .forest {
-      padding: 16px 14px 14px;
-    }
-
     .row {
       gap: 10px;
       grid-template-columns: minmax(8.5rem, 44%) minmax(0, 1fr);
     }
 
     .val {
-      font-size: 11px;
+      font-size: 11.5px;
     }
   }
 </style>

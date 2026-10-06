@@ -1,5 +1,6 @@
 ---
-import { site, nav, press } from "../data/site";
+import { site, nav, press, joinHref } from "../data/site";
+import Logo from "./Logo.astro";
 
 const year = new Date().getFullYear();
 ---
@@ -7,25 +8,31 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
   <div class="wrap grid">
     <div class="about">
-      <p class="wordmark">Pitt AIMs</p>
+      <a class="brand" href="/">
+        <Logo size={30} />
+        <span>Pitt AIMs</span>
+      </a>
       <p class="blurb">
-        A student-led research group at the University of Pittsburgh School of Medicine using machine
-        learning to answer clinical questions.
+        The AI in Medicine Society, a student club at the University of Pittsburgh. Journal club,
+        workshops, a summer ML course, and research with Pitt and UPMC faculty.
       </p>
-      <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+      <a class="btn" href={joinHref}>Join us</a>
     </div>
 
     <nav aria-label="Footer">
-      <p class="head">Site</p>
+      <p class="head">Explore</p>
       <ul>
         <li><a href="/">Home</a></li>
         {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
-        <li><a href="/#join">Get involved</a></li>
       </ul>
     </nav>
 
     <div>
-      <p class="head">In the news</p>
+      <p class="head">Contact</p>
+      <ul>
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+      </ul>
+      <p class="head news">In the news</p>
       <ul>
         {
           press.map((item) => (
@@ -38,50 +45,63 @@ const year = new Date().getFullYear();
     </div>
   </div>
   <div class="wrap fine">
-    <p>© {year} {site.fullName}. A student organization at the University of Pittsburgh.</p>
+    <p>© {year} Pitt AIMs, the AI in Medicine Society at the University of Pittsburgh.</p>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    border-top: 1px solid var(--rule);
-    background: var(--paper-2);
-    padding: 48px 0 28px;
-    font-size: 15px;
+    background: var(--navy);
+    color: #c9d4ee;
+    padding: 56px 0 28px;
+    font-size: 15.5px;
   }
 
   .grid {
     display: grid;
-    gap: 32px;
+    gap: 36px;
   }
 
   @media (min-width: 760px) {
     .grid {
-      grid-template-columns: 2fr 1fr 1.4fr;
+      grid-template-columns: 2fr 1fr 1.3fr;
       gap: 48px;
     }
   }
 
-  .wordmark {
-    font-family: var(--serif);
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--white);
+    text-decoration: none;
     font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 8px;
+    font-weight: 800;
+    font-stretch: 120%;
   }
 
   .blurb {
-    color: var(--ink-2);
-    max-width: 44ch;
-    margin-bottom: 12px;
+    margin: 14px 0 22px;
+    max-width: 46ch;
+  }
+
+  .btn {
+    box-shadow: 4px 4px 0 #000;
+    border-color: #000;
   }
 
   .head {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.06em;
+    font-size: 13px;
+    font-weight: 700;
+    font-stretch: 115%;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--ink-3);
+    color: var(--gold);
     margin-bottom: 10px;
+  }
+
+  .head.news {
+    margin-top: 24px;
   }
 
   ul {
@@ -93,20 +113,19 @@ const year = new Date().getFullYear();
   }
 
   ul a {
-    color: var(--ink-2);
+    color: var(--white);
     text-decoration: none;
   }
 
   ul a:hover {
-    color: var(--ink);
     text-decoration: underline;
   }
 
   .fine {
-    margin-top: 40px;
+    margin-top: 44px;
     padding-top: 20px;
-    border-top: 1px solid var(--rule);
-    font-size: 13px;
-    color: var(--ink-3);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 13.5px;
+    color: #9fb0d6;
   }
 </style>

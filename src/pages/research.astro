@@ -1,10 +1,13 @@
 ---
 import Base from "../layouts/Base.astro";
+import Avatar from "../components/Avatar.astro";
 import PublicationList from "../components/PublicationList.astro";
 import { site } from "../data/site";
-import { publications } from "../data/publications";
+import { publications, doiUrl } from "../data/publications";
+import { spotlights } from "../data/spotlights";
 
 const years = [...new Set(publications.map((p) => p.year))].sort((a, b) => b - a);
+const [featured, ...others] = spotlights;
 
 const steps = [
   {
@@ -12,126 +15,277 @@ const steps = [
     body: "A clinician or faculty mentor brings a question worth answering: who gets this disease early, what predicts a bad outcome, what are we missing.",
   },
   {
-    title: "Cohort",
-    body: "Students define cases and matched controls and build the dataset, most often in the NIH All of Us Researcher Workbench.",
+    title: "Data",
+    body: "Students define cases and controls and build the dataset, often in the NIH All of Us Researcher Workbench.",
   },
   {
     title: "Model",
-    body: "Interpretable models first: logistic regression, gradient-boosted trees, clustering. Evaluated on held-out data with AUC and feature attributions.",
+    body: "Start with models you can explain, like logistic regression and gradient-boosted trees, and test them on held-out data.",
   },
   {
     title: "Paper",
-    body: "We check findings against the clinical literature, validate where we can, and write it up for peer review with our mentors.",
+    body: "Check the findings against the clinical literature, then write it up for peer review with your mentor.",
   },
 ];
+
+const pitchHref = `mailto:${site.email}?subject=${encodeURIComponent("Project idea for Pitt AIMs")}`;
+const joinProjectHref = `mailto:${site.email}?subject=${encodeURIComponent("Joining a Pitt AIMs project")}`;
 ---
 
 <Base
   title="Research"
-  description="Publications and research projects from Pitt AIMs: interpretable machine learning on real patient data, run by students with Pitt and UPMC faculty."
+  description="Research by Pitt AIMs members: graph neural networks for drug discovery, machine learning on NIH All of Us health records, large language models in pathology, and more."
 >
-  <header class="page-head">
+  <header class="page-head gold-head">
     <div class="wrap">
-      <p class="label">Research</p>
-      <h1>Student research, published.</h1>
+      <p class="eyebrow">Research</p>
+      <h1>Students doing real research.</h1>
       <p class="lede">
-        Our members run machine learning projects on real clinical data with faculty at Pitt and
-        UPMC. We favor models a clinician can interrogate, and questions a clinician actually has.
+        Members work with faculty at Pitt, UPMC, and beyond, on everything from drug discovery to
+        health records to language models. Here's some of what they've published.
       </p>
     </div>
   </header>
 
-  <section class="section" aria-labelledby="method-h">
-    <div class="wrap section-grid">
-      <p class="label"><span class="num">01</span> Method</p>
-      <div>
-        <h2 class="section-title" id="method-h">How a project runs</h2>
-        <ol class="steps">
-          {
-            steps.map((s, i) => (
-              <li>
-                <span class="step-num">{String(i + 1).padStart(2, "0")}</span>
-                <div>
-                  <h3>{s.title}</h3>
-                  <p>{s.body}</p>
-                </div>
-              </li>
-            ))
-          }
-        </ol>
+  <section class="band white" aria-labelledby="spot-h">
+    <div class="wrap">
+      <div class="intro">
+        <p class="eyebrow">Spotlight</p>
+        <h2 class="title" id="spot-h">{featured.headline}</h2>
       </div>
-    </div>
-  </section>
-
-  <section class="section" id="publications" aria-labelledby="pubs-h">
-    <div class="wrap section-grid">
-      <p class="label"><span class="num">02</span> Publications</p>
-      <div>
-        <h2 class="section-title" id="pubs-h">Publications</h2>
-        <p class="note">Selected work by Pitt AIMs members, whose names are in bold. Newest first.</p>
-        {
-          years.map((y) => (
-            <div class="year">
-              <h3 class="year-h">{y}</h3>
-              <PublicationList items={publications.filter((p) => p.year === y)} hideYear />
+      <div class="spot-main">
+        <figure class="overview card">
+          <img
+            src="/images/research/pdgrapher-overview.jpg"
+            alt="PDGrapher overview: diseased and healthy gene expression go into the model, which predicts drug targets and how they would shift the cell toward a treated state."
+            width="1612"
+            height="1148"
+            loading="lazy"
+          />
+          <figcaption>
+            PDGrapher overview.{" "}
+            {featured.image && <a href={featured.image.creditHref}>{featured.image.credit}</a>}
+          </figcaption>
+        </figure>
+        <div class="spot-copy">
+          <div class="who">
+            <Avatar person={{ name: featured.member, photo: featured.photo }} size="sm" />
+            <div>
+              <p class="who-name">{featured.member}</p>
+              <p class="who-role">{featured.role}</p>
             </div>
+          </div>
+          <p>{featured.body}</p>
+          <p class="cite">
+            <a href={doiUrl(featured.paper.doi)}>{featured.paper.title}</a>
+            <span>{featured.paper.journal}, {featured.paper.year}</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="others">
+        {
+          others.map((s, i) => (
+            <article class:list={["card", "other", i === 0 ? "sky" : "gold"]}>
+              <div class="who">
+                <Avatar person={{ name: s.member, photo: s.photo }} size="sm" />
+                <div>
+                  <p class="who-name">{s.member}</p>
+                  <p class="who-role">{s.role}</p>
+                </div>
+              </div>
+              <h3>{s.headline}</h3>
+              <p class="body">{s.body}</p>
+              <p class="cite">
+                <a href={doiUrl(s.paper.doi)}>{s.paper.title}</a>
+                <span>
+                  {s.paper.journal}, {s.paper.year}
+                </span>
+              </p>
+            </article>
           ))
         }
       </div>
     </div>
   </section>
 
-  <section class="section collab" aria-labelledby="collab-h">
-    <div class="wrap section-grid">
-      <p class="label"><span class="num">03</span> Collaborate</p>
-      <div class="two">
-        <div>
-          <h2 class="section-title" id="collab-h">Bring us a question</h2>
-          <p class="prose">
-            Faculty and clinicians: if you have a question and the data, or a route to it, we have
-            students who want to do the work. Tell us the question in a paragraph and we'll find
-            the right people.
-          </p>
-          <p class="more">
-            <a class="btn" href={`mailto:${site.email}?subject=Project%20idea%20for%20Pitt%20AIMs`}>
-              Pitch a project
-            </a>
-          </p>
-        </div>
-        <div>
-          <h2 class="section-title">Join a project</h2>
-          <p class="prose">
-            Students: the fastest way in is the <a href="/course/">summer course</a>, which ends
-            with a project of your own. You can also email us with what you're interested in and
-            any experience you have. None is fine.
-          </p>
-          <p class="more">
-            <a class="btn ghost" href={`mailto:${site.email}?subject=Joining%20a%20Pitt%20AIMs%20project`}>
-              Email us
-            </a>
-          </p>
-        </div>
+  <section class="band sky" aria-labelledby="how-h">
+    <div class="wrap">
+      <div class="intro">
+        <p class="eyebrow">How it works</p>
+        <h2 class="title" id="how-h">From a question to a paper</h2>
+      </div>
+      <ol class="steps">
+        {
+          steps.map((s, i) => (
+            <li>
+              <span class="num">{i + 1}</span>
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" id="publications" aria-labelledby="pubs-h">
+    <div class="wrap">
+      <div class="intro">
+        <p class="eyebrow">Publications</p>
+        <h2 class="title" id="pubs-h">Member publications</h2>
+        <p class="lede">Selected work by Pitt AIMs members, whose names are in bold.</p>
+      </div>
+      {
+        years.map((y) => (
+          <div class="year">
+            <h3 class="year-h">{y}</h3>
+            <PublicationList items={publications.filter((p) => p.year === y)} hideYear />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="band blue" aria-labelledby="collab-h">
+    <div class="wrap two">
+      <div>
+        <h2 class="title" id="collab-h">Faculty: bring us a question</h2>
+        <p class="lede">
+          Have a clinical question and the data, or a route to it? We have students who want to do
+          the work. Send us a paragraph and we'll find the right people.
+        </p>
+        <div class="actions"><a class="btn" href={pitchHref}>Pitch a project</a></div>
+      </div>
+      <div>
+        <h2 class="title">Students: join a project</h2>
+        <p class="lede">
+          The fastest way in is the <a href="/course/">summer course</a>, which ends with a project
+          of your own. Or email us with what you're curious about.
+        </p>
+        <div class="actions"><a class="btn light" href={joinProjectHref}>Email us</a></div>
       </div>
     </div>
   </section>
 </Base>
 
 <style>
-  .page-head {
-    padding: clamp(40px, 6vw, 80px) 0 clamp(36px, 5vw, 64px);
+  .gold-head {
+    background: var(--gold-soft);
   }
 
-  .page-head .wrap {
+  .spot-main {
+    display: grid;
+    gap: 28px;
+    align-items: start;
+  }
+
+  @media (min-width: 980px) {
+    .spot-main {
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 40px;
+    }
+  }
+
+  .overview {
+    margin: 0;
+    padding: 16px;
+    box-shadow: var(--pop);
+  }
+
+  .overview img {
+    width: 100%;
+    height: auto;
+  }
+
+  .overview figcaption {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--ink-3);
+  }
+
+  .overview figcaption a {
+    color: inherit;
+  }
+
+  .spot-copy {
+    display: grid;
+    gap: 18px;
+    color: var(--ink-2);
+    font-size: 17.5px;
+  }
+
+  .who {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .who :global(.avatar) {
+    width: 56px;
+    flex: none;
+  }
+
+  .who-name {
+    font-weight: 800;
+    font-stretch: 110%;
+    color: var(--ink);
+  }
+
+  .who-role {
+    font-size: 14px;
+    color: var(--ink-3);
+  }
+
+  .cite {
+    display: grid;
+    gap: 2px;
+    font-size: 15px;
+  }
+
+  .cite a {
+    font-weight: 700;
+  }
+
+  .cite span {
+    color: var(--ink-3);
+  }
+
+  .others {
     display: grid;
     gap: 20px;
+    margin-top: 40px;
   }
 
-  .page-head h1 {
-    font-size: clamp(2.3rem, 5vw, 3.8rem);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    font-weight: 450;
-    max-width: 18ch;
+  @media (min-width: 900px) {
+    .others {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+    }
+  }
+
+  .other {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: var(--pop);
+  }
+
+  .other.sky {
+    background: var(--sky-soft);
+  }
+
+  .other.gold {
+    background: #fff4d6;
+  }
+
+  .other h3 {
+    font-size: 1.35rem;
+  }
+
+  .other .body {
+    color: var(--ink-2);
+    flex: 1;
   }
 
   .steps {
@@ -139,52 +293,45 @@ const steps = [
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0;
-    border-top: 1px solid var(--rule);
+    gap: 20px;
+  }
+
+  @media (min-width: 760px) {
+    .steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
   }
 
   .steps li {
+    background: var(--white);
+    border: 2px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px;
     display: grid;
-    grid-template-columns: 48px minmax(0, 1fr);
-    gap: 16px;
-    padding: 20px 0;
-    border-bottom: 1px solid var(--rule);
+    align-content: start;
+    gap: 8px;
   }
 
-  .step-num {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--ink-3);
-    padding-top: 5px;
+  .num {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--navy);
+    font-weight: 800;
+    font-size: 20px;
+    margin-bottom: 6px;
   }
 
   .steps h3 {
     font-size: 1.3rem;
-    margin-bottom: 4px;
   }
 
   .steps p {
     color: var(--ink-2);
-    max-width: 64ch;
-  }
-
-  @media (min-width: 760px) {
-    .steps li {
-      grid-template-columns: 64px 160px minmax(0, 1fr);
-    }
-
-    .steps li > div {
-      display: contents;
-    }
-
-    .steps h3 {
-      margin: 0;
-    }
-  }
-
-  .note {
-    color: var(--ink-3);
-    margin-bottom: 28px;
+    font-size: 16px;
   }
 
   .year + .year {
@@ -192,15 +339,14 @@ const steps = [
   }
 
   .year-h {
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--ink);
-    margin-bottom: 4px;
-  }
-
-  .collab {
-    background: var(--paper-2);
+    display: inline-block;
+    font-size: 15px;
+    font-stretch: 115%;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--navy);
+    color: var(--white);
+    margin-bottom: 16px;
   }
 
   .two {
@@ -214,11 +360,17 @@ const steps = [
     }
   }
 
-  .two .section-title {
-    font-size: clamp(1.5rem, 2.6vw, 2rem);
+  .two > div {
+    display: grid;
+    gap: 16px;
+    align-content: start;
   }
 
-  .more {
-    margin-top: 20px;
+  .two .title {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+  }
+
+  .two .lede a {
+    color: var(--gold);
   }
 </style>

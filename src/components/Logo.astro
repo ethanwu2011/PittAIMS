@@ -1,0 +1,15 @@
+---
+// The Pitt AIMs mark: an odds-ratio point estimate with its confidence
+// interval. Same drawing as public/favicon.svg.
+interface Props {
+  size?: number;
+}
+const { size = 34 } = Astro.props;
+---
+
+<svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
+  <rect width="32" height="32" rx="7" fill="#003594"></rect>
+  <path d="M5 16h22M5 11.5v9M27 11.5v9" stroke="#fff" stroke-width="2" fill="none"></path>
+  <path d="M11 6v20" stroke="#fff" stroke-opacity=".45" stroke-width="1" stroke-dasharray="2 2"></path>
+  <rect x="14.5" y="11.5" width="9" height="9" fill="#ffb81c" stroke="#003594" stroke-width="1.5"></rect>
+</svg>
