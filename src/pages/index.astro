@@ -1,0 +1,329 @@
+---
+import Base from "../layouts/Base.astro";
+import ForestPlot from "../components/ForestPlot.astro";
+import PublicationList from "../components/PublicationList.astro";
+import { site, press } from "../data/site";
+import { publications, doiUrl } from "../data/publications";
+import { course } from "../data/course";
+
+const amd = publications.find((p) => p.doi === "10.1016/j.ajo.2025.07.020")!;
+
+const areas = [
+  {
+    title: "Disease signals in health records",
+    body: "Interpretable models on the NIH All of Us cohort that surface systemic conditions linked to retinal disease.",
+  },
+  {
+    title: "Medical imaging",
+    body: "Deep learning for retinal OCT, including head-to-head benchmarks of diffusion models for fluid segmentation.",
+  },
+  {
+    title: "Language models in medicine",
+    body: "Testing LLMs against expert panels in pathology, and the regulation, bias, and synthetic-data questions that come with them.",
+  },
+  {
+    title: "Therapeutic discovery",
+    body: "Causally inspired graph neural networks that predict which combinations of drug targets reverse a disease state.",
+  },
+];
+
+const audiences = [
+  {
+    who: "Students",
+    body: "No ML background needed. Come to journal club and workshops, take the summer course, and join a project when you're ready.",
+    action: { label: "Email to join", href: `mailto:${site.email}?subject=Joining%20Pitt%20AIMs` },
+  },
+  {
+    who: "Faculty and clinicians",
+    body: "Have a clinical question and the data, or access, to answer it? We bring students who can build the cohort and the models.",
+    action: { label: "Pitch a project", href: `mailto:${site.email}?subject=Project%20idea%20for%20Pitt%20AIMs` },
+  },
+  {
+    who: "Partners and press",
+    body: "We're glad to talk about speaking, sponsorship, compute, or coverage of student research at Pitt.",
+    action: { label: "Get in touch", href: `mailto:${site.email}?subject=Pitt%20AIMs` },
+  },
+];
+---
+
+<Base>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="label">University of Pittsburgh School of Medicine</p>
+        <h1>
+          We use machine learning to answer <span class="mark">clinical questions</span>.
+        </h1>
+        <p class="lede">
+          Pitt AIMs is a student-led research group at the University of Pittsburgh School of
+          Medicine. We teach applied ML on real patient data, run projects with Pitt and UPMC
+          faculty, and publish what we find.
+        </p>
+        <div class="actions">
+          <a class="btn" href="/research/">See our research</a>
+          <a class="btn ghost" href="#join">Get involved</a>
+        </div>
+      </div>
+      <ForestPlot
+        figure="Fig. 1"
+        rows={[
+          { label: "Essential hypertension", or: 5.8, lo: 4.25, hi: 7.93 },
+          { label: "Hyperlipidemia", or: 5.16, lo: 3.76, hi: 7.08 },
+          { label: "Rheumatoid arthritis", or: 4.61, lo: 1.55, hi: 13.72 },
+        ]}
+        caption="Comorbidities associated with early-onset age-related macular degeneration in the NIH All of Us cohort. Odds ratio with 95% CI, log scale."
+        source={{ label: `Wu et al., ${amd.journal}, ${amd.year}.`, href: doiUrl(amd.doi) }}
+      />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="research-h">
+    <div class="wrap section-grid">
+      <p class="label"><span class="num">01</span> Research</p>
+      <div>
+        <h2 class="section-title" id="research-h">What we work on</h2>
+        <ol class="areas">
+          {
+            areas.map((a) => (
+              <li>
+                <h3>{a.title}</h3>
+                <p>{a.body}</p>
+              </li>
+            ))
+          }
+        </ol>
+
+        <div class="subhead">
+          <h3>Recent publications</h3>
+          <a class="arrow-link" href="/research/#publications">All publications</a>
+        </div>
+        <PublicationList items={publications.slice(0, 3)} compact />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="course-h">
+    <div class="wrap section-grid">
+      <p class="label"><span class="num">02</span> Course</p>
+      <div class="course">
+        <div>
+          <h2 class="section-title" id="course-h">{course.title}</h2>
+          <p class="prose">
+            Our summer course teaches machine learning by doing it. Students go from a clinical
+            question to a cohort, a model, and a final presentation, all on the NIH All of Us
+            research dataset. Past student projects have been published in peer-reviewed
+            journals.
+          </p>
+          <p class="more"><a class="arrow-link" href="/course/">Syllabus and materials</a></p>
+        </div>
+        <dl class="facts">
+          <dt>Term</dt>
+          <dd>{course.term} · {course.status}</dd>
+          <dt>Format</dt>
+          <dd>{course.sessions} sessions, hands-on and theory</dd>
+          <dt>Data</dt>
+          <dd>{course.dataset.name}</dd>
+          <dt>Seats</dt>
+          <dd>{course.capacity} students</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="news-h">
+    <div class="wrap section-grid">
+      <p class="label"><span class="num">03</span> In the news</p>
+      <div>
+        <h2 class="visually-hidden" id="news-h">In the news</h2>
+        <ul class="rows press">
+          {
+            press.map((item) => (
+              <li>
+                <p class="meta">{item.outlet}</p>
+                <a href={item.url}>{item.title}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section join" id="join" aria-labelledby="join-h">
+    <div class="wrap section-grid">
+      <p class="label"><span class="num">04</span> Get involved</p>
+      <div>
+        <h2 class="section-title" id="join-h">Work with us</h2>
+        <div class="audiences">
+          {
+            audiences.map((a) => (
+              <div class="audience">
+                <h3>{a.who}</h3>
+                <p>{a.body}</p>
+                <a class="arrow-link" href={a.action.href}>
+                  {a.action.label}
+                </a>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding: clamp(40px, 7vw, 96px) 0 clamp(48px, 7vw, 88px);
+  }
+
+  .hero-grid {
+    display: grid;
+    gap: 48px;
+    align-items: center;
+  }
+
+  @media (min-width: 980px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 64px;
+    }
+  }
+
+  .hero-copy {
+    display: grid;
+    gap: 24px;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 5.6vw, 4.4rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    font-weight: 450;
+  }
+
+  .areas {
+    list-style: none;
+    margin: 0 0 56px;
+    padding: 0;
+    display: grid;
+    gap: 28px;
+    counter-reset: area;
+  }
+
+  @media (min-width: 640px) {
+    .areas {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 36px 40px;
+    }
+  }
+
+  .areas li {
+    counter-increment: area;
+    border-top: 2px solid var(--ink);
+    padding-top: 14px;
+  }
+
+  .areas li::before {
+    content: "0" counter(area);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+
+  .areas h3,
+  .audience h3 {
+    font-size: 1.3rem;
+    margin: 6px 0 8px;
+  }
+
+  .areas p,
+  .audience p {
+    color: var(--ink-2);
+    font-size: 16px;
+  }
+
+  .subhead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .subhead h3 {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .subhead a {
+    font-size: 15px;
+  }
+
+  .course {
+    display: grid;
+    gap: 32px;
+  }
+
+  @media (min-width: 900px) {
+    .course {
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 48px;
+      align-items: start;
+    }
+
+    .course .facts {
+      margin-top: 8px;
+    }
+  }
+
+  .more {
+    margin-top: 18px;
+  }
+
+  .press a {
+    font-family: var(--serif);
+    font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+    line-height: 1.25;
+    color: var(--ink);
+    text-decoration-color: var(--rule-strong);
+  }
+
+  .press a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .press .meta {
+    margin-bottom: 6px;
+  }
+
+  .join {
+    background: var(--paper-2);
+  }
+
+  .audiences {
+    display: grid;
+    gap: 32px;
+  }
+
+  @media (min-width: 760px) {
+    .audiences {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .audience {
+    display: grid;
+    align-content: start;
+    gap: 6px;
+  }
+
+  .audience .arrow-link {
+    margin-top: 8px;
+    font-size: 15px;
+  }
+</style>

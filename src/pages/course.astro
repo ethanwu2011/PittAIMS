@@ -1,0 +1,288 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../data/site";
+import { course, schedule, resources } from "../data/course";
+import { faculty } from "../data/people";
+
+const description = `${course.title}: an ${course.sessions}-session course where students learn machine learning by building models on the NIH All of Us research dataset, ending in a clinical research project.`;
+
+const courseSchema = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  name: course.title,
+  description,
+  url: new URL("/course/", site.url).href,
+  provider: { "@type": "Organization", name: site.fullName, url: site.url },
+};
+
+const notifyHref = `mailto:${site.email}?subject=${encodeURIComponent(`Next ${course.title} cohort`)}`;
+---
+
+<Base title="Applied ML in Medicine course" description={description} schema={[courseSchema]}>
+  <header class="page-head">
+    <div class="wrap">
+      <p class="label">Course</p>
+      <h1>{course.title}</h1>
+      <p class="meta">
+        {course.term} · {course.meets} · {course.location}
+      </p>
+      <p class="lede">
+        An {course.sessions}-session course where you learn machine learning by doing it. Using the
+        {" "}<a href={course.dataset.url}>NIH All of Us</a> research dataset, you go from project
+        planning to building and evaluating models on real patient data, and finish with a project
+        on a clinical question you choose. Past student projects have been published in
+        peer-reviewed journals.
+      </p>
+      {
+        course.status === "Completed" && (
+          <p class="status">
+            <strong>The {course.term} cohort has finished.</strong> Want a seat in the next one?{" "}
+            <a href={notifyHref}>Email us</a> and we'll let you know when applications open.
+          </p>
+        )
+      }
+    </div>
+  </header>
+
+  <section class="section" aria-labelledby="schedule-h">
+    <div class="wrap section-grid">
+      <p class="label"><span class="num">01</span> Schedule</p>
+      <div>
+        <h2 class="section-title" id="schedule-h">Schedule</h2>
+        <p class="note">Each session: hands-on focus 6:00–6:45, ML theory 6:45–7:30.</p>
+        <ol class="sched">
+          {
+            schedule.map((s, i) => (
+              <li>
+                <div class="when">
+                  <span class="wk">Week {i + 1}</span>
+                  <span class="date">{s.date}</span>
+                  <span class="fmt">{s.format}</span>
+                </div>
+                <div class="what">
+                  <p class="focus">{s.focus}</p>
+                  {s.theory !== "—" && (
+                    <p class="theory">
+                      <span>Theory</span> {s.theory}
+                    </p>
+                  )}
+                </div>
+                <p class="who">{s.instructors !== "—" ? s.instructors : ""}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="project-h">
+    <div class="wrap section-grid">
+      <p class="label"><span class="num">02</span> Final project</p>
+      <div class="prose">
+        <h2 class="section-title" id="project-h">Final project</h2>
+        <p>
+          Work solo or in a team of two. Pick a clinical question, build case and control cohorts
+          from All of Us, train and evaluate models, and present what you found.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="people-h">
+    <div class="wrap section-grid">
+      <p class="label"><span class="num">03</span> Instructors</p>
+      <div>
+        <h2 class="section-title" id="people-h">Instructors</h2>
+        <ul class="names">
+          <li><strong>Ethan Wu</strong> <span>Lead instructor</span></li>
+          {faculty.map((f) => <li>{f.name}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="res-h">
+    <div class="wrap section-grid">
+      <p class="label"><span class="num">04</span> Resources</p>
+      <div>
+        <h2 class="section-title" id="res-h">Resources</h2>
+        <ul class="rows res">
+          {
+            resources.map((r) => (
+              <li>
+                <a href={r.url}>{r.label}</a>
+                <span>{r.note}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="log-h">
+    <div class="wrap section-grid">
+      <p class="label"><span class="num">05</span> Logistics</p>
+      <div>
+        <h2 class="visually-hidden" id="log-h">Logistics</h2>
+        <dl class="facts">
+          <dt>Location</dt>
+          <dd>{course.location}</dd>
+          <dt>Meets</dt>
+          <dd>{course.meets}, {course.term}</dd>
+          <dt>Capacity</dt>
+          <dd>{course.capacity} students</dd>
+          <dt>Attendance</dt>
+          <dd>Expected, not enforced</dd>
+          <dt>Contact</dt>
+          <dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-head {
+    padding: clamp(40px, 6vw, 80px) 0 clamp(36px, 5vw, 64px);
+  }
+
+  .page-head .wrap {
+    display: grid;
+    gap: 18px;
+  }
+
+  .page-head h1 {
+    font-size: clamp(2.2rem, 4.8vw, 3.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-weight: 450;
+    max-width: 20ch;
+  }
+
+  .status {
+    max-width: 62ch;
+    padding: 14px 16px;
+    border-left: 3px solid var(--gold);
+    background: var(--paper-2);
+    color: var(--ink-2);
+  }
+
+  .status strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .note {
+    color: var(--ink-3);
+    margin-bottom: 20px;
+  }
+
+  .sched {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .sched li {
+    display: grid;
+    gap: 6px 24px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  @media (min-width: 760px) {
+    .sched li {
+      grid-template-columns: 150px minmax(0, 1fr) 180px;
+    }
+  }
+
+  .when {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 10px;
+  }
+
+  @media (min-width: 760px) {
+    .when {
+      display: grid;
+      gap: 2px;
+    }
+  }
+
+  .wk,
+  .fmt {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+
+  .date {
+    font-weight: 600;
+  }
+
+  .focus {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    line-height: 1.3;
+  }
+
+  .theory {
+    margin-top: 4px;
+    color: var(--ink-2);
+    font-size: 15.5px;
+  }
+
+  .theory span {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-right: 6px;
+  }
+
+  .who {
+    font-size: 14.5px;
+    color: var(--ink-3);
+  }
+
+  .names {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+    font-size: 17px;
+  }
+
+  @media (min-width: 760px) {
+    .names {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .names strong {
+    font-weight: 600;
+  }
+
+  .names span {
+    color: var(--ink-3);
+    font-size: 14.5px;
+    margin-left: 6px;
+  }
+
+  .res li {
+    display: grid;
+    gap: 2px;
+    padding: 16px 0;
+  }
+
+  .res span {
+    color: var(--ink-3);
+    font-size: 15px;
+  }
+</style>

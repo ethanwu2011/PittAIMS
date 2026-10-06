@@ -1,0 +1,120 @@
+---
+import { authorParts, doiUrl, type Publication } from "../data/publications";
+
+interface Props {
+  items: Publication[];
+  /** Compact rows for the homepage: no summary or tags. */
+  compact?: boolean;
+  /** Omit the year when the list is already grouped by year. */
+  hideYear?: boolean;
+}
+
+const { items, compact = false, hideYear = false } = Astro.props;
+---
+
+<ol class:list={["rows", "pubs", { compact }]}>
+  {
+    items.map((p) => (
+      <li>
+        <p class="meta">
+          {!hideYear && `${p.year} · `}
+          <cite>{p.journal}</cite>
+        </p>
+        <h3>
+          <a href={doiUrl(p.doi)}>{p.title}</a>
+        </h3>
+        <p class="authors">
+          {authorParts(p).map((a, i) => (
+            <>
+              {i > 0 && ", "}
+              {a.elided && "… "}
+              {a.member ? <strong>{a.name}</strong> : a.name}
+            </>
+          ))}
+        </p>
+        {!compact && <p class="summary">{p.summary}</p>}
+        {!compact && (
+          <div class="foot">
+            <div class="tags">
+              {p.tags.map((t) => (
+                <span class="tag">{t}</span>
+              ))}
+            </div>
+            <p class="meta ids">
+              <a href={doiUrl(p.doi)}>doi:{p.doi}</a>
+              {p.pmid && (
+                <>
+                  {" · "}
+                  <a href={`https://pubmed.ncbi.nlm.nih.gov/${p.pmid}/`}>PMID {p.pmid}</a>
+                </>
+              )}
+            </p>
+          </div>
+        )}
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .pubs h3 {
+    font-size: clamp(1.2rem, 2vw, 1.4rem);
+    line-height: 1.25;
+    margin: 6px 0 6px;
+  }
+
+  .pubs h3 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .pubs h3 a:hover {
+    color: var(--link);
+    text-decoration: underline;
+  }
+
+  cite {
+    font-style: normal;
+  }
+
+  .authors {
+    font-size: 14.5px;
+    color: var(--ink-3);
+  }
+
+  .authors strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .summary {
+    margin-top: 10px;
+    color: var(--ink-2);
+    max-width: 70ch;
+  }
+
+  .foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 20px;
+    margin-top: 14px;
+  }
+
+  .ids a {
+    color: var(--ink-3);
+  }
+
+  .ids a:hover {
+    color: var(--link);
+  }
+
+  .compact > li {
+    padding: 18px 0;
+  }
+
+  .compact h3 {
+    font-size: 1.15rem;
+  }
+</style>

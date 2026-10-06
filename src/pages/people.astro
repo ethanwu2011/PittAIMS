@@ -1,0 +1,141 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../data/site";
+import { officers, officersTerm, founders, faculty, type Person } from "../data/people";
+
+const groups: { num: string; label: string; title: string; note?: string; people: Person[] }[] = [
+  { num: "01", label: "Officers", title: `Officers, ${officersTerm}`, people: officers },
+  {
+    num: "02",
+    label: "Founders",
+    title: "Founders",
+    note: "Pitt AIMs was started by four Pitt medical students.",
+    people: founders,
+  },
+  {
+    num: "03",
+    label: "Faculty",
+    title: "Faculty and instructors",
+    note: "Faculty and staff who have taught in Applied Machine Learning in Medicine.",
+    people: faculty,
+  },
+];
+---
+
+<Base
+  title="People"
+  description={`The officers, founders, and faculty instructors behind Pitt AIMs, the University of Pittsburgh's student-led AI in medicine research group.`}
+>
+  <header class="page-head">
+    <div class="wrap">
+      <p class="label">People</p>
+      <h1>The people behind Pitt AIMs.</h1>
+      <p class="lede">
+        Students at the University of Pittsburgh, with faculty who teach and mentor alongside
+        us.
+      </p>
+    </div>
+  </header>
+
+  {
+    groups.map((g) => (
+      <section class="section" aria-labelledby={`${g.label}-h`}>
+        <div class="wrap section-grid">
+          <p class="label">
+            <span class="num">{g.num}</span> {g.label}
+          </p>
+          <div>
+            <h2 class="section-title" id={`${g.label}-h`}>
+              {g.title}
+            </h2>
+            {g.note && <p class="note">{g.note}</p>}
+            <ul class="people">
+              {g.people.map((p) => (
+                <li>
+                  <p class="name">{p.name}</p>
+                  {p.role && <p class="role">{p.role}</p>}
+                  {p.program && <p class="program">{p.program}</p>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section join">
+    <div class="wrap section-grid">
+      <p class="label">Join</p>
+      <div>
+        <p class="prose">
+          Want to help run Pitt AIMs, teach a session, or mentor a project?
+          {" "}<a href={`mailto:${site.email}?subject=Getting%20involved%20with%20Pitt%20AIMs`}>Email us</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-head {
+    padding: clamp(40px, 6vw, 80px) 0 clamp(36px, 5vw, 64px);
+  }
+
+  .page-head .wrap {
+    display: grid;
+    gap: 20px;
+  }
+
+  .page-head h1 {
+    font-size: clamp(2.3rem, 5vw, 3.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-weight: 450;
+    max-width: 18ch;
+  }
+
+  .note {
+    color: var(--ink-3);
+    margin: -6px 0 24px;
+  }
+
+  .people {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0 32px;
+  }
+
+  .people li {
+    border-top: 1px solid var(--rule);
+    padding: 16px 0 20px;
+  }
+
+  .name {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+
+  .role {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-top: 6px;
+  }
+
+  .program {
+    font-size: 14.5px;
+    color: var(--ink-3);
+    margin-top: 4px;
+  }
+
+  .join {
+    background: var(--paper-2);
+  }
+</style>

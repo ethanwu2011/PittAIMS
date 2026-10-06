@@ -1,0 +1,33 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Page not found" noindex>
+  <section class="nf">
+    <div class="wrap">
+      <p class="label">404</p>
+      <h1>That page isn't here.</h1>
+      <p class="lede">It may have moved when we rebuilt the site.</p>
+      <div class="actions">
+        <a class="btn" href="/">Home</a>
+        <a class="btn ghost" href="/research/">Research</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding: clamp(64px, 12vw, 160px) 0;
+  }
+
+  .nf .wrap {
+    display: grid;
+    gap: 20px;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 450;
+  }
+</style>
