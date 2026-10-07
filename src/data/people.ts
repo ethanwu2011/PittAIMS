@@ -6,7 +6,18 @@ export interface Person {
   name: string;
   role?: string;
   photo?: string;
+  /** An empty slot shown as "Announced soon". */
+  placeholder?: boolean;
 }
+
+const tba = (count: number): Person[] =>
+  Array.from({ length: count }, () => ({ name: "Announced soon", placeholder: true }));
+
+// Incoming board. Replace the placeholders with real entries as officers
+// are announced, e.g. { name: "Jane Doe", photo: "/images/people/jane.jpg" }.
+// Once the whole board is in, make it the current board below.
+export const incomingTerm = "2026–27";
+export const incomingOfficers: Person[] = tba(6);
 
 export const officersTerm = "2025–26";
 

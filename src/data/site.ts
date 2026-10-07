@@ -5,13 +5,14 @@ export const site = {
   fullName: "AI in Medicine Society at the University of Pittsburgh",
   url: "https://pittaims.com",
   email: "etw46@pitt.edu",
-  tagline: "Pitt's student club for AI in medicine.",
+  tagline: "A big tent for AI in medicine.",
   description:
-    "Pitt AIMs is the University of Pittsburgh's student club for AI in medicine. Journal club, coding workshops, a summer machine learning course, and research projects with Pitt and UPMC faculty. No coding experience needed.",
+    "Pitt AIMs, the AI in Medicine Society, is a student-run club at the University of Pittsburgh that's open to everyone. Journal club, coding workshops, a summer machine learning course, and research with Pitt and UPMC faculty. No coding experience needed.",
 };
 
 export const nav = [
   { label: "What we do", href: "/#what-we-do" },
+  { label: "Events", href: "/#events" },
   { label: "Research", href: "/research/" },
   { label: "Course", href: "/course/" },
   { label: "People", href: "/people/" },

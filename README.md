@@ -1,7 +1,7 @@
 # Pitt AIMs website
 
 Source for [pittaims.com](https://pittaims.com), the site of Pitt AIMs, the AI in Medicine
-Society: the University of Pittsburgh's student club for AI in medicine.
+Society: a student-run club at the University of Pittsburgh that's open to everyone.
 
 It's a static site built with [Astro](https://astro.build). Every page is plain HTML at build
 time, so search engines and link previews (iMessage, Slack, LinkedIn) see the real content.
@@ -12,7 +12,8 @@ Most edits are in `src/data/`. You shouldn't need to touch page markup.
 
 | To change… | Edit |
 | --- | --- |
-| Officers, founders, faculty | `src/data/people.ts` (update `officersTerm` each year) |
+| Officers, founders, faculty | `src/data/people.ts`. Incoming officers start as "Announced soon" placeholders in `incomingOfficers`; swap in names as they're announced, then make them the current board. |
+| Meetings and events ("Coming up" on the homepage) | `src/data/events.ts`. Leave `date` out and it shows "TBA". |
 | Headshots | Add a square photo (~480px JPG) to `public/images/people/` and set `photo` in `people.ts`. Anyone without one gets a colored initials tile. |
 | Research spotlights (homepage and /research) | `src/data/spotlights.ts` |
 | Publications | `src/data/publications.ts` (newest first; put member names in `members` to highlight them) |

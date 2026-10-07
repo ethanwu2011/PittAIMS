@@ -5,7 +5,8 @@ import Avatar from "../components/Avatar.astro";
 import ForestPlot from "../components/ForestPlot.astro";
 import { site, press, joinHref } from "../data/site";
 import { course } from "../data/course";
-import { officers, officersTerm } from "../data/people";
+import { officers, officersTerm, incomingTerm, incomingOfficers } from "../data/people";
+import { events } from "../data/events";
 import { spotlights } from "../data/spotlights";
 import { publications, doiUrl } from "../data/publications";
 
@@ -36,7 +37,7 @@ const activities = [
     icon: "flask-conical",
     tone: "mint",
     title: "Research projects",
-    body: "We match students with Pitt and UPMC faculty on projects in health records, imaging, language models, and more. Several members have published along the way.",
+    body: "We connect members with Pitt and UPMC faculty on projects in health records, imaging, language models, and more. Several members have published along the way.",
     link: { label: "Our research", href: "/research/" },
   },
 ];
@@ -54,8 +55,12 @@ const faqs = [
     a: "No. Workshops start from the basics, and the summer course includes a Python and pandas crash course.",
   },
   {
-    q: "Who can join?",
-    a: "Pitt students who are curious about where AI meets medicine. If you're not sure it's for you, email us and come to a meeting anyway.",
+    q: "Do I have to be a Pitt student?",
+    a: "No. We're based at Pitt, but anyone curious about AI in medicine is welcome: undergrads, med and grad students, clinicians, engineers, and people from other schools. It's a big tent.",
+  },
+  {
+    q: "When and where do you meet?",
+    a: "We're setting this year's schedule now. Email us and we'll send dates and rooms as soon as they're confirmed.",
   },
   {
     q: "Can I actually get published?",
@@ -88,12 +93,13 @@ const topics = [
   <section class="hero band blue">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow">University of Pittsburgh · Student club</p>
-        <h1>Pitt's student club for <span class="scribble">AI in medicine</span>.</h1>
+        <p class="eyebrow">AI in Medicine Society · University of Pittsburgh</p>
+        <h1>A big tent for <span class="scribble">AI in medicine</span>.</h1>
         <p class="lede">
-          We're Pitt students learning to build, test, and question the AI tools headed for the
-          clinic. Come for journal club and coding workshops, stay for the summer ML course and
-          research with Pitt and UPMC faculty.
+          We're a student-run club at Pitt, and everyone's welcome: med students, undergrads, grad
+          students, clinicians, engineers, and the just plain curious, from Pitt or anywhere else.
+          Come for journal club and coding workshops, stay for the summer ML course and research
+          with Pitt and UPMC faculty.
         </p>
         <div class="actions">
           <a class="btn" href={joinHref}>Join us</a>
@@ -152,6 +158,44 @@ const topics = [
           ))
         }
       </div>
+    </div>
+  </section>
+
+  <!-- Events -->
+  <section class="band white" id="events" aria-labelledby="events-h">
+    <div class="wrap">
+      <div class="intro row">
+        <div>
+          <p class="eyebrow">Coming up</p>
+          <h2 class="title" id="events-h">Meetings and events</h2>
+          <p class="lede">Dates for this year are still being set. Want them as soon as they're out?</p>
+        </div>
+        <a class="btn" href={joinHref}>Get updates</a>
+      </div>
+      <ul class="events">
+        {
+          events.map((e) => (
+            <li class="event">
+              <div class:list={["date", { tba: !e.date }]}>
+                <span>{e.date ?? "TBA"}</span>
+              </div>
+              <div class="event-body">
+                <p class="kind">{e.kind}</p>
+                <h3>{e.title}</h3>
+                <p>{e.blurb}</p>
+                <p class="when">
+                  {[e.time ?? "Time TBA", e.place ?? "Location TBA"].join(" · ")}
+                </p>
+                {e.link && (
+                  <a class="more" href={e.link.href}>
+                    {e.link.label}
+                  </a>
+                )}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
@@ -271,6 +315,14 @@ const topics = [
           ))
         }
       </ul>
+      {
+        incomingOfficers.some((p) => p.placeholder) && (
+          <p class="incoming">
+            <strong>{incomingTerm} officers will be announced soon.</strong> Interested in helping
+            run Pitt AIMs? <a href={joinHref}>Let us know</a>.
+          </p>
+        )
+      }
     </div>
   </section>
 
@@ -740,6 +792,86 @@ const topics = [
     margin-top: 32px;
   }
 
+  /* Events */
+  .events {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+  }
+
+  @media (min-width: 760px) {
+    .events {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .event {
+    display: grid;
+    grid-template-columns: 84px minmax(0, 1fr);
+    gap: 18px;
+    padding: 20px;
+    border: 2px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--cream);
+  }
+
+  .date {
+    display: grid;
+    place-items: center;
+    align-self: start;
+    aspect-ratio: 1;
+    border: 2px solid var(--line);
+    border-radius: 16px;
+    background: var(--gold);
+    font-weight: 800;
+    font-stretch: 118%;
+    font-size: 17px;
+    line-height: 1.1;
+    text-align: center;
+    padding: 6px;
+  }
+
+  .date.tba {
+    background: var(--white);
+    border-style: dashed;
+    color: var(--ink-3);
+  }
+
+  .event-body {
+    display: grid;
+    align-content: start;
+    gap: 6px;
+  }
+
+  .kind {
+    font-size: 12.5px;
+    font-weight: 700;
+    font-stretch: 112%;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  .event h3 {
+    font-size: 1.25rem;
+  }
+
+  .event p:not(.kind) {
+    color: var(--ink-2);
+    font-size: 16px;
+  }
+
+  .event .when {
+    font-size: 14px !important;
+    color: var(--ink-3) !important;
+  }
+
+  .event .more {
+    font-size: 15px;
+  }
+
   /* Officers */
   .intro.row {
     display: flex;
@@ -770,6 +902,19 @@ const topics = [
   .officer-role {
     font-size: 14px;
     color: var(--ink-3);
+  }
+
+  .incoming {
+    margin-top: 28px;
+    padding: 16px 20px;
+    border: 2px dashed var(--line);
+    border-radius: 16px;
+    background: var(--white);
+    color: var(--ink-2);
+  }
+
+  .incoming strong {
+    color: var(--ink);
   }
 
   /* FAQ */

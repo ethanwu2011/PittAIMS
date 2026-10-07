@@ -2,23 +2,59 @@
 import Base from "../layouts/Base.astro";
 import Avatar from "../components/Avatar.astro";
 import { joinHref } from "../data/site";
-import { officers, officersTerm, founders, faculty } from "../data/people";
+import {
+  officers,
+  officersTerm,
+  incomingOfficers,
+  incomingTerm,
+  founders,
+  faculty,
+} from "../data/people";
+
+const incomingPending = incomingOfficers.some((p) => p.placeholder);
 ---
 
 <Base
   title="People"
-  description={`Meet the ${officersTerm} officers, founders, and faculty instructors of Pitt AIMs, the University of Pittsburgh's student club for AI in medicine.`}
+  description={`Meet the officers, founders, and faculty instructors of Pitt AIMs, the AI in Medicine Society at the University of Pittsburgh. Open to everyone.`}
 >
   <header class="page-head sky-head">
     <div class="wrap">
       <p class="eyebrow">People</p>
       <h1>The people who make it happen.</h1>
       <p class="lede">
-        Pitt AIMs is run by students, for students, with faculty who teach and mentor alongside
-        us.
+        Pitt AIMs is run by students and open to everyone, with faculty who teach and mentor
+        alongside us.
       </p>
     </div>
   </header>
+
+  <section class="band white" aria-labelledby="incoming-h">
+    <div class="wrap">
+      <div class="intro">
+        <p class="eyebrow">Incoming</p>
+        <h2 class="title" id="incoming-h">{incomingTerm} officers</h2>
+        {
+          incomingPending && (
+            <p class="lede">
+              Announced soon. Interested in a role? <a href={joinHref}>Let us know</a>.
+            </p>
+          )
+        }
+      </div>
+      <ul class="grid">
+        {
+          incomingOfficers.map((p, i) => (
+            <li>
+              <Avatar person={p} index={i} />
+              <p class:list={["name", { muted: p.placeholder }]}>{p.name}</p>
+              {p.role && <p class="role">{p.role}</p>}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
 
   <section class="band" aria-labelledby="officers-h">
     <div class="wrap">
@@ -113,6 +149,11 @@ import { officers, officersTerm, founders, faculty } from "../data/people";
     font-stretch: 110%;
     font-size: 18px;
     line-height: 1.2;
+  }
+
+  .name.muted {
+    color: var(--ink-3);
+    font-weight: 600;
   }
 
   .role {

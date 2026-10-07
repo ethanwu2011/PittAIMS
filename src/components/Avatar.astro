@@ -14,7 +14,11 @@ const tone = tones[index % tones.length];
 ---
 
 {
-  person.photo ? (
+  person.placeholder ? (
+    <span class:list={["avatar", "tile", "empty", size]} aria-hidden="true">
+      ?
+    </span>
+  ) : person.photo ? (
     <img
       class:list={["avatar", size]}
       src={person.photo}
@@ -74,5 +78,11 @@ const tone = tones[index % tones.length];
 
   .mint {
     background: var(--mint);
+  }
+
+  .empty {
+    background: var(--white);
+    border-style: dashed;
+    color: var(--ink-3);
   }
 </style>

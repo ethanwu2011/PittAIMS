@@ -8,6 +8,6 @@ export default defineConfig({
   // Old URLs from the previous site.
   redirects: {
     "/about": "/people/",
-    "/events": "/",
+    "/events": "/#events",
   },
 });
