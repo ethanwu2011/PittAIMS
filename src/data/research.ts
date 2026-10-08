@@ -134,7 +134,7 @@ export const groups: ResearchGroup[] = [
   },
   {
     id: "operating-room",
-    name: "Human–AI teams in the operating room",
+    name: "Humans and AI in the operating room",
     blurb: "Pairing clinicians with AI models to watch for problems during surgery.",
     tone: "mint",
     people: ["Yash Raka"],

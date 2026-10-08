@@ -1,10 +1,10 @@
-// Applied Machine Learning in Medicine — syllabus data for /course.
+// Syllabus data for the Applied Machine Learning in Medicine course (/course).
 
 export const course = {
   title: "Applied Machine Learning in Medicine",
   term: "Summer 2026",
   status: "Completed" as "Open" | "In session" | "Completed",
-  meets: "Fridays, 6:00–7:30 PM",
+  meets: "Fridays, 6:00 to 7:30 PM",
   location: "Scaife Hall",
   capacity: 40,
   sessions: 8,
@@ -15,11 +15,12 @@ export interface Session {
   date: string;
   format: "In person" | "Async";
   focus: string;
-  theory: string;
-  instructors: string;
+  /** Leave out for sessions with no theory block. */
+  theory?: string;
+  instructors?: string;
 }
 
-// Each session: hands-on focus 6:00–6:45, ML theory 6:45–7:30.
+// Each session: hands-on focus 6:00 to 6:45, ML theory 6:45 to 7:30.
 export const schedule: Session[] = [
   {
     date: "June 5",
@@ -53,8 +54,6 @@ export const schedule: Session[] = [
     date: "July 3",
     format: "Async",
     focus: "Optional mini-hackathon meetup",
-    theory: "—",
-    instructors: "—",
   },
   {
     date: "July 10",
@@ -67,14 +66,12 @@ export const schedule: Session[] = [
     date: "July 17",
     format: "In person",
     focus: "Project work session",
-    theory: "—",
     instructors: "Ethan Wu",
   },
   {
     date: "July 24",
     format: "In person",
     focus: "Final presentations",
-    theory: "—",
     instructors: "Ethan Wu",
   },
 ];

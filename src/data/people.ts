@@ -16,10 +16,10 @@ const tba = (count: number): Person[] =>
 // Incoming board. Replace the placeholders with real entries as officers
 // are announced, e.g. { name: "Jane Doe", photo: "/images/people/jane.jpg" }.
 // Once the whole board is in, make it the current board below.
-export const incomingTerm = "2026–27";
+export const incomingTerm = "2026 to 2027";
 export const incomingOfficers: Person[] = tba(6);
 
-export const officersTerm = "2025–26";
+export const officersTerm = "2025 to 2026";
 
 export const officers: Person[] = [
   { name: "Ethan Wu", photo: "/images/people/ethan.jpg" },
@@ -38,7 +38,7 @@ export const founders: Person[] = [
 ];
 
 // Earlier boards, newest first. Add a { term, people } entry for each
-// year, e.g. { term: "2024–25", people: [{ name: "Jane Doe" }] }.
+// year, e.g. { term: "2024 to 2025", people: [{ name: "Jane Doe" }] }.
 export const pastOfficers: { term: string; people: Person[] }[] = [
   { term: "Founding officers", people: founders },
 ];
