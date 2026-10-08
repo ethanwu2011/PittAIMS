@@ -142,13 +142,15 @@ export const groups: ResearchGroup[] = [
   },
   {
     id: "pathology",
-    name: "Pathology and language models",
+    name: "Pathology",
     blurb:
-      "What chatbots like ChatGPT and Llama can and can't do in pathology, plus reviews that explain AI to clinicians: how it works, how to evaluate it, where bias comes from, and how it's regulated.",
+      "Cytopathology and surgical pathology, what chatbots like ChatGPT and Llama can and can't do in the field, and reviews that explain AI to clinicians: how it works, how to evaluate it, where bias comes from, and how it's regulated.",
     tone: "sky",
     people: ["Josh Pantanowitz"],
     papers: [
       "10.1016/j.jpi.2026.100661",
+      "10.1159/000553127",
+      "10.1177/10668969241283481",
       "10.1016/j.modpat.2024.100687",
       "10.1016/j.modpat.2024.100688",
       "10.1016/j.modpat.2024.100686",
@@ -159,6 +161,9 @@ export const groups: ResearchGroup[] = [
       "10.1016/j.labinv.2024.102095",
       "10.1016/j.thromres.2024.109121",
       "10.1016/j.jasc.2023.07.001",
+      "10.1002/cncy.22272",
+      "10.1002/cncy.22212",
+      "10.1016/j.rmcr.2019.01.011",
     ],
   },
   {

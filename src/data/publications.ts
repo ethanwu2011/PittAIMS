@@ -327,6 +327,70 @@ publications.push(
   },
 );
 
+// Josh Pantanowitz: pathology and cytopathology.
+publications.push(
+  {
+    title: "Pericardial Fluid Metastatic Tumor Distribution and Fluid Volume Analysis: A 10-Year Institutional Experience",
+    authors: "Marshall M, Ramseyer T, Cuda J, … Pantanowitz J, … Khader S",
+    members: ["Pantanowitz J"],
+    journal: "Acta Cytologica",
+    year: 2026,
+    doi: "10.1159/000553127",
+    pmid: "42319869",
+    summary:
+      "Cancer found in the fluid around the heart mostly spread from lung and breast tumors, and larger fluid samples caught it more often.",
+    tags: ["Cytopathology", "Oncology"],
+  },
+  {
+    title: "Aberrant CD45 Immunoreactivity in Neuroendocrine Neoplasms: A Diagnostic Pitfall-Report of 10 Specimens and Clinical Recommendations",
+    authors: "Pantanowitz J, Huang T, Cantley R, … Pantanowitz L",
+    members: ["Pantanowitz J"],
+    journal: "International Journal of Surgical Pathology",
+    year: 2025,
+    doi: "10.1177/10668969241283481",
+    pmid: "39350753",
+    summary:
+      "Some neuroendocrine tumors unexpectedly stain for a white-blood-cell marker used to spot lymphoma, so pathologists should use broader stain panels.",
+    tags: ["Surgical pathology"],
+  },
+  {
+    title: "Ki-67 proliferation index in neuroendocrine tumors: Can augmented reality microscopy with image analysis improve scoring?",
+    authors: "Satturwar SP, Pantanowitz JL, Manko CD, … Pantanowitz L",
+    members: ["Pantanowitz JL"],
+    journal: "Cancer Cytopathology",
+    year: 2020,
+    doi: "10.1002/cncy.22272",
+    pmid: "32401429",
+    summary:
+      "Compares ways to score a tumor growth marker; augmented reality microscopy with image analysis sped up scoring but wasn't always accurate.",
+    tags: ["Digital pathology", "Image analysis"],
+  },
+  {
+    title: "Volunteering at CerviCusco in Peru",
+    authors: "Pantanowitz L, Pantanowitz J, Escalante EP, Krotish D",
+    members: ["Pantanowitz J"],
+    journal: "Cancer Cytopathology",
+    year: 2020,
+    doi: "10.1002/cncy.22212",
+    pmid: "31816158",
+    summary:
+      "On volunteering with CerviCusco, a Peruvian nonprofit that brings cervical cancer screening to underserved rural communities.",
+    tags: ["Global health", "Cytopathology"],
+  },
+  {
+    title: "Sudden cardiac death due to primary malignant pericardial mesothelioma: Brief report and literature review",
+    authors: "Martínez-Girón R, Pantanowitz L, Martínez-Torre S, Pantanowitz J",
+    members: ["Pantanowitz J"],
+    journal: "Respiratory Medicine Case Reports",
+    year: 2019,
+    doi: "10.1016/j.rmcr.2019.01.011",
+    pmid: "30705816",
+    summary:
+      "A case report and review: a seemingly healthy man died suddenly when fluid from a rare cancer of the heart's lining compressed his heart.",
+    tags: ["Case report", "Pathology"],
+  },
+);
+
 // Newest first; ties keep file order.
 publications.sort((a, b) => b.year - a.year);
 
