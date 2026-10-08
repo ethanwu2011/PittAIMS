@@ -1,15 +1,25 @@
 ---
 import Base from "../layouts/Base.astro";
 import Avatar from "../components/Avatar.astro";
+import PersonChip from "../components/PersonChip.astro";
 import { mailto } from "../data/site";
 import {
   officers,
   officersTerm,
   incomingOfficers,
   incomingTerm,
-  founders,
+  pastOfficers,
   faculty,
 } from "../data/people";
+import { groups } from "../data/research";
+
+// Everyone in a research group, with the groups they're in.
+const researchers = new Map<string, { id: string; name: string }[]>();
+for (const g of groups) {
+  for (const n of g.people) {
+    researchers.set(n, [...(researchers.get(n) ?? []), { id: g.id, name: g.name }]);
+  }
+}
 
 const incomingPending = incomingOfficers.some((p) => p.placeholder);
 ---
@@ -70,18 +80,55 @@ const incomingPending = incomingOfficers.some((p) => p.placeholder);
     </div>
   </section>
 
-  <section class="band white" aria-labelledby="founders-h">
+  <section class="band white" aria-labelledby="past-h">
     <div class="wrap">
       <div class="intro">
-        <h2 class="title" id="founders-h">Founders</h2>
-        <p class="lede">The club was started by four Pitt medical students.</p>
+        <h2 class="title" id="past-h">Past officers</h2>
+        <p class="lede">
+          The club was started by four Pitt medical students. We're still adding earlier boards.
+          Were you an officer? <a href={mailto("Past officer")}>Tell us</a>.
+        </p>
       </div>
-      <ul class="grid">
+      {
+        pastOfficers.map((b) => (
+          <div class="board">
+            <h3 class="board-h">{b.term}</h3>
+            <ul class="grid">
+              {b.people.map((p, i) => (
+                <li>
+                  <Avatar person={p} index={i} />
+                  <p class="name">{p.name}</p>
+                  {p.role && <p class="role">{p.role}</p>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="researchers-h">
+    <div class="wrap">
+      <div class="intro">
+        <h2 class="title" id="researchers-h">Members in research groups</h2>
+        <p class="lede">
+          Who's working on what. See their work on the <a href="/research/">research page</a>.
+        </p>
+      </div>
+      <ul class="researchers">
         {
-          founders.map((p, i) => (
+          [...researchers].map(([name, gs], i) => (
             <li>
-              <Avatar person={p} index={i} />
-              <p class="name">{p.name}</p>
+              <PersonChip name={name} index={i} />
+              <span class="in">
+                {gs.map((g, j) => (
+                  <>
+                    {j > 0 && ", "}
+                    <a href={`/research/#${g.id}`}>{g.name}</a>
+                  </>
+                ))}
+              </span>
             </li>
           ))
         }
@@ -89,7 +136,7 @@ const incomingPending = incomingOfficers.some((p) => p.placeholder);
     </div>
   </section>
 
-  <section class="band" aria-labelledby="faculty-h">
+  <section class="band white" aria-labelledby="faculty-h">
     <div class="wrap">
       <div class="intro">
         <h2 class="title" id="faculty-h">Faculty and instructors</h2>
@@ -152,6 +199,42 @@ const incomingPending = incomingOfficers.some((p) => p.placeholder);
     font-size: 14.5px;
     color: var(--ink-3);
     margin-top: 2px;
+  }
+
+  .board + .board {
+    margin-top: 36px;
+  }
+
+  .board-h {
+    font-size: 1.25rem;
+    margin-bottom: 14px;
+  }
+
+  .researchers {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  @media (min-width: 760px) {
+    .researchers {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 32px;
+    }
+  }
+
+  .researchers li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+  }
+
+  .in {
+    font-size: 15px;
+    color: var(--ink-2);
   }
 
   .faculty {

@@ -1,0 +1,46 @@
+---
+import Avatar from "./Avatar.astro";
+import { person } from "../data/people";
+
+interface Props {
+  name: string;
+  index?: number;
+}
+
+const { name, index = 0 } = Astro.props;
+---
+
+<span class="chip">
+  <span class="pic"><Avatar person={person(name)} index={index} size="sm" /></span>
+  {name}
+</span>
+
+<style>
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 14px 4px 4px;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    background: var(--white);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .pic {
+    width: 30px;
+    flex: none;
+  }
+
+  .pic :global(.avatar) {
+    border-width: 1.5px;
+  }
+
+  .pic :global(.tile.sm) {
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+</style>

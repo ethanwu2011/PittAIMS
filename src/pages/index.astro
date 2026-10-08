@@ -1,16 +1,17 @@
 ---
 import Base from "../layouts/Base.astro";
 import Avatar from "../components/Avatar.astro";
-import ForestPlot from "../components/ForestPlot.astro";
+import ToolCard from "../components/ToolCard.astro";
 import { site, press, joinHref, mailto } from "../data/site";
 import { course } from "../data/course";
 import { officers, officersTerm, incomingTerm, incomingOfficers } from "../data/people";
 import { events } from "../data/events";
 import { spotlights } from "../data/spotlights";
+import { groups, celtic } from "../data/research";
 import { publications, doiUrl } from "../data/publications";
 import PublicationList from "../components/PublicationList.astro";
 
-const [featured, ...others] = spotlights;
+const [featured] = spotlights;
 const isuru = featured.image!;
 
 const activities = [
@@ -66,7 +67,7 @@ const faqs = [
   },
 ];
 
-const latest = publications.slice(0, 5);
+const latest = publications.slice(0, 4);
 ---
 
 <Base>
@@ -85,7 +86,7 @@ const latest = publications.slice(0, 5);
         </p>
         <div class="actions">
           <a class="btn" href={joinHref}>Join us</a>
-          <a class="btn light" href="/research/">Our research</a>
+          <a class="btn light" href="#research">Our research</a>
         </div>
       </div>
 
@@ -107,6 +108,64 @@ const latest = publications.slice(0, 5);
     </div>
   </section>
 
+
+  <!-- Research -->
+  <section class="band white" id="research" aria-labelledby="research-h">
+    <div class="wrap">
+      <div class="intro">
+        <h2 class="title" id="research-h">Research</h2>
+        <p class="lede">
+          Research is a big part of what we do. Members work with faculty at Pitt, UPMC, and other
+          schools, and share it as papers, conference abstracts, and tools people can use.
+        </p>
+      </div>
+
+      <article class="feature card">
+        <figure class="feature-fig">
+          <img src={isuru.src} alt={isuru.alt} width={isuru.width} height={isuru.height} loading="lazy" />
+          <figcaption><a href={isuru.creditHref}>{isuru.credit}</a></figcaption>
+        </figure>
+        <div class="feature-copy">
+          <div class="who">
+            <Avatar person={{ name: featured.member, photo: featured.photo }} size="sm" />
+            <div>
+              <p class="who-name">{featured.member}</p>
+              <p class="who-role">{featured.role} · {featured.paper.journal}, {featured.paper.year}</p>
+            </div>
+          </div>
+          <h3>{featured.headline}</h3>
+          <p class="body">{featured.body}</p>
+          <a class="more" href={doiUrl(featured.paper.doi)}>Read the paper</a>
+        </div>
+      </article>
+
+      <div class="tool-wrap">
+        <ToolCard tool={celtic} />
+      </div>
+
+      <div class="groups-head">
+        <h3>Research groups</h3>
+        <a class="more" href="/research/">See all research</a>
+      </div>
+      <ul class="group-grid">
+        {
+          groups.map((g) => (
+            <li>
+              <a class:list={["group-card", g.tone]} href={`/research/#${g.id}`}>
+                <span class="group-name">{g.name}</span>
+                <span class="group-people">{g.people.join(", ")}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="latest">
+        <h3>A few recent papers</h3>
+        <PublicationList items={latest} compact />
+      </div>
+    </div>
+  </section>
 
   <!-- What we do -->
   <section class="band" id="what-we-do" aria-labelledby="do-h">
@@ -169,80 +228,6 @@ const latest = publications.slice(0, 5);
     </div>
   </section>
 
-  <!-- Member research -->
-  <section class="band white" aria-labelledby="research-h">
-    <div class="wrap">
-      <div class="intro">
-        <h2 class="title" id="research-h">Research</h2>
-        <p class="lede">
-          Recent work by members, done with faculty at Pitt, UPMC, and elsewhere.
-        </p>
-      </div>
-
-      <article class="feature card">
-        <figure class="feature-fig">
-          <img src={isuru.src} alt={isuru.alt} width={isuru.width} height={isuru.height} loading="lazy" />
-          <figcaption><a href={isuru.creditHref}>{isuru.credit}</a></figcaption>
-        </figure>
-        <div class="feature-copy">
-          <div class="who">
-            <Avatar person={{ name: featured.member, photo: featured.photo }} size="sm" />
-            <div>
-              <p class="who-name">{featured.member}</p>
-              <p class="who-role">{featured.role} · {featured.paper.journal}, {featured.paper.year}</p>
-            </div>
-          </div>
-          <h3>{featured.headline}</h3>
-          <p class="body">{featured.body}</p>
-          <a class="more" href={doiUrl(featured.paper.doi)}>Read the paper</a>
-        </div>
-      </article>
-
-      <div class="others">
-        {
-          others.map((s, i) => (
-            <article class:list={["card", "spot", i === 0 ? "sky" : "gold"]}>
-              <div class="who">
-                <Avatar person={{ name: s.member, photo: s.photo }} size="sm" />
-                <div>
-                  <p class="who-name">{s.member}</p>
-                  <p class="who-role">
-                    {s.role} · {s.paper.journal}, {s.paper.year}
-                  </p>
-                </div>
-              </div>
-              <h3>{s.headline}</h3>
-              <p class="body">{s.body}</p>
-              {s.member === "Ethan Wu" && (
-                <div class="plot-wrap">
-                  <ForestPlot
-                    figure="Early-onset AMD in All of Us:"
-                    rows={[
-                      { label: "Hypertension", or: 5.8, lo: 4.25, hi: 7.93 },
-                      { label: "Hyperlipidemia", or: 5.16, lo: 3.76, hi: 7.08 },
-                      { label: "Rheumatoid arthritis", or: 4.61, lo: 1.55, hi: 13.72 },
-                    ]}
-                    caption="odds ratio with 95% CI, log scale."
-                  />
-                </div>
-              )}
-              <a class="more" href={doiUrl(s.paper.doi)}>
-                Read the paper
-              </a>
-            </article>
-          ))
-        }
-      </div>
-
-      <div class="latest">
-        <div class="latest-head">
-          <h3>Latest publications</h3>
-          <a class="more" href="/publications/">All {publications.length}</a>
-        </div>
-        <PublicationList items={latest} compact />
-      </div>
-    </div>
-  </section>
 
 
   <!-- Officers -->
@@ -585,62 +570,100 @@ const latest = publications.slice(0, 5);
     color: var(--ink-2);
   }
 
-  .others {
-    display: grid;
-    gap: 20px;
-    margin-top: 20px;
+
+
+
+
+
+
+
+
+  .tool-wrap {
+    margin-top: 24px;
   }
 
-  @media (min-width: 900px) {
-    .others {
+  .groups-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 48px 0 14px;
+  }
+
+  .groups-head h3,
+  .latest h3 {
+    font-size: 1.4rem;
+  }
+
+  .group-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  @media (min-width: 640px) {
+    .group-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: start;
     }
   }
 
-  .spot {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+  @media (min-width: 1000px) {
+    .group-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
   }
 
-  .spot.sky {
-    background: var(--sky-soft);
-  }
-
-  .spot.gold {
-    background: #fff4d6;
-  }
-
-  .spot h3 {
-    font-size: 1.35rem;
-  }
-
-  .spot .body {
-    flex: 1;
-  }
-
-  .plot-wrap {
-    background: var(--white);
+  .group-card {
+    display: grid;
+    gap: 6px;
+    height: 100%;
+    padding: 16px 18px;
     border: 2px solid var(--line);
-    border-radius: 14px;
-    padding: 16px 16px 12px;
+    border-radius: 16px;
+    color: var(--navy);
+    text-decoration: none;
+  }
+
+  .group-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--navy);
+  }
+
+  .group-card.sky {
+    background: var(--sky);
+  }
+
+  .group-card.gold {
+    background: var(--gold-soft);
+  }
+
+  .group-card.coral {
+    background: var(--coral-soft);
+  }
+
+  .group-card.mint {
+    background: var(--mint);
+  }
+
+  .group-name {
+    font-weight: 800;
+    font-stretch: 106%;
+    line-height: 1.2;
+  }
+
+  .group-people {
+    font-size: 14.5px;
+    color: var(--ink-2);
   }
 
   .latest {
     margin-top: 48px;
   }
 
-  .latest-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 16px;
+  .latest h3 {
     margin-bottom: 14px;
-  }
-
-  .latest-head h3 {
-    font-size: 1.4rem;
   }
 
   .hero .small {

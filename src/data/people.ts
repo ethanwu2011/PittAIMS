@@ -37,6 +37,12 @@ export const founders: Person[] = [
   { name: "Josh Pantanowitz", photo: "/images/people/josh.jpg" },
 ];
 
+// Earlier boards, newest first. Add a { term, people } entry for each
+// year, e.g. { term: "2024–25", people: [{ name: "Jane Doe" }] }.
+export const pastOfficers: { term: string; people: Person[] }[] = [
+  { term: "Founding officers", people: founders },
+];
+
 // Faculty and staff who have taught in the Applied ML in Medicine course.
 export const faculty: Person[] = [
   { name: "Dr. Shyam Visweswaran" },
@@ -54,3 +60,7 @@ export const initials = (name: string) =>
     .slice(0, 2)
     .map((w) => w[0])
     .join("");
+
+/** Look up a person by name across all lists, so their photo shows up anywhere. */
+export const person = (name: string): Person =>
+  [...officers, ...founders].find((p) => p.name === name) ?? { name };
