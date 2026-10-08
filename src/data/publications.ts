@@ -327,6 +327,20 @@ publications.push(
   },
 );
 
+// Yash Raka.
+publications.push({
+  title: "Hybrid novice-AI system achieves expert-level performance in intraoperative ischemia detection",
+  authors: "Murali N, Mina AI, Sinha H, … Raka Y, … Visweswaran S",
+  members: ["Raka Y"],
+  journal: "medRxiv (preprint)",
+  year: 2026,
+  doi: "10.64898/2026.08.01.26359457",
+  pmid: "42620188",
+  summary:
+    "Pairing novice EEG monitors with an AI model held up against expert neurophysiologists at catching brain ischemia during carotid surgery, with fewer false alarms than the AI alone.",
+  tags: ["Preprint", "Human–AI teams", "Neuromonitoring"],
+});
+
 // Josh Pantanowitz: pathology and cytopathology.
 publications.push(
   {

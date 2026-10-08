@@ -1,18 +1,15 @@
 ---
 import Base from "../layouts/Base.astro";
 import Avatar from "../components/Avatar.astro";
-import PipelineCard from "../components/PipelineCard.astro";
 import { site, press, joinHref, mailto } from "../data/site";
 import { course } from "../data/course";
 import { officers, officersTerm, incomingTerm, incomingOfficers } from "../data/people";
 import { events } from "../data/events";
-import { spotlights } from "../data/spotlights";
-import { groups, pipeline } from "../data/research";
-import { publications, doiUrl } from "../data/publications";
+import { groups } from "../data/research";
+import { publications } from "../data/publications";
 import PublicationList from "../components/PublicationList.astro";
 
-const [featured] = spotlights;
-const isuru = featured.image!;
+const isuru = groups.find((g) => g.id === "drug-discovery")!.feature!.image!;
 
 const activities = [
   {
@@ -124,59 +121,24 @@ const latest = publications
         <h2 class="title" id="research-h">Research</h2>
         <p class="lede">
           Research is a big part of what we do. Members work with faculty at Pitt, UPMC, and other
-          schools, in AI and well beyond it, and share it as papers, conference abstracts, and tools
-          people can use.
+          schools, in AI and well beyond it. Here's who's working on what.
         </p>
       </div>
 
-      <article class="feature card">
-        <figure class="feature-fig">
-          <img src={isuru.src} alt={isuru.alt} width={isuru.width} height={isuru.height} loading="lazy" />
-          <figcaption><a href={isuru.creditHref}>{isuru.credit}</a></figcaption>
-        </figure>
-        <div class="feature-copy">
-          <div class="who">
-            <Avatar person={{ name: featured.member, photo: featured.photo }} size="sm" />
-            <div>
-              <p class="who-name">{featured.member}</p>
-              <p class="who-role">{featured.role} · {featured.paper.journal}, {featured.paper.year}</p>
-            </div>
-          </div>
-          <h3>{featured.headline}</h3>
-          <p class="body">{featured.body}</p>
-          <a class="more" href={doiUrl(featured.paper.doi)}>Read the paper</a>
-        </div>
-      </article>
-
-      <div class="coming-head">
-        <h3>Coming out</h3>
-      </div>
-      <ul class="coming">
-        {
-          pipeline.map((item) => (
-            <li>
-              <PipelineCard item={item} compact />
-            </li>
-          ))
-        }
-      </ul>
-
-      <div class="groups-head">
-        <h3>Research groups</h3>
-        <a class="more" href="/research/">See all research</a>
-      </div>
       <ul class="group-grid">
         {
           groups.map((g) => (
             <li>
               <a class:list={["group-card", g.tone]} href={`/research/#${g.id}`}>
                 <span class="group-name">{g.name}</span>
+                <span class="group-blurb">{g.blurb}</span>
                 <span class="group-people">{g.people.join(", ")}</span>
               </a>
             </li>
           ))
         }
       </ul>
+      <p class="see-all"><a class="more" href="/research/">See all research</a></p>
 
       <div class="latest">
         <h3>A few recent papers</h3>
@@ -504,129 +466,12 @@ const latest = publications
     color: var(--navy);
   }
 
-  /* Research */
-  .feature {
-    display: grid;
-    gap: 28px;
-    padding: 0;
-    overflow: hidden;
-  }
-
-  @media (min-width: 900px) {
-    .feature {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 0;
-    }
-  }
-
-  .feature-fig {
-    margin: 0;
-    background: var(--white);
-    padding: 24px;
-    display: grid;
-    align-content: center;
-    gap: 10px;
-    border-bottom: 2px solid var(--line);
-  }
-
-  @media (min-width: 900px) {
-    .feature-fig {
-      border-bottom: 0;
-      border-right: 2px solid var(--line);
-    }
-  }
-
-  .feature-fig figcaption {
-    font-size: 12.5px;
-    color: var(--ink-3);
-  }
-
-  .feature-fig figcaption a {
-    color: inherit;
-  }
-
-  .feature-copy {
-    padding: 0 26px 28px;
-    display: grid;
-    align-content: center;
-    gap: 14px;
-    background: var(--sky-soft);
-  }
-
-  @media (min-width: 900px) {
-    .feature-copy {
-      padding: 36px;
-    }
-  }
-
-  .feature h3 {
-    font-size: clamp(1.5rem, 2.6vw, 2rem);
-  }
-
-  .who {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .who :global(.avatar) {
-    width: 52px;
-    flex: none;
-  }
-
-  .who-name {
-    font-weight: 800;
-    font-stretch: 110%;
-  }
-
-  .who-role {
-    font-size: 14px;
-    color: var(--ink-3);
-  }
-
-  .body {
-    color: var(--ink-2);
-  }
 
 
 
 
 
 
-
-
-
-  .coming-head {
-    margin: 48px 0 14px;
-  }
-
-  .coming-head h3 {
-    font-size: 1.4rem;
-  }
-
-  .coming {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 16px;
-  }
-
-  @media (min-width: 760px) {
-    .coming {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  .groups-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 16px;
-    margin: 48px 0 14px;
-  }
-
-  .groups-head h3,
   .latest h3 {
     font-size: 1.4rem;
   }
@@ -653,9 +498,10 @@ const latest = publications
 
   .group-card {
     display: grid;
-    gap: 6px;
+    align-content: start;
+    gap: 8px;
     height: 100%;
-    padding: 16px 18px;
+    padding: 20px;
     border: 2px solid var(--line);
     border-radius: 16px;
     color: var(--navy);
@@ -686,12 +532,24 @@ const latest = publications
   .group-name {
     font-weight: 800;
     font-stretch: 106%;
+    font-size: 1.15rem;
     line-height: 1.2;
   }
 
-  .group-people {
-    font-size: 14.5px;
+  .group-blurb {
+    font-size: 15px;
     color: var(--ink-2);
+  }
+
+  .group-people {
+    margin-top: auto;
+    padding-top: 4px;
+    font-size: 14.5px;
+    font-weight: 700;
+  }
+
+  .see-all {
+    margin-top: 18px;
   }
 
   .latest {
