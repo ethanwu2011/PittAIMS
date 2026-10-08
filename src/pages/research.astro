@@ -1,0 +1,477 @@
+---
+import Base from "../layouts/Base.astro";
+import PersonChip from "../components/PersonChip.astro";
+import PublicationList from "../components/PublicationList.astro";
+import { mailto } from "../data/site";
+import { publications, doiUrl } from "../data/publications";
+import { groups } from "../data/research";
+
+const byDoi = new Map(publications.map((p) => [p.doi, p]));
+const paper = (doi: string) => {
+  const p = byDoi.get(doi);
+  if (!p) throw new Error(`research.ts lists a DOI that isn't in publications.ts: ${doi}`);
+  return p;
+};
+
+const SHOWN = 3;
+
+const steps = [
+  {
+    title: "Question.",
+    body: "A clinician or faculty mentor brings a question worth answering, like who gets a disease early or what predicts a bad outcome.",
+  },
+  {
+    title: "Data.",
+    body: "Members figure out which patients to study and build the dataset, from sources like NIH All of Us.",
+  },
+  {
+    title: "Analysis.",
+    body: "We start with methods we can explain, and check the results on patients the model hasn't seen.",
+  },
+  {
+    title: "Share it.",
+    body: "An abstract at a meeting or a paper, written up with the mentor.",
+  },
+];
+---
+
+<Base
+  title="Research"
+  description="Research groups at Pitt AI in Medicine: drug discovery, neurosurgery, pathology, clinical prediction, human–AI teams in the operating room, critical care, OB/GYN, and medical imaging."
+>
+  <header class="page-head gold-head">
+    <div class="wrap">
+      <h1>Research</h1>
+      <p class="lede">
+        Members do research with faculty at Pitt, UPMC, and other schools, in AI and well beyond it.
+        Here's who's working on what. Join a group, or start your own.
+      </p>
+    </div>
+  </header>
+
+  <section class="band white" aria-labelledby="groups-h">
+    <div class="wrap">
+      <h2 class="visually-hidden" id="groups-h">Research groups</h2>
+      <ul class="overview">
+        {
+          groups.map((g) => (
+            <li>
+              <a class:list={["ocard", g.tone]} href={`#${g.id}`}>
+                <span class="oname">{g.name}</span>
+                <span class="oblurb">{g.blurb}</span>
+                <span class="opeople">{g.people.join(", ")}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" aria-label="Group details">
+    <div class="wrap groups">
+      {
+        groups.map((g) => {
+          const papers = (g.papers ?? []).map(paper);
+          const f = g.feature;
+          return (
+            <section class="group" id={g.id} aria-labelledby={`${g.id}-h`}>
+              <header class:list={["group-head", g.tone]}>
+                <h2 id={`${g.id}-h`}>{g.name}</h2>
+                <p>{g.blurb}</p>
+                <div class="people">
+                  {g.people.map((n, i) => (
+                    <PersonChip name={n} index={i} />
+                  ))}
+                </div>
+              </header>
+
+              <div class="group-body">
+                {f && (
+                  <article class:list={["feature", { "with-image": f.image }]}>
+                    {f.image && (
+                      <figure>
+                        <img
+                          src={f.image.src}
+                          alt={f.image.alt}
+                          width={f.image.width}
+                          height={f.image.height}
+                          loading="lazy"
+                        />
+                        {f.image.credit && (
+                          <figcaption>
+                            {f.image.creditHref ? (
+                              <a href={f.image.creditHref}>{f.image.credit}</a>
+                            ) : (
+                              f.image.credit
+                            )}
+                          </figcaption>
+                        )}
+                      </figure>
+                    )}
+                    <div class="feature-copy">
+                      <h3>{f.headline}</h3>
+                      <p>{f.body}</p>
+                      {f.doi && (
+                        <a class="more" href={doiUrl(f.doi)}>
+                          Read the paper
+                        </a>
+                      )}
+                    </div>
+                  </article>
+                )}
+
+                {g.abstracts?.map((a) => (
+                  <div class="abstract">
+                    <p class="abs-kind">Conference abstracts</p>
+                    <p class="abs-title">{a.title ?? `Abstracts at the ${a.meeting}`}</p>
+                  </div>
+                ))}
+
+                {papers.length > 0 && (
+                  <div class="papers">
+                    <h3 class="papers-h">Papers</h3>
+                    <PublicationList items={papers.slice(0, SHOWN)} />
+                    {papers.length > SHOWN && (
+                      <details class="more-papers">
+                        <summary>More papers from this group</summary>
+                        <PublicationList items={papers.slice(SHOWN)} />
+                      </details>
+                    )}
+                  </div>
+                )}
+
+                {!f && !g.abstracts && papers.length === 0 && (
+                  <p class="empty">
+                    This group is just getting going. <a href={mailto(`Joining: ${g.name}`)}>Want in?</a>
+                  </p>
+                )}
+              </div>
+            </section>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="band sky" aria-labelledby="how-h">
+    <div class="wrap two-col">
+      <h2 class="title" id="how-h">How projects usually go</h2>
+      <ol class="steps">
+        {
+          steps.map((s) => (
+            <li>
+              <strong>{s.title}</strong> {s.body}
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="band blue" aria-labelledby="collab-h">
+    <div class="wrap two">
+      <div>
+        <h2 class="title" id="collab-h">Faculty: bring us a question</h2>
+        <p class="lede">
+          Have a clinical question and the data, or a route to it? We have members who want to do
+          the work. Send us a paragraph and we'll find the right people.
+        </p>
+        <div class="actions"><a class="btn" href={mailto("Project idea")}>Pitch a project</a></div>
+      </div>
+      <div>
+        <h2 class="title">Want to join a group?</h2>
+        <p class="lede">
+          Email us with what you're curious about and we'll connect you. The <a href="/course/"
+            >summer course</a
+          > is also a good way in, since it ends with a project of your own.
+        </p>
+        <div class="actions">
+          <a class="btn light" href={mailto("Joining a research group")}>Email us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .gold-head {
+    background: var(--gold-soft);
+  }
+
+  /* Overview */
+  .overview {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+  }
+
+  @media (min-width: 640px) {
+    .overview {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .overview {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .ocard {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    height: 100%;
+    padding: 20px;
+    border: 2px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--navy);
+    text-decoration: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .ocard:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--pop);
+  }
+
+  .ocard.sky,
+  .group-head.sky {
+    background: var(--sky);
+  }
+
+  .ocard.gold,
+  .group-head.gold {
+    background: var(--gold-soft);
+  }
+
+  .ocard.coral,
+  .group-head.coral {
+    background: var(--coral-soft);
+  }
+
+  .ocard.mint,
+  .group-head.mint {
+    background: var(--mint);
+  }
+
+  .oname {
+    font-weight: 800;
+    font-stretch: 108%;
+    font-size: 1.2rem;
+    line-height: 1.2;
+  }
+
+  .oblurb {
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+
+  .opeople {
+    margin-top: auto;
+    padding-top: 6px;
+    font-size: 14.5px;
+    font-weight: 700;
+  }
+
+  /* Groups */
+  .groups {
+    display: grid;
+    gap: 32px;
+  }
+
+  .group {
+    border: 2px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--white);
+    overflow: hidden;
+    scroll-margin-top: 96px;
+  }
+
+  .group-head {
+    display: grid;
+    gap: 10px;
+    padding: clamp(20px, 3vw, 28px);
+    border-bottom: 2px solid var(--line);
+  }
+
+  .group-head h2 {
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+  }
+
+  .group-head p {
+    color: var(--ink-2);
+    max-width: 70ch;
+  }
+
+  .people {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .group-body {
+    display: grid;
+    gap: 20px;
+    padding: clamp(18px, 3vw, 28px);
+    background: var(--cream);
+  }
+
+  .feature {
+    display: grid;
+    gap: 20px;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .feature.with-image {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      gap: 32px;
+    }
+  }
+
+  .feature figure {
+    margin: 0;
+    padding: 14px;
+    background: var(--white);
+    border: 2px solid var(--line);
+    border-radius: 16px;
+  }
+
+  .feature img {
+    width: 100%;
+    height: auto;
+  }
+
+  .feature figcaption {
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: var(--ink-3);
+  }
+
+  .feature figcaption a {
+    color: inherit;
+  }
+
+  .feature-copy {
+    display: grid;
+    gap: 10px;
+    max-width: 70ch;
+  }
+
+  .feature-copy h3 {
+    font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+  }
+
+  .feature-copy p {
+    color: var(--ink-2);
+    font-size: 17px;
+  }
+
+  .abstract {
+    background: var(--white);
+    border: 2px dashed var(--line);
+    border-radius: 18px;
+    padding: 16px 20px;
+    display: grid;
+    gap: 4px;
+  }
+
+  .abs-kind {
+    font-size: 13px;
+    font-weight: 700;
+    font-stretch: 112%;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  .abs-title {
+    font-weight: 800;
+    font-stretch: 104%;
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+
+  .papers-h {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+
+  .more-papers {
+    margin-top: 14px;
+  }
+
+  .more-papers summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--blue);
+    padding: 4px 0 12px;
+  }
+
+  .empty {
+    color: var(--ink-2);
+  }
+
+  /* How it goes */
+  .two-col {
+    display: grid;
+    gap: 24px;
+  }
+
+  @media (min-width: 900px) {
+    .two-col {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+      gap: 56px;
+    }
+  }
+
+  .steps {
+    margin: 0;
+    padding-left: 1.4em;
+    display: grid;
+    gap: 14px;
+    font-size: 17.5px;
+    color: var(--ink-2);
+  }
+
+  .steps li::marker {
+    font-weight: 800;
+    color: var(--blue);
+  }
+
+  .steps strong {
+    color: var(--ink);
+  }
+
+  /* CTA */
+  .two {
+    display: grid;
+    gap: 48px;
+  }
+
+  @media (min-width: 900px) {
+    .two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .two > div {
+    display: grid;
+    gap: 16px;
+    align-content: start;
+  }
+
+  .two .title {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+  }
+
+  .two .lede a {
+    color: var(--gold);
+  }
+</style>

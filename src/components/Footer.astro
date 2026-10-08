@@ -1,0 +1,131 @@
+---
+import { site, nav, press, joinHref } from "../data/site";
+import Logo from "./Logo.astro";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap grid">
+    <div class="about">
+      <a class="brand" href="/">
+        <Logo size={30} />
+        <span>Pitt AI in Medicine</span>
+      </a>
+      <p class="blurb">
+        A student-run club at the University of Pittsburgh, open to everyone. Also known as Pitt
+        AIMs.
+      </p>
+      <a class="btn" href={joinHref}>Join us</a>
+    </div>
+
+    <nav aria-label="Footer">
+      <p class="head">Explore</p>
+      <ul>
+        <li><a href="/">Home</a></li>
+        {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div>
+      <p class="head">Contact</p>
+      <ul>
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+      </ul>
+      <p class="head news">In the news</p>
+      <ul>
+        {
+          press.map((item) => (
+            <li>
+              <a href={item.url}>{item.outlet}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+  <div class="wrap fine">
+    <p>© {year} Pitt AI in Medicine</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--navy);
+    color: #c9d4ee;
+    padding: 56px 0 28px;
+    font-size: 15.5px;
+  }
+
+  .grid {
+    display: grid;
+    gap: 36px;
+  }
+
+  @media (min-width: 760px) {
+    .grid {
+      grid-template-columns: 2fr 1fr 1.3fr;
+      gap: 48px;
+    }
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 22px;
+    font-weight: 800;
+    font-stretch: 120%;
+  }
+
+  .blurb {
+    margin: 14px 0 22px;
+    max-width: 46ch;
+  }
+
+  .btn {
+    box-shadow: 4px 4px 0 #000;
+    border-color: #000;
+  }
+
+  .head {
+    font-size: 13px;
+    font-weight: 700;
+    font-stretch: 115%;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .head.news {
+    margin-top: 24px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+
+  ul a {
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  ul a:hover {
+    text-decoration: underline;
+  }
+
+  .fine {
+    margin-top: 44px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 13.5px;
+    color: #9fb0d6;
+  }
+</style>

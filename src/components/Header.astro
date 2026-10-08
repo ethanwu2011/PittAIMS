@@ -1,0 +1,186 @@
+---
+import { nav, joinHref } from "../data/site";
+import Logo from "./Logo.astro";
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => !href.includes("#") && path.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/" aria-label="Pitt AI in Medicine home">
+      <Logo />
+      <span class="name">Pitt AI in Medicine</span>
+    </a>
+
+    <nav class="desk" aria-label="Primary">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a class="btn join" href={joinHref}>Join us</a>
+    </nav>
+
+    <details class="mob">
+      <summary>Menu</summary>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="/">Home</a></li>
+          {
+            nav.map((item) => (
+              <li>
+                <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <a class="btn join" href={joinHref}>Join us</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: var(--white);
+    border-bottom: 2px solid var(--line);
+  }
+
+  .bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 72px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--navy);
+    text-decoration: none;
+  }
+
+  .name {
+    font-size: 21px;
+    white-space: nowrap;
+    font-weight: 800;
+    font-stretch: 120%;
+    letter-spacing: -0.02em;
+  }
+
+  ul {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav a:not(.btn) {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--navy);
+    text-decoration: none;
+  }
+
+  nav a:not(.btn):hover {
+    background: var(--sky-soft);
+  }
+
+  nav a[aria-current="page"] {
+    background: var(--sky);
+  }
+
+  .desk {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .join {
+    padding: 10px 18px;
+    font-size: 15px;
+    box-shadow: 3px 3px 0 var(--navy);
+  }
+
+  .mob {
+    display: none;
+  }
+
+  @media (max-width: 1100px) {
+    .desk {
+      display: none;
+    }
+
+    .mob {
+      display: block;
+    }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 9px 16px;
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .name {
+      font-size: 18px;
+    }
+
+    .mob[open] summary {
+      background: var(--sky);
+    }
+
+    .mob nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 2px);
+      background: var(--white);
+      border-bottom: 2px solid var(--line);
+      padding: 12px var(--gutter) 20px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .mob ul {
+      display: grid;
+      gap: 2px;
+    }
+
+    .mob nav a:not(.btn) {
+      font-size: 18px;
+      padding: 10px 12px;
+    }
+
+    .mob .join {
+      justify-self: start;
+    }
+  }
+</style>

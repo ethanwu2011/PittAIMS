@@ -1,0 +1,812 @@
+---
+import Base from "../layouts/Base.astro";
+import Avatar from "../components/Avatar.astro";
+import { site, press, joinHref, mailto } from "../data/site";
+import { course } from "../data/course";
+import { officers, officersTerm, incomingTerm, incomingOfficers } from "../data/people";
+import { events } from "../data/events";
+import { groups } from "../data/research";
+import { publications } from "../data/publications";
+import PublicationList from "../components/PublicationList.astro";
+
+const isuru = groups.find((g) => g.id === "drug-discovery")!.feature!.image!;
+
+const activities = [
+  {
+    tone: "sky",
+    title: "Journal club",
+    body: "We pick a recent paper on AI in medicine and talk it through: what they built, whether it holds up, and what it would mean for patients. You don't need to have read every page to show up.",
+  },
+  {
+    tone: "gold",
+    title: "Coding workshops",
+    body: "Hands-on sessions from Python basics to machine learning frameworks and health-data analysis. Bring a laptop. We start from scratch.",
+  },
+  {
+    tone: "coral",
+    title: "Summer ML course",
+    body: `${course.title}: ${course.sessions} Friday sessions building real models on the NIH All of Us dataset, ending with your own project.`,
+    link: { label: "See the syllabus", href: "/course/" },
+  },
+  {
+    tone: "mint",
+    title: "Research projects",
+    body: "We connect members with Pitt and UPMC faculty on projects in health records, imaging, language models, and more. Several members have published along the way.",
+    link: { label: "Our research", href: "/research/" },
+  },
+];
+
+
+const faqs = [
+  {
+    q: "Do I need to know how to code?",
+    a: "No. Workshops start from the basics, and the summer course includes a Python and pandas crash course.",
+  },
+  {
+    q: "Do I have to be a Pitt student?",
+    a: "No. We're based at Pitt, but you don't need to be a Pitt student, or a student at all. People from other schools, clinicians, and engineers are all welcome.",
+  },
+  {
+    q: "When and where do you meet?",
+    a: "We're still setting this year's schedule. Email us and we'll send dates and rooms once they're confirmed.",
+  },
+  {
+    q: "Can I actually get published?",
+    a: "It happens. Some past course projects were published in peer-reviewed journals, and members publish with faculty at Pitt, UPMC, and elsewhere.",
+  },
+  {
+    q: "What data do we work with?",
+    a: "The summer course uses the NIH All of Us Research Program, a national dataset of health records and surveys, through its online Researcher Workbench.",
+  },
+  {
+    q: "How do I join?",
+    a: `Email ${site.email} with a line or two about yourself. That's it.`,
+  },
+];
+
+// Most recent paper from each member, so the list shows a range of people.
+const seen = new Set<string>();
+const latest = publications
+  .filter((p) => {
+    const fresh = p.members.some((m) => !seen.has(m));
+    p.members.forEach((m) => seen.add(m));
+    return fresh;
+  })
+  .slice(0, 4);
+---
+
+<Base>
+  <!-- Hero -->
+  <section class="hero band blue">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1>A big tent for <span class="scribble">AI in medicine</span>.</h1>
+        <p class="lede">
+          Pitt AI in Medicine is a student-run club at the University of Pittsburgh. We read papers
+          together, teach each other to code, run a summer machine learning course, and do research
+          with Pitt and UPMC faculty.
+        </p>
+        <p class="lede small">
+          You don't need to be a Pitt student, a med student, or a programmer to join.
+        </p>
+        <div class="actions">
+          <a class="btn" href={joinHref}>Join us</a>
+          <a class="btn light" href="#research">Our research</a>
+        </div>
+      </div>
+
+      <div class="collage" aria-label="Member research and officers">
+        <figure class="snap fig">
+          <img src={isuru.src} alt={isuru.alt} width={isuru.width} height={isuru.height} />
+          <figcaption>PDGrapher, co-authored by Isuru</figcaption>
+        </figure>
+        <figure class="snap face one">
+          <img src="/images/people/ethan.jpg" alt="Ethan Wu" width="480" height="480" />
+          <figcaption>Ethan</figcaption>
+        </figure>
+        <figure class="snap face two">
+          <img src="/images/people/isuru.jpg" alt="Isuru Herath" width="480" height="480" />
+          <figcaption>Isuru</figcaption>
+        </figure>
+        <p class="sticker"><span>No coding experience needed</span></p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Research -->
+  <section class="band white" id="research" aria-labelledby="research-h">
+    <div class="wrap">
+      <div class="intro">
+        <h2 class="title" id="research-h">Research</h2>
+        <p class="lede">
+          Research is a big part of what we do. Members work with faculty at Pitt, UPMC, and other
+          schools, in AI and well beyond it. Here's who's working on what.
+        </p>
+      </div>
+
+      <ul class="group-grid">
+        {
+          groups.map((g) => (
+            <li>
+              <a class:list={["group-card", g.tone]} href={`/research/#${g.id}`}>
+                <span class="group-name">{g.name}</span>
+                <span class="group-blurb">{g.blurb}</span>
+                <span class="group-people">{g.people.join(", ")}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="see-all"><a class="more" href="/research/">See all research</a></p>
+
+      <div class="latest">
+        <h3>A few recent papers</h3>
+        <PublicationList items={latest} compact />
+      </div>
+    </div>
+  </section>
+
+  <!-- What we do -->
+  <section class="band" id="what-we-do" aria-labelledby="do-h">
+    <div class="wrap">
+      <h2 class="title intro" id="do-h">What we do</h2>
+      <div class="activities">
+        {
+          activities.map((a) => (
+            <article class:list={["activity", a.tone]}>
+              <h3>{a.title}</h3>
+              <p>{a.body}</p>
+              {a.link && (
+                <a class="more" href={a.link.href}>
+                  {a.link.label}
+                </a>
+              )}
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Events -->
+  <section class="band sky" id="events" aria-labelledby="events-h">
+    <div class="wrap">
+      <div class="intro row">
+        <div>
+          <h2 class="title" id="events-h">Coming up</h2>
+          <p class="lede">
+            Dates for this year aren't set yet. <a href={mailto("Event dates")}>Email us</a> and
+            we'll send them when they are.
+          </p>
+        </div>
+      </div>
+      <ul class="events">
+        {
+          events.map((e) => (
+            <li class="event">
+              <div class:list={["date", { tba: !e.date }]}>
+                <span>{e.date ?? "TBA"}</span>
+              </div>
+              <div class="event-body">
+                <p class="kind">{e.kind}</p>
+                <h3>{e.title}</h3>
+                <p>{e.blurb}</p>
+                <p class="when">
+                  {[e.time ?? "Time TBA", e.place ?? "Location TBA"].join(" · ")}
+                </p>
+                {e.link && (
+                  <a class="more" href={e.link.href}>
+                    {e.link.label}
+                  </a>
+                )}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+
+
+  <!-- Officers -->
+  <section class="band" aria-labelledby="officers-h">
+    <div class="wrap">
+      <div class="intro row">
+        <div>
+          <h2 class="title" id="officers-h">Officers, {officersTerm}</h2>
+        </div>
+        <a class="more" href="/people/">Meet everyone</a>
+      </div>
+      <ul class="officers">
+        {
+          officers.map((p, i) => (
+            <li>
+              <Avatar person={p} index={i} />
+              <p class="officer-name">{p.name}</p>
+              {p.role && <p class="officer-role">{p.role}</p>}
+            </li>
+          ))
+        }
+      </ul>
+      {
+        incomingOfficers.some((p) => p.placeholder) && (
+          <p class="incoming">
+            <strong>{incomingTerm} officers will be announced soon.</strong> Interested in helping
+            run the club? <a href={mailto("Officer roles")}>Let us know</a>.
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="band white" aria-labelledby="faq-h">
+    <div class="wrap faq-grid">
+      <h2 class="title" id="faq-h">FAQ</h2>
+      <div class="faqs">
+        {
+          faqs.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Press + CTA -->
+  <section class="band blue" aria-labelledby="news-h">
+    <div class="wrap news-grid">
+      <div>
+        <h2 class="news-h" id="news-h">In the news</h2>
+        {
+          press.map((item) => (
+            <a class="press" href={item.url}>
+              <span class="press-title">“{item.title}”</span>
+              <span class="press-outlet">{item.outlet}</span>
+            </a>
+          ))
+        }
+      </div>
+      <div class="cta">
+        <h2 class="title">Come to a meeting</h2>
+        <p class="lede">Email us and we'll tell you when the next one is.</p>
+        <div class="actions">
+          <a class="btn" href={joinHref}>Join us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    padding-top: clamp(48px, 7vw, 88px);
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    display: grid;
+    gap: 56px;
+    align-items: center;
+  }
+
+  @media (min-width: 980px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 48px;
+    }
+  }
+
+  .hero-copy {
+    display: grid;
+    gap: 24px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 5.1vw, 4.1rem);
+    font-stretch: 122%;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+
+  .collage {
+    position: relative;
+    min-height: 470px;
+    max-width: 560px;
+    width: 100%;
+    justify-self: center;
+  }
+
+  .snap {
+    position: absolute;
+    margin: 0;
+    background: var(--white);
+    color: var(--navy);
+    padding: 10px 10px 8px;
+    border: 2px solid var(--navy);
+    border-radius: 14px;
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.28);
+  }
+
+  .snap img {
+    border-radius: 8px;
+    width: 100%;
+    height: auto;
+  }
+
+  .snap figcaption {
+    font-size: 13px;
+    font-weight: 600;
+    padding-top: 6px;
+    text-align: center;
+  }
+
+  .snap.fig {
+    top: 34px;
+    left: 0;
+    width: 64%;
+    transform: rotate(-3deg);
+  }
+
+  .snap.face {
+    width: 34%;
+  }
+
+  .snap.face.one {
+    right: 0;
+    top: 0;
+    transform: rotate(5deg);
+  }
+
+  .snap.face.two {
+    right: 0;
+    bottom: 0;
+    transform: rotate(-4deg);
+  }
+
+  .sticker {
+    position: absolute;
+    left: 8%;
+    bottom: 0;
+    width: 122px;
+    height: 122px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--navy);
+    border: 2px solid var(--navy);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.28);
+    transform: rotate(-12deg);
+    font-weight: 800;
+    font-stretch: 115%;
+    font-size: 15px;
+    line-height: 1.1;
+    padding: 18px;
+  }
+
+  @media (max-width: 560px) {
+    .collage {
+      min-height: 370px;
+    }
+
+    .sticker {
+      width: 104px;
+      height: 104px;
+      font-size: 12.5px;
+      padding: 14px;
+    }
+  }
+
+
+  /* Activities */
+  .activities {
+    display: grid;
+    gap: 20px;
+  }
+
+  @media (min-width: 680px) {
+    .activities {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .activities {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .activity {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 26px 24px;
+    border: 2px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .activity.sky {
+    background: var(--sky);
+  }
+
+  .activity.gold {
+    background: var(--gold-soft);
+  }
+
+  .activity.coral {
+    background: var(--coral-soft);
+  }
+
+  .activity.mint {
+    background: var(--mint);
+  }
+
+
+  .activity h3 {
+    font-size: 1.4rem;
+    margin-top: 6px;
+  }
+
+  .activity p {
+    color: var(--ink-2);
+    font-size: 16px;
+    flex: 1;
+  }
+
+  .activity .more {
+    color: var(--navy);
+  }
+
+
+
+
+
+
+
+  .latest h3 {
+    font-size: 1.4rem;
+  }
+
+  .group-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  @media (min-width: 640px) {
+    .group-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .group-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .group-card {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    height: 100%;
+    padding: 20px;
+    border: 2px solid var(--line);
+    border-radius: 16px;
+    color: var(--navy);
+    text-decoration: none;
+  }
+
+  .group-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--navy);
+  }
+
+  .group-card.sky {
+    background: var(--sky);
+  }
+
+  .group-card.gold {
+    background: var(--gold-soft);
+  }
+
+  .group-card.coral {
+    background: var(--coral-soft);
+  }
+
+  .group-card.mint {
+    background: var(--mint);
+  }
+
+  .group-name {
+    font-weight: 800;
+    font-stretch: 106%;
+    font-size: 1.15rem;
+    line-height: 1.2;
+  }
+
+  .group-blurb {
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+
+  .group-people {
+    margin-top: auto;
+    padding-top: 4px;
+    font-size: 14.5px;
+    font-weight: 700;
+  }
+
+  .see-all {
+    margin-top: 18px;
+  }
+
+  .latest {
+    margin-top: 48px;
+  }
+
+  .latest h3 {
+    margin-bottom: 14px;
+  }
+
+  .hero .small {
+    font-size: 1rem;
+    color: var(--gold-soft);
+  }
+
+  .news-h {
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+
+  /* Events */
+  .events {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+  }
+
+  @media (min-width: 760px) {
+    .events {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .event {
+    display: grid;
+    grid-template-columns: 84px minmax(0, 1fr);
+    gap: 18px;
+    padding: 20px;
+    border: 2px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--cream);
+  }
+
+  .date {
+    display: grid;
+    place-items: center;
+    align-self: start;
+    aspect-ratio: 1;
+    border: 2px solid var(--line);
+    border-radius: 16px;
+    background: var(--gold);
+    font-weight: 800;
+    font-stretch: 118%;
+    font-size: 17px;
+    line-height: 1.1;
+    text-align: center;
+    padding: 6px;
+  }
+
+  .date.tba {
+    background: var(--white);
+    border-style: dashed;
+    color: var(--ink-3);
+  }
+
+  .event-body {
+    display: grid;
+    align-content: start;
+    gap: 6px;
+  }
+
+  .kind {
+    font-size: 12.5px;
+    font-weight: 700;
+    font-stretch: 112%;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  .event h3 {
+    font-size: 1.25rem;
+  }
+
+  .event p:not(.kind) {
+    color: var(--ink-2);
+    font-size: 16px;
+  }
+
+  .event .when {
+    font-size: 14px !important;
+    color: var(--ink-3) !important;
+  }
+
+  .event .more {
+    font-size: 15px;
+  }
+
+  /* Officers */
+  .intro.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 12px 24px;
+    max-width: none;
+  }
+
+  .officers {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 24px 20px;
+  }
+
+  .officer-name {
+    margin-top: 12px;
+    font-weight: 800;
+    font-stretch: 110%;
+    font-size: 17px;
+    line-height: 1.2;
+  }
+
+  .officer-role {
+    font-size: 14px;
+    color: var(--ink-3);
+  }
+
+  .incoming {
+    margin-top: 28px;
+    padding: 16px 20px;
+    border: 2px dashed var(--line);
+    border-radius: 16px;
+    background: var(--white);
+    color: var(--ink-2);
+  }
+
+  .incoming strong {
+    color: var(--ink);
+  }
+
+  /* FAQ */
+  .faq-grid {
+    display: grid;
+    gap: 28px;
+  }
+
+  @media (min-width: 900px) {
+    .faq-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+      gap: 56px;
+    }
+  }
+
+  .faqs {
+    display: grid;
+    gap: 12px;
+  }
+
+  details {
+    border: 2px solid var(--line);
+    border-radius: 16px;
+    background: var(--cream);
+  }
+
+  summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 18px 56px 18px 20px;
+    font-weight: 700;
+    font-stretch: 108%;
+    font-size: 17.5px;
+    position: relative;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary::after {
+    content: "+";
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--navy);
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  details[open] summary::after {
+    content: "–";
+  }
+
+  details p {
+    padding: 0 20px 20px;
+    color: var(--ink-2);
+  }
+
+  /* News + CTA */
+  .news-grid {
+    display: grid;
+    gap: 48px;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .news-grid {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 64px;
+    }
+  }
+
+  .press {
+    display: grid;
+    gap: 14px;
+    padding: 28px;
+    border-radius: var(--radius);
+    background: var(--white);
+    color: var(--navy);
+    text-decoration: none;
+    border: 2px solid var(--navy);
+    box-shadow: 6px 6px 0 var(--gold);
+    transition: transform 0.12s ease;
+  }
+
+  .press:hover {
+    transform: translate(-2px, -2px);
+  }
+
+  .press-title {
+    font-size: clamp(1.3rem, 2.4vw, 1.75rem);
+    font-weight: 800;
+    font-stretch: 110%;
+    line-height: 1.2;
+  }
+
+  .press-outlet {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--blue);
+  }
+
+  .cta {
+    display: grid;
+    gap: 16px;
+  }
+</style>

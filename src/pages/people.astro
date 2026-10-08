@@ -1,0 +1,262 @@
+---
+import Base from "../layouts/Base.astro";
+import Avatar from "../components/Avatar.astro";
+import PersonChip from "../components/PersonChip.astro";
+import { mailto } from "../data/site";
+import {
+  officers,
+  officersTerm,
+  incomingOfficers,
+  incomingTerm,
+  pastOfficers,
+  faculty,
+} from "../data/people";
+import { groups } from "../data/research";
+
+// Everyone in a research group, with the groups they're in.
+const researchers = new Map<string, { id: string; name: string }[]>();
+for (const g of groups) {
+  for (const n of g.people) {
+    researchers.set(n, [...(researchers.get(n) ?? []), { id: g.id, name: g.name }]);
+  }
+}
+
+const incomingPending = incomingOfficers.some((p) => p.placeholder);
+---
+
+<Base
+  title="People"
+  description={`The officers, founders, and faculty instructors of Pitt AI in Medicine, a student-run club at the University of Pittsburgh.`}
+>
+  <header class="page-head sky-head">
+    <div class="wrap">
+      <h1>People</h1>
+      <p class="lede">
+        The club is run by students, with faculty who teach and mentor alongside us.
+      </p>
+    </div>
+  </header>
+
+  <section class="band white" aria-labelledby="incoming-h">
+    <div class="wrap">
+      <div class="intro">
+        <h2 class="title" id="incoming-h">Incoming officers, {incomingTerm}</h2>
+        {
+          incomingPending && (
+            <p class="lede">
+              Announced soon. Interested in a role? <a href={mailto("Officer roles")}>Let us know</a>.
+            </p>
+          )
+        }
+      </div>
+      <ul class="grid">
+        {
+          incomingOfficers.map((p, i) => (
+            <li>
+              <Avatar person={p} index={i} />
+              <p class:list={["name", { muted: p.placeholder }]}>{p.name}</p>
+              {p.role && <p class="role">{p.role}</p>}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="officers-h">
+    <div class="wrap">
+      <h2 class="title intro" id="officers-h">Officers, {officersTerm}</h2>
+      <ul class="grid">
+        {
+          officers.map((p, i) => (
+            <li>
+              <Avatar person={p} index={i} />
+              <p class="name">{p.name}</p>
+              {p.role && <p class="role">{p.role}</p>}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="band white" aria-labelledby="past-h">
+    <div class="wrap">
+      <div class="intro">
+        <h2 class="title" id="past-h">Past officers</h2>
+        <p class="lede">
+          The club was started by four Pitt medical students. We're still adding earlier boards.
+          Were you an officer? <a href={mailto("Past officer")}>Tell us</a>.
+        </p>
+      </div>
+      {
+        pastOfficers.map((b) => (
+          <div class="board">
+            <h3 class="board-h">{b.term}</h3>
+            <ul class="grid">
+              {b.people.map((p, i) => (
+                <li>
+                  <Avatar person={p} index={i} />
+                  <p class="name">{p.name}</p>
+                  {p.role && <p class="role">{p.role}</p>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="researchers-h">
+    <div class="wrap">
+      <div class="intro">
+        <h2 class="title" id="researchers-h">Members in research groups</h2>
+        <p class="lede">
+          Who's working on what. See their work on the <a href="/research/">research page</a>.
+        </p>
+      </div>
+      <ul class="researchers">
+        {
+          [...researchers].map(([name, gs], i) => (
+            <li>
+              <PersonChip name={name} index={i} />
+              <span class="in">
+                {gs.map((g, j) => (
+                  <>
+                    {j > 0 && ", "}
+                    <a href={`/research/#${g.id}`}>{g.name}</a>
+                  </>
+                ))}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="band white" aria-labelledby="faculty-h">
+    <div class="wrap">
+      <div class="intro">
+        <h2 class="title" id="faculty-h">Faculty and instructors</h2>
+        <p class="lede">
+          Faculty and staff who have taught in our summer course, Applied Machine Learning in
+          Medicine.
+        </p>
+      </div>
+      <ul class="faculty">
+        {faculty.map((p) => <li>{p.name}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="band blue">
+    <div class="wrap help">
+      <h2 class="title">Want to help out?</h2>
+      <p class="lede">
+        We're always looking for people to lead a journal club, teach a workshop, or mentor a
+        project.
+      </p>
+      <div class="actions"><a class="btn" href={mailto("Helping out")}>Get in touch</a></div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .sky-head {
+    background: var(--sky);
+  }
+
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 28px 22px;
+  }
+
+  .grid li {
+    display: grid;
+    align-content: start;
+  }
+
+  .name {
+    margin-top: 12px;
+    font-weight: 800;
+    font-stretch: 110%;
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  .name.muted {
+    color: var(--ink-3);
+    font-weight: 600;
+  }
+
+  .role {
+    font-size: 14.5px;
+    color: var(--ink-3);
+    margin-top: 2px;
+  }
+
+  .board + .board {
+    margin-top: 36px;
+  }
+
+  .board-h {
+    font-size: 1.25rem;
+    margin-bottom: 14px;
+  }
+
+  .researchers {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  @media (min-width: 760px) {
+    .researchers {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 32px;
+    }
+  }
+
+  .researchers li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+  }
+
+  .in {
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+
+  .faculty {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .faculty li {
+    padding: 12px 18px;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    background: var(--white);
+    font-weight: 700;
+  }
+
+  .help {
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+  }
+</style>

@@ -1,0 +1,350 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../data/site";
+import { course, schedule, resources } from "../data/course";
+import { faculty } from "../data/people";
+
+const description = `${course.title}: an ${course.sessions}-session Pitt AI in Medicine course where students learn machine learning by building models on the NIH All of Us research dataset, ending in a clinical research project.`;
+
+const courseSchema = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  name: course.title,
+  description,
+  url: new URL("/course/", site.url).href,
+  provider: { "@type": "Organization", name: site.name, url: site.url },
+};
+
+const notifyHref = `mailto:${site.email}?subject=${encodeURIComponent(`Next ${course.title} cohort`)}`;
+const tones = ["sky", "gold", "coral", "mint"];
+---
+
+<Base title="Applied ML in Medicine course" description={description} schema={[courseSchema]}>
+  <header class="page-head coral-head">
+    <div class="wrap head-grid">
+      <div>
+        <h1>{course.title}</h1>
+        <p class="lede">
+          Learn machine learning by doing it. Over {course.sessions} Friday evenings you'll go from
+          a clinical question to a cohort, a model, and a final presentation, all on the
+          {" "}<a href={course.dataset.url}>NIH All of Us</a> research dataset. Past student
+          projects have been published in peer-reviewed journals.
+        </p>
+      </div>
+      <dl class="facts card">
+        <dt>When</dt>
+        <dd>{course.term} · {course.meets}</dd>
+        <dt>Where</dt>
+        <dd>{course.location}</dd>
+        <dt>Seats</dt>
+        <dd>{course.capacity} students</dd>
+        <dt>Data</dt>
+        <dd>{course.dataset.name}</dd>
+        <dt>Status</dt>
+        <dd><span class="pill">{course.status}</span></dd>
+      </dl>
+    </div>
+  </header>
+
+  {
+    course.status === "Completed" && (
+      <div class="notice">
+        <div class="wrap notice-row">
+          <p>
+            <strong>The {course.term} cohort has wrapped up.</strong> Want a seat next time?
+          </p>
+          <a class="btn" href={notifyHref}>Tell me when it opens</a>
+        </div>
+      </div>
+    )
+  }
+
+  <section class="band" aria-labelledby="schedule-h">
+    <div class="wrap">
+      <div class="intro">
+        <h2 class="title" id="schedule-h">Schedule</h2>
+        <p class="lede">
+          Each session: hands-on work 6:00–6:45, then machine learning theory 6:45–7:30.
+        </p>
+      </div>
+      <ol class="weeks">
+        {
+          schedule.map((s, i) => (
+            <li class:list={["week", tones[i % tones.length], { async: s.format === "Async" }]}>
+              <p class="wk">
+                <span>Week {i + 1}</span>
+                <span>{s.date}</span>
+              </p>
+              <h3>{s.focus}</h3>
+              {s.theory !== "—" && (
+                <p class="theory">
+                  <strong>Theory:</strong> {s.theory}
+                </p>
+              )}
+              <p class="who">
+                {s.format === "Async" ? "Async, optional" : s.instructors}
+              </p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="band white" aria-labelledby="project-h">
+    <div class="wrap two">
+      <div>
+        <h2 class="title" id="project-h">Final project</h2>
+        <p class="lede">
+          Work solo or in a team of two. Pick a clinical question, build case and control cohorts
+          from All of Us, train and evaluate models, and present what you found.
+        </p>
+      </div>
+      <div>
+        <h2 class="title small-title">Instructors</h2>
+        <ul class="people">
+          <li><strong>Ethan Wu</strong> · lead instructor</li>
+          {faculty.map((f) => <li>{f.name}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="band sky" aria-labelledby="res-h">
+    <div class="wrap">
+      <div class="intro">
+        <h2 class="title" id="res-h">Resources</h2>
+        <p class="lede">Useful whether or not you're enrolled.</p>
+      </div>
+      <ul class="resources">
+        {
+          resources.map((r) => (
+            <li>
+              <a class="card res" href={r.url}>
+                <span class="res-label">{r.label}</span>
+                <span class="res-note">{r.note}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="small">
+        Questions about the course? <a href={`mailto:${site.email}`}>{site.email}</a>. Attendance
+        is expected but not enforced.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .coral-head {
+    background: var(--coral-soft);
+  }
+
+  .head-grid {
+    display: grid;
+    gap: 36px;
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .head-grid {
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 56px;
+    }
+  }
+
+  .head-grid h1 {
+    max-width: 14ch;
+  }
+
+  .small-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: 16px;
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--navy);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .notice {
+    background: var(--gold);
+    border-bottom: 2px solid var(--line);
+  }
+
+  .notice-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px 24px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  .notice .btn {
+    background: var(--white);
+  }
+
+  .weeks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+  }
+
+  @media (min-width: 640px) {
+    .weeks {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .weeks {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .week {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    border: 2px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .week.sky {
+    background: var(--sky);
+  }
+
+  .week.gold {
+    background: var(--gold-soft);
+  }
+
+  .week.coral {
+    background: var(--coral-soft);
+  }
+
+  .week.mint {
+    background: var(--mint);
+  }
+
+  .week.async {
+    background: var(--white);
+    border-style: dashed;
+  }
+
+  .wk {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    font-stretch: 115%;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .week h3 {
+    font-size: 1.15rem;
+    line-height: 1.2;
+  }
+
+  .theory {
+    font-size: 15px;
+    color: var(--ink-2);
+    flex: 1;
+  }
+
+  .theory strong {
+    color: var(--ink);
+  }
+
+  .who {
+    font-size: 14px;
+    color: var(--ink-3);
+    margin-top: auto;
+  }
+
+  .two {
+    display: grid;
+    gap: 40px;
+  }
+
+  @media (min-width: 900px) {
+    .two {
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 64px;
+    }
+  }
+
+  .two .lede {
+    margin-top: 16px;
+  }
+
+  .people {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  .people li {
+    padding: 12px 16px;
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    background: var(--cream);
+  }
+
+  .resources {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+  }
+
+  @media (min-width: 760px) {
+    .resources {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .res {
+    display: grid;
+    gap: 4px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .res:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--pop);
+  }
+
+  .res-label {
+    font-weight: 800;
+    font-stretch: 110%;
+    font-size: 18px;
+    color: var(--blue);
+  }
+
+  .res-note {
+    color: var(--ink-2);
+  }
+
+  .small {
+    margin-top: 24px;
+    color: var(--ink-2);
+  }
+</style>
