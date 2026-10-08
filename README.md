@@ -18,7 +18,7 @@ Most edits are in `src/data/`. You shouldn't need to touch page markup.
 | Research groups: who's in each, a short feature write-up (optional image), example papers, and presented abstracts | `src/data/research.ts`. Only list work that's already public, keep the writing plain, and skip statistics. |
 | Papers | `src/data/publications.ts` (newest first; put member names in `members` to highlight them). A paper shows up on /research once its DOI is listed in a group in `research.ts`. |
 | Course dates, schedule, status | `src/data/course.ts` (set `status` to `"Open"`, `"In session"`, or `"Completed"`) |
-| Contact email, press coverage, nav | `src/data/site.ts` |
+| Contact email, press coverage, nav | `src/data/site.ts`. The first item in `press` gets the big "In the news" feature on the homepage; older stories are listed under it. |
 
 Only use images you have rights to. The PDGrapher figure comes from the
 [PDGrapher repository](https://github.com/mims-harvard/PDGrapher) (MIT License) and is credited on the page.
