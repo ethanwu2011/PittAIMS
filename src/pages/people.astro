@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import Avatar from "../components/Avatar.astro";
-import { joinHref } from "../data/site";
+import { mailto } from "../data/site";
 import {
   officers,
   officersTerm,
@@ -16,15 +16,13 @@ const incomingPending = incomingOfficers.some((p) => p.placeholder);
 
 <Base
   title="People"
-  description={`Meet the officers, founders, and faculty instructors of Pitt AIMs, the AI in Medicine Society at the University of Pittsburgh. Open to everyone.`}
+  description={`The officers, founders, and faculty instructors of Pitt AI in Medicine, a student-run club at the University of Pittsburgh.`}
 >
   <header class="page-head sky-head">
     <div class="wrap">
-      <p class="eyebrow">People</p>
-      <h1>The people who make it happen.</h1>
+      <h1>People</h1>
       <p class="lede">
-        Pitt AIMs is run by students and open to everyone, with faculty who teach and mentor
-        alongside us.
+        The club is run by students, with faculty who teach and mentor alongside us.
       </p>
     </div>
   </header>
@@ -32,12 +30,11 @@ const incomingPending = incomingOfficers.some((p) => p.placeholder);
   <section class="band white" aria-labelledby="incoming-h">
     <div class="wrap">
       <div class="intro">
-        <p class="eyebrow">Incoming</p>
-        <h2 class="title" id="incoming-h">{incomingTerm} officers</h2>
+        <h2 class="title" id="incoming-h">Incoming officers, {incomingTerm}</h2>
         {
           incomingPending && (
             <p class="lede">
-              Announced soon. Interested in a role? <a href={joinHref}>Let us know</a>.
+              Announced soon. Interested in a role? <a href={mailto("Officer roles")}>Let us know</a>.
             </p>
           )
         }
@@ -58,10 +55,7 @@ const incomingPending = incomingOfficers.some((p) => p.placeholder);
 
   <section class="band" aria-labelledby="officers-h">
     <div class="wrap">
-      <div class="intro">
-        <p class="eyebrow">Officers</p>
-        <h2 class="title" id="officers-h">{officersTerm} officers</h2>
-      </div>
+      <h2 class="title intro" id="officers-h">Officers, {officersTerm}</h2>
       <ul class="grid">
         {
           officers.map((p, i) => (
@@ -79,9 +73,8 @@ const incomingPending = incomingOfficers.some((p) => p.placeholder);
   <section class="band white" aria-labelledby="founders-h">
     <div class="wrap">
       <div class="intro">
-        <p class="eyebrow">Founders</p>
-        <h2 class="title" id="founders-h">Where it started</h2>
-        <p class="lede">Pitt AIMs was founded by four Pitt medical students.</p>
+        <h2 class="title" id="founders-h">Founders</h2>
+        <p class="lede">The club was started by four Pitt medical students.</p>
       </div>
       <ul class="grid">
         {
@@ -99,7 +92,6 @@ const incomingPending = incomingOfficers.some((p) => p.placeholder);
   <section class="band" aria-labelledby="faculty-h">
     <div class="wrap">
       <div class="intro">
-        <p class="eyebrow">Faculty</p>
         <h2 class="title" id="faculty-h">Faculty and instructors</h2>
         <p class="lede">
           Faculty and staff who have taught in our summer course, Applied Machine Learning in
@@ -114,12 +106,12 @@ const incomingPending = incomingOfficers.some((p) => p.placeholder);
 
   <section class="band blue">
     <div class="wrap help">
-      <h2 class="title">Want to help run Pitt AIMs?</h2>
+      <h2 class="title">Want to help out?</h2>
       <p class="lede">
         We're always looking for people to lead a journal club, teach a workshop, or mentor a
         project.
       </p>
-      <div class="actions"><a class="btn" href={joinHref}>Get in touch</a></div>
+      <div class="actions"><a class="btn" href={mailto("Helping out")}>Get in touch</a></div>
     </div>
   </section>
 </Base>

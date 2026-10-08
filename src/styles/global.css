@@ -115,20 +115,6 @@ a {
   background: var(--white);
 }
 
-.eyebrow {
-  display: inline-block;
-  font-size: 13px;
-  font-weight: 700;
-  font-stretch: 115%;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--blue);
-  margin-bottom: 14px;
-}
-
-.blue .eyebrow {
-  color: var(--gold);
-}
 
 .title {
   font-size: clamp(2rem, 4.4vw, 3.1rem);

@@ -2,57 +2,52 @@
 import Base from "../layouts/Base.astro";
 import Avatar from "../components/Avatar.astro";
 import PublicationList from "../components/PublicationList.astro";
-import { site } from "../data/site";
+import { mailto } from "../data/site";
 import { publications, doiUrl } from "../data/publications";
 import { spotlights } from "../data/spotlights";
 
-const years = [...new Set(publications.map((p) => p.year))].sort((a, b) => b - a);
 const [featured, ...others] = spotlights;
 
 const steps = [
   {
-    title: "Question",
-    body: "A clinician or faculty mentor brings a question worth answering: who gets this disease early, what predicts a bad outcome, what are we missing.",
+    title: "Question.",
+    body: "A clinician or faculty mentor brings a question worth answering, like who gets a disease early or what predicts a bad outcome.",
   },
   {
-    title: "Data",
+    title: "Data.",
     body: "Members define cases and controls and build the dataset, often in the NIH All of Us Researcher Workbench.",
   },
   {
-    title: "Model",
-    body: "Start with models you can explain, like logistic regression and gradient-boosted trees, and test them on held-out data.",
+    title: "Model.",
+    body: "We start with models we can explain, like logistic regression and gradient-boosted trees, and test them on held-out data.",
   },
   {
-    title: "Paper",
-    body: "Check the findings against the clinical literature, then write it up for peer review with your mentor.",
+    title: "Paper.",
+    body: "We check the findings against the clinical literature and write it up for peer review with the mentor.",
   },
 ];
 
-const pitchHref = `mailto:${site.email}?subject=${encodeURIComponent("Project idea for Pitt AIMs")}`;
-const joinProjectHref = `mailto:${site.email}?subject=${encodeURIComponent("Joining a Pitt AIMs project")}`;
+const latest = publications.slice(0, 5);
 ---
 
 <Base
   title="Research"
-  description="Research by Pitt AIMs members: graph neural networks for drug discovery, machine learning on NIH All of Us health records, large language models in pathology, and more."
+  description="Research by Pitt AI in Medicine members: graph neural networks for drug discovery, machine learning on NIH All of Us health records, large language models in pathology, and more."
 >
   <header class="page-head gold-head">
     <div class="wrap">
-      <p class="eyebrow">Research</p>
-      <h1>Members doing real research.</h1>
+      <h1>Research</h1>
       <p class="lede">
-        Members work with faculty at Pitt, UPMC, and beyond, on everything from drug discovery to
-        health records to language models. Here's some of what they've published.
+        Members work with faculty at Pitt, UPMC, and elsewhere on everything from drug discovery to
+        health records to language models. A few recent projects are below, and the full list is on
+        the <a href="/publications/">publications page</a>.
       </p>
     </div>
   </header>
 
   <section class="band white" aria-labelledby="spot-h">
     <div class="wrap">
-      <div class="intro">
-        <p class="eyebrow">Spotlight</p>
-        <h2 class="title" id="spot-h">{featured.headline}</h2>
-      </div>
+      <h2 class="title intro" id="spot-h">{featured.headline}</h2>
       <div class="spot-main">
         <figure class="overview card">
           <img
@@ -110,18 +105,13 @@ const joinProjectHref = `mailto:${site.email}?subject=${encodeURIComponent("Join
   </section>
 
   <section class="band sky" aria-labelledby="how-h">
-    <div class="wrap">
-      <div class="intro">
-        <p class="eyebrow">How it works</p>
-        <h2 class="title" id="how-h">From a question to a paper</h2>
-      </div>
+    <div class="wrap two-col">
+      <h2 class="title" id="how-h">How projects usually go</h2>
       <ol class="steps">
         {
-          steps.map((s, i) => (
+          steps.map((s) => (
             <li>
-              <span class="num">{i + 1}</span>
-              <h3>{s.title}</h3>
-              <p>{s.body}</p>
+              <strong>{s.title}</strong> {s.body}
             </li>
           ))
         }
@@ -129,21 +119,13 @@ const joinProjectHref = `mailto:${site.email}?subject=${encodeURIComponent("Join
     </div>
   </section>
 
-  <section class="band" id="publications" aria-labelledby="pubs-h">
+  <section class="band" aria-labelledby="pubs-h">
     <div class="wrap">
-      <div class="intro">
-        <p class="eyebrow">Publications</p>
-        <h2 class="title" id="pubs-h">Member publications</h2>
-        <p class="lede">Selected work by Pitt AIMs members, whose names are in bold.</p>
+      <div class="intro row">
+        <h2 class="title" id="pubs-h">Latest publications</h2>
+        <a class="more" href="/publications/">All {publications.length} publications</a>
       </div>
-      {
-        years.map((y) => (
-          <div class="year">
-            <h3 class="year-h">{y}</h3>
-            <PublicationList items={publications.filter((p) => p.year === y)} hideYear />
-          </div>
-        ))
-      }
+      <PublicationList items={latest} />
     </div>
   </section>
 
@@ -155,7 +137,7 @@ const joinProjectHref = `mailto:${site.email}?subject=${encodeURIComponent("Join
           Have a clinical question and the data, or a route to it? We have members who want to do
           the work. Send us a paragraph and we'll find the right people.
         </p>
-        <div class="actions"><a class="btn" href={pitchHref}>Pitch a project</a></div>
+        <div class="actions"><a class="btn" href={mailto("Project idea")}>Pitch a project</a></div>
       </div>
       <div>
         <h2 class="title">Want to join a project?</h2>
@@ -163,7 +145,7 @@ const joinProjectHref = `mailto:${site.email}?subject=${encodeURIComponent("Join
           The fastest way in is the <a href="/course/">summer course</a>, which ends with a project
           of your own. Or email us with what you're curious about.
         </p>
-        <div class="actions"><a class="btn light" href={joinProjectHref}>Email us</a></div>
+        <div class="actions"><a class="btn light" href={mailto("Joining a project")}>Email us</a></div>
       </div>
     </div>
   </section>
@@ -190,7 +172,6 @@ const joinProjectHref = `mailto:${site.email}?subject=${encodeURIComponent("Join
   .overview {
     margin: 0;
     padding: 16px;
-    box-shadow: var(--pop);
   }
 
   .overview img {
@@ -268,7 +249,6 @@ const joinProjectHref = `mailto:${site.email}?subject=${encodeURIComponent("Join
     display: flex;
     flex-direction: column;
     gap: 14px;
-    box-shadow: var(--pop);
   }
 
   .other.sky {
@@ -288,65 +268,43 @@ const joinProjectHref = `mailto:${site.email}?subject=${encodeURIComponent("Join
     flex: 1;
   }
 
-  .steps {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .two-col {
     display: grid;
-    gap: 20px;
+    gap: 24px;
   }
 
-  @media (min-width: 760px) {
-    .steps {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+  @media (min-width: 900px) {
+    .two-col {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+      gap: 56px;
     }
   }
 
-  .steps li {
-    background: var(--white);
-    border: 2px solid var(--line);
-    border-radius: var(--radius);
-    padding: 22px;
+  .steps {
+    margin: 0;
+    padding-left: 1.4em;
     display: grid;
-    align-content: start;
-    gap: 8px;
-  }
-
-  .num {
-    display: grid;
-    place-items: center;
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    background: var(--gold);
-    border: 2px solid var(--navy);
-    font-weight: 800;
-    font-size: 20px;
-    margin-bottom: 6px;
-  }
-
-  .steps h3 {
-    font-size: 1.3rem;
-  }
-
-  .steps p {
+    gap: 14px;
+    font-size: 17.5px;
     color: var(--ink-2);
-    font-size: 16px;
   }
 
-  .year + .year {
-    margin-top: 40px;
+  .steps li::marker {
+    font-weight: 800;
+    color: var(--blue);
   }
 
-  .year-h {
-    display: inline-block;
-    font-size: 15px;
-    font-stretch: 115%;
-    padding: 6px 14px;
-    border-radius: 999px;
-    background: var(--navy);
-    color: var(--white);
-    margin-bottom: 16px;
+  .steps strong {
+    color: var(--ink);
+  }
+
+  .intro.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px 24px;
+    max-width: none;
   }
 
   .two {

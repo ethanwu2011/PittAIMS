@@ -1,7 +1,7 @@
-# Pitt AIMs website
+# Pitt AI in Medicine website
 
-Source for [pittaims.com](https://pittaims.com), the site of Pitt AIMs, the AI in Medicine
-Society: a student-run club at the University of Pittsburgh that's open to everyone.
+Source for [pittaims.com](https://pittaims.com), the site of Pitt AI in Medicine (also known as
+Pitt AIMs): a student-run club at the University of Pittsburgh that's open to everyone.
 
 It's a static site built with [Astro](https://astro.build). Every page is plain HTML at build
 time, so search engines and link previews (iMessage, Slack, LinkedIn) see the real content.
@@ -16,7 +16,7 @@ Most edits are in `src/data/`. You shouldn't need to touch page markup.
 | Meetings and events ("Coming up" on the homepage) | `src/data/events.ts`. Leave `date` out and it shows "TBA". |
 | Headshots | Add a square photo (~480px JPG) to `public/images/people/` and set `photo` in `people.ts`. Anyone without one gets a colored initials tile. |
 | Research spotlights (homepage and /research) | `src/data/spotlights.ts` |
-| Publications | `src/data/publications.ts` (newest first; put member names in `members` to highlight them) |
+| Publications (/publications and the latest five on the homepage and /research) | `src/data/publications.ts` (newest first; put member names in `members` to highlight them) |
 | Course dates, schedule, status | `src/data/course.ts` (set `status` to `"Open"`, `"In session"`, or `"Completed"`) |
 | Contact email, press coverage, nav | `src/data/site.ts` |
 
@@ -24,8 +24,7 @@ Only use images you have rights to. The PDGrapher figure comes from the
 [PDGrapher repository](https://github.com/mims-harvard/PDGrapher) (MIT License) and is credited on the page.
 
 Page layouts live in `src/pages/`, shared pieces in `src/components/`, and styling in
-`src/styles/global.css` (colors, type, buttons) plus a `<style>` block per page. Icons are
-[Lucide](https://lucide.dev); add one by name in `src/components/Icon.astro`.
+`src/styles/global.css` (colors, type, buttons) plus a `<style>` block per page.
 
 ## Running locally
 

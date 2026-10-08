@@ -1,4 +1,4 @@
-// Selected publications by Pitt AIMs members. Newest first.
+// Publications by Pitt AI in Medicine members. Newest first; the site groups them by year.
 // Only add entries you can link to (DOI, ideally PubMed too). Put member
 // names in `members` exactly as they appear in `authors` so they render bold.
 // `summary` is one plain-English sentence for the website.
@@ -116,6 +116,42 @@ export const publications: Publication[] = [
     tags: ["Review", "ML evaluation"],
   },
   {
+    title: "Ethical and Bias Considerations in Artificial Intelligence/Machine Learning",
+    authors: "Hanna MG, Pantanowitz L, Jackson B, … Pantanowitz J, … Rashidi HH",
+    members: ["Pantanowitz J"],
+    journal: "Modern Pathology",
+    year: 2025,
+    doi: "10.1016/j.modpat.2024.100686",
+    pmid: "39694331",
+    summary:
+      "Reviews where bias gets into medical AI (the data, the model's development, and how people use it) and the ethical questions from build to deployment.",
+    tags: ["Review", "AI ethics", "Bias"],
+  },
+  {
+    title: "Nongenerative Artificial Intelligence in Medicine: Advancements and Applications in Supervised and Unsupervised Machine Learning",
+    authors: "Pantanowitz L, Pearce T, Abukhiran I, … Pantanowitz J, … Rashidi HH",
+    members: ["Pantanowitz J"],
+    journal: "Modern Pathology",
+    year: 2025,
+    doi: "10.1016/j.modpat.2024.100680",
+    pmid: "39675426",
+    summary:
+      "Reviews supervised and unsupervised machine learning in medicine and whole-slide image analysis, including explainability and data drift.",
+    tags: ["Review", "Pathology"],
+  },
+  {
+    title: "Future of Artificial Intelligence-Machine Learning Trends in Pathology and Medicine",
+    authors: "Hanna MG, Pantanowitz L, Dash R, … Pantanowitz J, Rashidi HH",
+    members: ["Pantanowitz J"],
+    journal: "Modern Pathology",
+    year: 2025,
+    doi: "10.1016/j.modpat.2025.100705",
+    pmid: "39761872",
+    summary:
+      "The closing review of the series: managing models in clinical use, multimodal and multi-agent AI, and uses in research and teaching.",
+    tags: ["Review", "Pathology"],
+  },
+  {
     title: "Synthetic Data and Its Utility in Pathology and Laboratory Medicine",
     authors: "Pantanowitz J, Manko CD, Pantanowitz L, Rashidi HH",
     members: ["Pantanowitz J"],
@@ -168,7 +204,7 @@ export const publications: Publication[] = [
 
 export const doiUrl = (doi: string) => `https://doi.org/${doi}`;
 
-/** Split an author string into parts, flagging Pitt AIMs members. */
+/** Split an author string into parts, flagging club members. */
 export const authorParts = (p: Publication) =>
   p.authors.split(", ").map((part) => {
     const elided = part.startsWith("… ");

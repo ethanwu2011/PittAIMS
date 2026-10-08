@@ -15,15 +15,15 @@ interface Props {
 const { title, description = site.description, schema = [], noindex = false } = Astro.props;
 const pageTitle = title
   ? `${title} — ${site.name}`
-  : `${site.name} — ${site.fullName}`;
+  : `${site.name}: a student club at the University of Pittsburgh`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const ogImage = new URL("/og.png", site.url).href;
 
 const organization = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "AI in Medicine Society",
-  alternateName: site.name,
+  name: site.name,
+  alternateName: site.alternateNames,
   url: site.url,
   email: site.email,
   description: site.description,
@@ -48,7 +48,7 @@ const organization = {
     <meta name="theme-color" content="#003594" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content={site.fullName} />
+    <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />

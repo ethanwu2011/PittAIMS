@@ -8,9 +8,9 @@ const isActive = (href: string) => !href.includes("#") && path.startsWith(href);
 
 <header class="site-header">
   <div class="wrap bar">
-    <a class="brand" href="/" aria-label="Pitt AIMs home">
+    <a class="brand" href="/" aria-label="Pitt AI in Medicine home">
       <Logo />
-      <span class="name">Pitt AIMs</span>
+      <span class="name">Pitt AI in Medicine</span>
     </a>
 
     <nav class="desk" aria-label="Primary">
@@ -76,7 +76,8 @@ const isActive = (href: string) => !href.includes("#") && path.startsWith(href);
   }
 
   .name {
-    font-size: 22px;
+    font-size: 21px;
+    white-space: nowrap;
     font-weight: 800;
     font-stretch: 120%;
     letter-spacing: -0.02em;
@@ -125,7 +126,7 @@ const isActive = (href: string) => !href.includes("#") && path.startsWith(href);
     display: none;
   }
 
-  @media (max-width: 960px) {
+  @media (max-width: 1100px) {
     .desk {
       display: none;
     }
@@ -146,6 +147,10 @@ const isActive = (href: string) => !href.includes("#") && path.startsWith(href);
 
     summary::-webkit-details-marker {
       display: none;
+    }
+
+    .name {
+      font-size: 18px;
     }
 
     .mob[open] summary {

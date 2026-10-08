@@ -4,7 +4,7 @@ import { site } from "../data/site";
 import { course, schedule, resources } from "../data/course";
 import { faculty } from "../data/people";
 
-const description = `${course.title}: an ${course.sessions}-session Pitt AIMs course where students learn machine learning by building models on the NIH All of Us research dataset, ending in a clinical research project.`;
+const description = `${course.title}: an ${course.sessions}-session Pitt AI in Medicine course where students learn machine learning by building models on the NIH All of Us research dataset, ending in a clinical research project.`;
 
 const courseSchema = {
   "@context": "https://schema.org",
@@ -12,7 +12,7 @@ const courseSchema = {
   name: course.title,
   description,
   url: new URL("/course/", site.url).href,
-  provider: { "@type": "Organization", name: "AI in Medicine Society", url: site.url },
+  provider: { "@type": "Organization", name: site.name, url: site.url },
 };
 
 const notifyHref = `mailto:${site.email}?subject=${encodeURIComponent(`Next ${course.title} cohort`)}`;
@@ -23,7 +23,6 @@ const tones = ["sky", "gold", "coral", "mint"];
   <header class="page-head coral-head">
     <div class="wrap head-grid">
       <div>
-        <p class="eyebrow">Summer course</p>
         <h1>{course.title}</h1>
         <p class="lede">
           Learn machine learning by doing it. Over {course.sessions} Friday evenings you'll go from
@@ -63,8 +62,7 @@ const tones = ["sky", "gold", "coral", "mint"];
   <section class="band" aria-labelledby="schedule-h">
     <div class="wrap">
       <div class="intro">
-        <p class="eyebrow">Schedule</p>
-        <h2 class="title" id="schedule-h">Eight weeks, one project</h2>
+        <h2 class="title" id="schedule-h">Schedule</h2>
         <p class="lede">
           Each session: hands-on work 6:00–6:45, then machine learning theory 6:45–7:30.
         </p>
@@ -96,15 +94,14 @@ const tones = ["sky", "gold", "coral", "mint"];
   <section class="band white" aria-labelledby="project-h">
     <div class="wrap two">
       <div>
-        <p class="eyebrow">Final project</p>
-        <h2 class="title" id="project-h">Your question, your model</h2>
+        <h2 class="title" id="project-h">Final project</h2>
         <p class="lede">
           Work solo or in a team of two. Pick a clinical question, build case and control cohorts
           from All of Us, train and evaluate models, and present what you found.
         </p>
       </div>
       <div>
-        <p class="eyebrow">Instructors</p>
+        <h2 class="title small-title">Instructors</h2>
         <ul class="people">
           <li><strong>Ethan Wu</strong> · lead instructor</li>
           {faculty.map((f) => <li>{f.name}</li>)}
@@ -116,8 +113,7 @@ const tones = ["sky", "gold", "coral", "mint"];
   <section class="band sky" aria-labelledby="res-h">
     <div class="wrap">
       <div class="intro">
-        <p class="eyebrow">Resources</p>
-        <h2 class="title" id="res-h">Start here</h2>
+        <h2 class="title" id="res-h">Resources</h2>
         <p class="lede">Useful whether or not you're enrolled.</p>
       </div>
       <ul class="resources">
@@ -162,8 +158,9 @@ const tones = ["sky", "gold", "coral", "mint"];
     max-width: 14ch;
   }
 
-  .facts.card {
-    box-shadow: var(--pop);
+  .small-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: 16px;
   }
 
   .pill {

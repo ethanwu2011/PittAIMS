@@ -1,40 +1,36 @@
 ---
 import Base from "../layouts/Base.astro";
-import Icon from "../components/Icon.astro";
 import Avatar from "../components/Avatar.astro";
 import ForestPlot from "../components/ForestPlot.astro";
-import { site, press, joinHref } from "../data/site";
+import { site, press, joinHref, mailto } from "../data/site";
 import { course } from "../data/course";
 import { officers, officersTerm, incomingTerm, incomingOfficers } from "../data/people";
 import { events } from "../data/events";
 import { spotlights } from "../data/spotlights";
 import { publications, doiUrl } from "../data/publications";
+import PublicationList from "../components/PublicationList.astro";
 
 const [featured, ...others] = spotlights;
 const isuru = featured.image!;
 
 const activities = [
   {
-    icon: "book-open",
     tone: "sky",
     title: "Journal club",
     body: "We pick a recent paper on AI in medicine and talk it through: what they built, whether it holds up, and what it would mean for patients. You don't need to have read every page to show up.",
   },
   {
-    icon: "code-xml",
     tone: "gold",
     title: "Coding workshops",
     body: "Hands-on sessions from Python basics to machine learning frameworks and health-data analysis. Bring a laptop. We start from scratch.",
   },
   {
-    icon: "graduation-cap",
     tone: "coral",
     title: "Summer ML course",
     body: `${course.title}: ${course.sessions} Friday sessions building real models on the NIH All of Us dataset, ending with your own project.`,
     link: { label: "See the syllabus", href: "/course/" },
   },
   {
-    icon: "flask-conical",
     tone: "mint",
     title: "Research projects",
     body: "We connect members with Pitt and UPMC faculty on projects in health records, imaging, language models, and more. Several members have published along the way.",
@@ -42,12 +38,6 @@ const activities = [
   },
 ];
 
-const steps = [
-  { title: "Say hi", body: "Email us and we'll tell you what's coming up next." },
-  { title: "Show up", body: "Come to a journal club or a workshop. No prep or experience needed." },
-  { title: "Learn", body: "Take the summer course and build a model on real patient data." },
-  { title: "Build", body: "Join a research project with a faculty mentor and see it through." },
-];
 
 const faqs = [
   {
@@ -56,36 +46,27 @@ const faqs = [
   },
   {
     q: "Do I have to be a Pitt student?",
-    a: "No. We're based at Pitt, but anyone curious about AI in medicine is welcome: undergrads, med and grad students, clinicians, engineers, and people from other schools. It's a big tent.",
+    a: "No. We're based at Pitt, but you don't need to be a Pitt student, or a student at all. People from other schools, clinicians, and engineers are all welcome.",
   },
   {
     q: "When and where do you meet?",
-    a: "We're setting this year's schedule now. Email us and we'll send dates and rooms as soon as they're confirmed.",
+    a: "We're still setting this year's schedule. Email us and we'll send dates and rooms once they're confirmed.",
   },
   {
     q: "Can I actually get published?",
-    a: "It happens. Past course projects have been published in peer-reviewed journals, and members publish with faculty at Pitt, UPMC, and beyond. See the research page.",
+    a: "It happens. Some past course projects were published in peer-reviewed journals, and members publish with faculty at Pitt, UPMC, and elsewhere.",
   },
   {
     q: "What data do we work with?",
     a: "The summer course uses the NIH All of Us Research Program, a national dataset of health records and surveys, through its online Researcher Workbench.",
   },
   {
-    q: "How do I get involved?",
-    a: `Email ${site.email}. Tell us a little about yourself and what you're interested in, and we'll take it from there.`,
+    q: "How do I join?",
+    a: `Email ${site.email} with a line or two about yourself. That's it.`,
   },
 ];
 
-const topics = [
-  "Journal club",
-  "Python workshops",
-  "NIH All of Us",
-  "Large language models",
-  "Graph neural networks",
-  "Medical imaging",
-  "Interpretable ML",
-  "AI ethics",
-];
+const latest = publications.slice(0, 5);
 ---
 
 <Base>
@@ -93,17 +74,18 @@ const topics = [
   <section class="hero band blue">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow">AI in Medicine Society · University of Pittsburgh</p>
         <h1>A big tent for <span class="scribble">AI in medicine</span>.</h1>
         <p class="lede">
-          We're a student-run club at Pitt, and everyone's welcome: med students, undergrads, grad
-          students, clinicians, engineers, and the just plain curious, from Pitt or anywhere else.
-          Come for journal club and coding workshops, stay for the summer ML course and research
+          Pitt AI in Medicine is a student-run club at the University of Pittsburgh. We read papers
+          together, teach each other to code, run a summer machine learning course, and do research
           with Pitt and UPMC faculty.
+        </p>
+        <p class="lede small">
+          You don't need to be a Pitt student, a med student, or a programmer to join.
         </p>
         <div class="actions">
           <a class="btn" href={joinHref}>Join us</a>
-          <a class="btn light" href="#what-we-do">See what we do</a>
+          <a class="btn light" href="/research/">Our research</a>
         </div>
       </div>
 
@@ -125,28 +107,15 @@ const topics = [
     </div>
   </section>
 
-  <!-- Topics ticker -->
-  <div class="ticker" aria-label="Topics we cover">
-    <div class="track">
-      <ul>{topics.map((t) => <li>{t}</li>)}</ul>
-      <ul aria-hidden="true">{topics.map((t) => <li>{t}</li>)}</ul>
-    </div>
-  </div>
 
   <!-- What we do -->
   <section class="band" id="what-we-do" aria-labelledby="do-h">
     <div class="wrap">
-      <div class="intro">
-        <p class="eyebrow">What we do</p>
-        <h2 class="title" id="do-h">Four ways to get your hands dirty</h2>
-      </div>
+      <h2 class="title intro" id="do-h">What we do</h2>
       <div class="activities">
         {
           activities.map((a) => (
             <article class:list={["activity", a.tone]}>
-              <span class="icon">
-                <Icon name={a.icon} size={26} />
-              </span>
               <h3>{a.title}</h3>
               <p>{a.body}</p>
               {a.link && (
@@ -162,15 +131,16 @@ const topics = [
   </section>
 
   <!-- Events -->
-  <section class="band white" id="events" aria-labelledby="events-h">
+  <section class="band sky" id="events" aria-labelledby="events-h">
     <div class="wrap">
       <div class="intro row">
         <div>
-          <p class="eyebrow">Coming up</p>
-          <h2 class="title" id="events-h">Meetings and events</h2>
-          <p class="lede">Dates for this year are still being set. Want them as soon as they're out?</p>
+          <h2 class="title" id="events-h">Coming up</h2>
+          <p class="lede">
+            Dates for this year aren't set yet. <a href={mailto("Event dates")}>Email us</a> and
+            we'll send them when they are.
+          </p>
         </div>
-        <a class="btn" href={joinHref}>Get updates</a>
       </div>
       <ul class="events">
         {
@@ -203,10 +173,9 @@ const topics = [
   <section class="band white" aria-labelledby="research-h">
     <div class="wrap">
       <div class="intro">
-        <p class="eyebrow">Member research</p>
-        <h2 class="title" id="research-h">What our members have built</h2>
+        <h2 class="title" id="research-h">Research</h2>
         <p class="lede">
-          Members publish with faculty at Pitt, UPMC, and beyond. A few recent highlights.
+          Recent work by members, done with faculty at Pitt, UPMC, and elsewhere.
         </p>
       </div>
 
@@ -265,42 +234,23 @@ const topics = [
         }
       </div>
 
-      <p class="all">
-        <a class="btn light" href="/research/">All {publications.length} member publications</a>
-      </p>
+      <div class="latest">
+        <div class="latest-head">
+          <h3>Latest publications</h3>
+          <a class="more" href="/publications/">All {publications.length}</a>
+        </div>
+        <PublicationList items={latest} compact />
+      </div>
     </div>
   </section>
 
-  <!-- How to join -->
-  <section class="band sky" id="join" aria-labelledby="join-h">
-    <div class="wrap">
-      <div class="intro">
-        <p class="eyebrow">Get involved</p>
-        <h2 class="title" id="join-h">How to join</h2>
-        <p class="lede">Four steps, at your own pace.</p>
-      </div>
-      <ol class="steps">
-        {
-          steps.map((s, i) => (
-            <li>
-              <span class="num">{i + 1}</span>
-              <h3>{s.title}</h3>
-              <p>{s.body}</p>
-            </li>
-          ))
-        }
-      </ol>
-      <p class="join-cta"><a class="btn" href={joinHref}>Email us to join</a></p>
-    </div>
-  </section>
 
   <!-- Officers -->
   <section class="band" aria-labelledby="officers-h">
     <div class="wrap">
       <div class="intro row">
         <div>
-          <p class="eyebrow">The team</p>
-          <h2 class="title" id="officers-h">{officersTerm} officers</h2>
+          <h2 class="title" id="officers-h">Officers, {officersTerm}</h2>
         </div>
         <a class="more" href="/people/">Meet everyone</a>
       </div>
@@ -319,7 +269,7 @@ const topics = [
         incomingOfficers.some((p) => p.placeholder) && (
           <p class="incoming">
             <strong>{incomingTerm} officers will be announced soon.</strong> Interested in helping
-            run Pitt AIMs? <a href={joinHref}>Let us know</a>.
+            run the club? <a href={mailto("Officer roles")}>Let us know</a>.
           </p>
         )
       }
@@ -329,10 +279,7 @@ const topics = [
   <!-- FAQ -->
   <section class="band white" aria-labelledby="faq-h">
     <div class="wrap faq-grid">
-      <div>
-        <p class="eyebrow">Questions</p>
-        <h2 class="title" id="faq-h">Good questions we get a lot</h2>
-      </div>
+      <h2 class="title" id="faq-h">FAQ</h2>
       <div class="faqs">
         {
           faqs.map((f) => (
@@ -350,7 +297,7 @@ const topics = [
   <section class="band blue" aria-labelledby="news-h">
     <div class="wrap news-grid">
       <div>
-        <p class="eyebrow" id="news-h">In the news</p>
+        <h2 class="news-h" id="news-h">In the news</h2>
         {
           press.map((item) => (
             <a class="press" href={item.url}>
@@ -361,8 +308,8 @@ const topics = [
         }
       </div>
       <div class="cta">
-        <h2 class="title">Come to a meeting.</h2>
-        <p class="lede">Bring a friend, bring a laptop, or just bring questions.</p>
+        <h2 class="title">Come to a meeting</h2>
+        <p class="lede">Email us and we'll tell you when the next one is.</p>
         <div class="actions">
           <a class="btn" href={joinHref}>Join us</a>
         </div>
@@ -403,9 +350,6 @@ const topics = [
     letter-spacing: -0.03em;
   }
 
-  .hero .eyebrow {
-    margin-bottom: 0;
-  }
 
   .collage {
     position: relative;
@@ -497,46 +441,6 @@ const topics = [
     }
   }
 
-  /* Ticker */
-  .ticker {
-    background: var(--gold);
-    border-block: 2px solid var(--navy);
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  .ticker .track {
-    display: flex;
-    width: max-content;
-    animation: ticker 40s linear infinite;
-  }
-
-  .ticker ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .ticker li {
-    padding: 14px 0;
-    font-weight: 800;
-    font-stretch: 118%;
-    font-size: 17px;
-    color: var(--navy);
-  }
-
-  .ticker li::after {
-    content: "✦";
-    margin: 0 22px;
-    color: var(--blue);
-  }
-
-  @keyframes ticker {
-    to {
-      transform: translateX(-50%);
-    }
-  }
 
   /* Activities */
   .activities {
@@ -563,7 +467,6 @@ const topics = [
     padding: 26px 24px;
     border: 2px solid var(--line);
     border-radius: var(--radius);
-    box-shadow: var(--pop);
   }
 
   .activity.sky {
@@ -582,16 +485,6 @@ const topics = [
     background: var(--mint);
   }
 
-  .activity .icon {
-    display: grid;
-    place-items: center;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: var(--white);
-    border: 2px solid var(--line);
-    color: var(--blue);
-  }
 
   .activity h3 {
     font-size: 1.4rem;
@@ -614,7 +507,6 @@ const topics = [
     gap: 28px;
     padding: 0;
     overflow: hidden;
-    box-shadow: var(--pop);
   }
 
   @media (min-width: 900px) {
@@ -710,7 +602,6 @@ const topics = [
     display: flex;
     flex-direction: column;
     gap: 14px;
-    box-shadow: var(--pop);
   }
 
   .spot.sky {
@@ -736,61 +627,33 @@ const topics = [
     padding: 16px 16px 12px;
   }
 
-  .all {
-    margin-top: 32px;
+  .latest {
+    margin-top: 48px;
   }
 
-  /* Steps */
-  .steps {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 20px;
-    counter-reset: step;
+  .latest-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
   }
 
-  @media (min-width: 760px) {
-    .steps {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
+  .latest-head h3 {
+    font-size: 1.4rem;
   }
 
-  .steps li {
-    background: var(--white);
-    border: 2px solid var(--line);
-    border-radius: var(--radius);
-    padding: 22px 22px 24px;
-    display: grid;
-    align-content: start;
-    gap: 8px;
+  .hero .small {
+    font-size: 1rem;
+    color: var(--gold-soft);
   }
 
-  .num {
-    display: grid;
-    place-items: center;
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    background: var(--gold);
-    border: 2px solid var(--navy);
-    font-weight: 800;
-    font-size: 20px;
-    margin-bottom: 6px;
+  .news-h {
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-bottom: 14px;
   }
 
-  .steps h3 {
-    font-size: 1.3rem;
-  }
-
-  .steps p {
-    color: var(--ink-2);
-    font-size: 16px;
-  }
-
-  .join-cta {
-    margin-top: 32px;
-  }
 
   /* Events */
   .events {
