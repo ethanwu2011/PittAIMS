@@ -48,3 +48,5 @@ Pull requests run the same build as a check, so a broken change can't merge sile
   `pittaims.com/brand/pittaims-qr.png`.
 - Sitemap: generated at `/sitemap-index.xml`. Submit it once in
   [Google Search Console](https://search.google.com/search-console) to get indexed faster.
+- `public/googlea967e9b4c9f7bfa7.html` verifies the site in Google Search Console. Don't
+  delete it: Google rechecks it, and removing it drops the verification.

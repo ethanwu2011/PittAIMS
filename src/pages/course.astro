@@ -64,7 +64,7 @@ const tones = ["sky", "gold", "coral", "mint"];
       <div class="intro">
         <h2 class="title" id="schedule-h">Schedule</h2>
         <p class="lede">
-          Each session: hands-on work 6:00–6:45, then machine learning theory 6:45–7:30.
+          Each session: hands-on work 6:00 to 6:45, then machine learning theory 6:45 to 7:30.
         </p>
       </div>
       <ol class="weeks">
@@ -76,7 +76,7 @@ const tones = ["sky", "gold", "coral", "mint"];
                 <span>{s.date}</span>
               </p>
               <h3>{s.focus}</h3>
-              {s.theory !== "—" && (
+              {s.theory && (
                 <p class="theory">
                   <strong>Theory:</strong> {s.theory}
                 </p>

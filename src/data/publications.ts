@@ -338,7 +338,7 @@ publications.push({
   pmid: "42620188",
   summary:
     "Pairing novice EEG monitors with an AI model held up against expert neurophysiologists at catching brain ischemia during carotid surgery, with fewer false alarms than the AI alone.",
-  tags: ["Preprint", "Human–AI teams", "Neuromonitoring"],
+  tags: ["Preprint", "Humans and AI", "Neuromonitoring"],
 });
 
 // Josh Pantanowitz: pathology and cytopathology.
