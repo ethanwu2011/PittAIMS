@@ -2,13 +2,13 @@
 import Base from "../layouts/Base.astro";
 import Avatar from "../components/Avatar.astro";
 import PersonChip from "../components/PersonChip.astro";
-import ToolCard from "../components/ToolCard.astro";
-import ForestPlot from "../components/ForestPlot.astro";
+import PipelineCard from "../components/PipelineCard.astro";
 import PublicationList from "../components/PublicationList.astro";
 import { mailto } from "../data/site";
 import { publications, doiUrl } from "../data/publications";
+import { person } from "../data/people";
 import { spotlights } from "../data/spotlights";
-import { groups, celtic, type Abstract } from "../data/research";
+import { groups, pipeline } from "../data/research";
 
 const byDoi = new Map(publications.map((p) => [p.doi, p]));
 const papersFor = (dois: string[] = []) =>
@@ -18,15 +18,10 @@ const papersFor = (dois: string[] = []) =>
     return p;
   });
 
-const abstractHeading = (a: Abstract) => {
-  if (a.title) return a.title;
-  const what = a.count ? `${a.count} abstracts` : "Abstracts";
-  const verb = a.status === "Submitted" ? "submitted to" : "at";
-  return `${what} ${verb} the ${a.meeting}`;
-};
-
-const sameAs = (a: string[], b: string[]) =>
-  a.length === b.length && a.every((n) => b.includes(n));
+const groupName = new Map(groups.map((g) => [g.id, g.name]));
+for (const item of pipeline) {
+  if (!groupName.has(item.group)) throw new Error(`Unknown research group "${item.group}" on "${item.title}"`);
+}
 
 const [featured, ...others] = spotlights;
 const SHOWN = 3;
@@ -38,11 +33,11 @@ const steps = [
   },
   {
     title: "Data.",
-    body: "Members define the patients to study and build the dataset, often from NIH All of Us or MIMIC.",
+    body: "Members figure out which patients to study and build the dataset, from sources like NIH All of Us or MIMIC.",
   },
   {
-    title: "Model.",
-    body: "We start with models we can explain, like logistic regression and gradient-boosted trees, and test them on patients the model hasn't seen.",
+    title: "Analysis.",
+    body: "We start with methods we can explain, and check the results on patients the model hasn't seen.",
   },
   {
     title: "Share it.",
@@ -53,15 +48,15 @@ const steps = [
 
 <Base
   title="Research"
-  description="Research by Pitt AI in Medicine members: papers, conference abstracts, and open tools in clinical prediction, critical care, drug discovery, language models, imaging, and more."
+  description="Research by Pitt AI in Medicine members: what's coming out, highlights, and research groups in clinical prediction, critical care, neurosurgery, drug discovery, OB/GYN, pathology, and more."
 >
   <header class="page-head gold-head">
     <div class="wrap">
       <h1>Research</h1>
       <p class="lede">
-        Members do research with faculty at Pitt, UPMC, and other schools: papers, conference
-        abstracts, and tools people can actually use. The work is organized into groups below. Join
-        one that fits, or start your own.
+        Members do research with faculty at Pitt, UPMC, and other schools, in AI and well beyond it:
+        papers, conference abstracts, and tools people can use. Join a group below, or start your
+        own.
       </p>
       <nav class="group-nav" aria-label="Research groups">
         {groups.map((g) => <a class="gchip" href={`#${g.id}`}>{g.name}</a>)}
@@ -69,7 +64,31 @@ const steps = [
     </div>
   </header>
 
-  <section class="band white" aria-labelledby="highlights-h">
+  <section class="band white" aria-labelledby="coming-h">
+    <div class="wrap">
+      <div class="intro">
+        <h2 class="title" id="coming-h">Coming out</h2>
+        <p class="lede">Work that's under review, submitted, or about to launch.</p>
+      </div>
+      <ul class="pipeline">
+        {
+          pipeline.map((item) => (
+            <li class:list={{ wide: !!item.image }}>
+              <PipelineCard item={item} />
+            </li>
+          ))
+        }
+        <li>
+          <a class="add" href={mailto("Something coming out")}>
+            <span class="add-h">Got something coming out?</span>
+            <span>A paper, poster, abstract, or tool. Tell us and we'll add it here.</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="highlights-h">
     <div class="wrap">
       <h2 class="title intro" id="highlights-h">Highlights</h2>
 
@@ -104,16 +123,12 @@ const steps = [
         </div>
       </article>
 
-      <div class="celtic">
-        <ToolCard tool={celtic} />
-      </div>
-
       <div class="others">
         {
           others.map((s, i) => (
-            <article class:list={["card", "other", i === 0 ? "sky" : "gold"]}>
+            <article class:list={["card", "other", i % 2 === 0 ? "mint" : "sky"]}>
               <div class="who">
-                <Avatar person={{ name: s.member, photo: s.photo }} size="sm" />
+                <Avatar person={person(s.member)} index={i} size="sm" />
                 <div>
                   <p class="who-name">{s.member}</p>
                   <p class="who-role">{s.role}</p>
@@ -121,19 +136,6 @@ const steps = [
               </div>
               <h3>{s.headline}</h3>
               <p class="body">{s.body}</p>
-              {s.member === "Ethan Wu" && (
-                <div class="plot-wrap">
-                  <ForestPlot
-                    figure="Early-onset AMD in All of Us:"
-                    rows={[
-                      { label: "Hypertension", or: 5.8, lo: 4.25, hi: 7.93 },
-                      { label: "Hyperlipidemia", or: 5.16, lo: 3.76, hi: 7.08 },
-                      { label: "Rheumatoid arthritis", or: 4.61, lo: 1.55, hi: 13.72 },
-                    ]}
-                    caption="odds ratio with 95% CI, log scale."
-                  />
-                </div>
-              )}
               <p class="cite">
                 <a href={doiUrl(s.paper.doi)}>{s.paper.title}</a>
                 <span>
@@ -147,18 +149,18 @@ const steps = [
     </div>
   </section>
 
-  <section class="band" aria-labelledby="groups-h">
+  <section class="band white" aria-labelledby="groups-h">
     <div class="wrap">
       <div class="intro">
         <h2 class="title" id="groups-h">Research groups</h2>
-        <p class="lede">Who's working on what. Papers listed are examples, not a complete record.</p>
+        <p class="lede">Who's working on what. Papers are examples, not a complete record.</p>
       </div>
 
       <div class="groups">
         {
           groups.map((g) => {
             const papers = papersFor(g.papers);
-            const code = (g.tools ?? []).filter((t) => t !== celtic);
+            const upcoming = pipeline.filter((item) => item.group === g.id);
             return (
               <section class="group" id={g.id} aria-labelledby={`${g.id}-h`}>
                 <header class:list={["group-head", g.tone]}>
@@ -172,44 +174,22 @@ const steps = [
                 </header>
 
                 <div class="group-body">
-                  {(g.tools ?? []).includes(celtic) && (
-                    <p class="see">
-                      <strong>Tool:</strong> <a href={celtic.url}>{celtic.name}</a>, the cellulitis
-                      calculator described above.
-                    </p>
-                  )}
-
-                  {code.map((t) => (
-                    <p class="see">
-                      <strong>Code:</strong> <a href={t.url}>{t.linkLabel}</a>. {t.body}
-                    </p>
-                  ))}
-
-                  {g.abstracts && (
-                    <ul class="abstracts">
-                      {g.abstracts.map((a) => (
+                  {upcoming.length > 0 && (
+                    <ul class="upcoming">
+                      {upcoming.map((item) => (
                         <li>
-                          <p class="abs-kind">
-                            {a.count === 1 ? "Conference abstract" : "Conference abstracts"}
-                            {a.status && ` · ${a.status}`}
-                          </p>
-                          <p class="abs-title">{abstractHeading(a)}</p>
-                          {sameAs(a.people, g.people) ? (
-                            <p class="others-note">
-                              By the members above{a.andOthers && " and others"}.
-                            </p>
-                          ) : (
-                            <div class="people">
-                              {a.people.map((n, i) => (
-                                <PersonChip name={n} index={i} />
-                              ))}
-                              {a.andOthers && <span class="others-note">and others</span>}
-                            </div>
-                          )}
+                          <span class="pill">{item.status}</span> {item.title}
                         </li>
                       ))}
                     </ul>
                   )}
+
+                  {g.abstracts?.map((a) => (
+                    <div class="abstract">
+                      <p class="abs-kind">Conference abstracts</p>
+                      <p class="abs-title">{a.title ?? `Abstracts at the ${a.meeting}`}</p>
+                    </div>
+                  ))}
 
                   {papers.length > 0 && <PublicationList items={papers.slice(0, SHOWN)} />}
 
@@ -218,6 +198,10 @@ const steps = [
                       <summary>More papers from this group</summary>
                       <PublicationList items={papers.slice(SHOWN)} />
                     </details>
+                  )}
+
+                  {upcoming.length === 0 && !g.abstracts && papers.length === 0 && (
+                    <p class="empty">Work in progress. Check back soon.</p>
                   )}
                 </div>
               </section>
@@ -293,6 +277,49 @@ const steps = [
 
   .gchip:hover {
     background: var(--sky);
+  }
+
+  /* Coming out */
+  .pipeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 20px;
+  }
+
+  @media (min-width: 900px) {
+    .pipeline {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pipeline .wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .add {
+    display: grid;
+    align-content: center;
+    gap: 6px;
+    height: 100%;
+    min-height: 160px;
+    padding: 24px;
+    border: 2px dashed var(--line);
+    border-radius: var(--radius);
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+
+  .add:hover {
+    background: var(--sky-soft);
+  }
+
+  .add-h {
+    font-weight: 800;
+    font-stretch: 108%;
+    font-size: 1.2rem;
+    color: var(--navy);
   }
 
   /* Highlights */
@@ -377,14 +404,10 @@ const steps = [
     color: var(--ink-3);
   }
 
-  .celtic {
-    margin-top: 40px;
-  }
-
   .others {
     display: grid;
     gap: 20px;
-    margin-top: 20px;
+    margin-top: 28px;
   }
 
   @media (min-width: 900px) {
@@ -404,8 +427,8 @@ const steps = [
     background: var(--sky-soft);
   }
 
-  .other.gold {
-    background: #fff4d6;
+  .other.mint {
+    background: #e6f8ef;
   }
 
   .other h3 {
@@ -414,13 +437,6 @@ const steps = [
 
   .other .body {
     color: var(--ink-2);
-  }
-
-  .plot-wrap {
-    background: var(--white);
-    border: 2px solid var(--line);
-    border-radius: 14px;
-    padding: 16px 16px 12px;
   }
 
   /* Groups */
@@ -477,11 +493,6 @@ const steps = [
     margin-top: 4px;
   }
 
-  .others-note {
-    font-weight: 600;
-    color: var(--ink-2);
-  }
-
   .group-body {
     display: grid;
     gap: 16px;
@@ -489,29 +500,33 @@ const steps = [
     background: var(--cream);
   }
 
-  .see {
-    color: var(--ink-2);
-  }
-
-  .see strong {
-    color: var(--ink);
-  }
-
-  .abstracts {
+  .upcoming {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 14px;
+    gap: 8px;
+    font-weight: 700;
   }
 
-  .abstracts li {
+  .pill {
+    display: inline-block;
+    margin-right: 6px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: var(--gold);
+    border: 2px solid var(--line);
+    font-size: 12.5px;
+    font-weight: 800;
+  }
+
+  .abstract {
     background: var(--white);
     border: 2px dashed var(--line);
     border-radius: 18px;
-    padding: 18px 20px;
+    padding: 16px 20px;
     display: grid;
-    gap: 6px;
+    gap: 4px;
   }
 
   .abs-kind {
@@ -526,7 +541,7 @@ const steps = [
   .abs-title {
     font-weight: 800;
     font-stretch: 104%;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     line-height: 1.3;
   }
 
@@ -535,6 +550,10 @@ const steps = [
     font-weight: 700;
     color: var(--blue);
     padding: 4px 0 12px;
+  }
+
+  .empty {
+    color: var(--ink-3);
   }
 
   /* How it goes */

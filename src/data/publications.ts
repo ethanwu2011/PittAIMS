@@ -25,7 +25,7 @@ export const publications: Publication[] = [
     doi: "10.1016/j.xops.2026.101124",
     pmid: "41908500",
     summary:
-      "Clustering and interpretable models on 10,380 All of Us patients tie idiopathic epiretinal membrane to systemic conditions, including hypertension, hyperlipidemia, and knee osteoarthritis.",
+      "Clustering and interpretable models on All of Us records tie idiopathic epiretinal membrane to systemic conditions like hypertension, hyperlipidemia, and knee osteoarthritis.",
     tags: ["All of Us", "Ophthalmology", "Interpretable ML"],
   },
   {
@@ -38,20 +38,8 @@ export const publications: Publication[] = [
     doi: "10.1016/j.jpi.2026.100661",
     pmid: "42164630",
     summary:
-      "Re-runs a published 180-question pathology Delphi study with ChatGPT-3.5, ChatGPT-4, and Llama 3; every model reached consensus on more questions than the human panel.",
+      "Re-runs a published pathology Delphi study with ChatGPT and Llama in place of the expert panel; the models reached consensus more often than the humans did.",
     tags: ["LLMs", "Pathology"],
-  },
-  {
-    title: "Hybrid novice-AI system achieves expert-level performance in intraoperative ischemia detection",
-    authors: "Murali N, Mina AI, Sinha H, … Raka Y, … Visweswaran S",
-    members: ["Raka Y"],
-    journal: "medRxiv (preprint)",
-    year: 2026,
-    doi: "10.64898/2026.08.01.26359457",
-    pmid: "42620188",
-    summary:
-      "Pairing novice EEG monitors with an AI model was non-inferior to expert neurophysiologists at catching brain ischemia during carotid surgery, and halved the AI's false alarms at 80% sensitivity.",
-    tags: ["Preprint", "Human–AI teams", "Neuromonitoring"],
   },
   {
     title: "Predicting Early Onset of Age-Related Macular Degeneration: A Machine Learning Approach",
@@ -62,7 +50,7 @@ export const publications: Publication[] = [
     doi: "10.1016/j.ajo.2025.07.020",
     pmid: "40701376",
     summary:
-      "Models trained on comorbidities diagnosed before age 55 predict early-onset AMD with about 76% accuracy; hypertension, hyperlipidemia, and rheumatoid arthritis are validated in All of Us.",
+      "Models trained on patients' earlier diagnoses predict early-onset AMD. Hypertension, hyperlipidemia, and rheumatoid arthritis stood out and held up in All of Us.",
     tags: ["All of Us", "Ophthalmology", "EHR"],
   },
   {
@@ -74,7 +62,7 @@ export const publications: Publication[] = [
     doi: "10.1038/s41551-025-01481-x",
     pmid: "40925962",
     summary:
-      "PDGrapher, a causally inspired graph neural network, predicts combinations of therapeutic targets that reverse disease phenotypes, and trains up to 25 times faster than existing methods.",
+      "PDGrapher, a causally inspired graph neural network, predicts combinations of therapeutic targets that reverse disease phenotypes, and trains much faster than existing methods.",
     tags: ["Graph neural networks", "Drug discovery", "Causal ML"],
   },
   {
@@ -86,7 +74,7 @@ export const publications: Publication[] = [
     doi: "10.1371/journal.pone.0335615",
     pmid: "41160596",
     summary:
-      "Benchmarks a diffusion model against four leading architectures for segmenting retinal fluid and pigment epithelial detachment on OCT; nnU-Net performed best overall.",
+      "Benchmarks a diffusion model against leading architectures for segmenting retinal fluid and pigment epithelial detachment on OCT; nnU-Net performed best overall.",
     tags: ["Deep learning", "OCT imaging", "Ophthalmology"],
   },
   {
@@ -99,7 +87,7 @@ export const publications: Publication[] = [
     doi: "10.1016/j.modpat.2024.100688",
     pmid: "39755237",
     summary:
-      "The opening review and glossary for a seven-part series on AI in pathology, covering the basics of generative and traditional machine learning.",
+      "The opening review and glossary for a series on AI in pathology, covering the basics of generative and traditional machine learning.",
     tags: ["Review", "Pathology"],
   },
   {
@@ -213,6 +201,134 @@ export const publications: Publication[] = [
     tags: ["Editorial", "LLMs", "Cytopathology"],
   },
 ];
+
+
+// Peace Odiase: neurosurgery and neuro-oncology.
+publications.push(
+  {
+    title: "Prognostic impact of multi-divisional trigeminal neuralgia on pain outcomes following microvascular decompression",
+    authors: "McKay W, Gopakumar A, Bhatia S, … Odiase P, … Zenonos GA",
+    members: ["Odiase P"],
+    journal: "Clinical Neurology and Neurosurgery",
+    year: 2026,
+    doi: "10.1016/j.clineuro.2026.109543",
+    pmid: "42314543",
+    summary:
+      "Pain in more than one branch of the trigeminal nerve didn't predict worse outcomes after microvascular decompression than pain in a single branch.",
+    tags: ["Neurosurgery", "Outcomes"],
+  },
+  {
+    title: "Prognostic utility of tumor grade and IDH-mutation status for immunotherapy response in high grade glioma: a systematic review and meta-analysis",
+    authors: "Srinivasan S, Eraghi MM, Odiase P, … Patel A",
+    members: ["Odiase P"],
+    journal: "Journal of Clinical Neuroscience",
+    year: 2026,
+    doi: "10.1016/j.jocn.2026.112202",
+    pmid: "42475978",
+    summary:
+      "Reviews immunotherapy studies in high-grade glioma; newly diagnosed IDH-mutant tumors were linked to longer survival than recurrent ones.",
+    tags: ["Neuro-oncology", "Meta-analysis"],
+  },
+  {
+    title: "Spina bifida in Africa: A systematic review and Meta-Analysis of Presentation, Management, and outcomes",
+    authors: "O'Leary S, Newsome-Cuby T, Odiase P, … Totimeh T",
+    members: ["Odiase P"],
+    journal: "Journal of Clinical Neuroscience",
+    year: 2026,
+    doi: "10.1016/j.jocn.2026.111986",
+    pmid: "41849992",
+    summary:
+      "Pools African studies of spina bifida to describe how it presents, how it's managed, and outcomes, which varied by region.",
+    tags: ["Global neurosurgery", "Meta-analysis"],
+  },
+  {
+    title: "Foix-Alajouanine syndrome: A systematic review and meta-analysis of presentation, management, and outcomes",
+    authors: "O'Leary S, Fredricks N, Odiase P, … Aoun S",
+    members: ["Odiase P"],
+    journal: "Neuro-Chirurgie",
+    year: 2025,
+    doi: "10.1016/j.neuchi.2025.101710",
+    pmid: "40784607",
+    summary:
+      "Reviews published cases of a rare spinal vascular syndrome; surgical treatment was linked to improvement.",
+    tags: ["Spine", "Meta-analysis"],
+  },
+  {
+    title: "Comparing Gabapentin and Pregabalin for Perioperative Pain Management in Lumbar Spine Surgery: A Systematic Review and Meta-Analysis",
+    authors: "Ebada A, Bever N, Carron CJ, Odiase P, … Aoun SG",
+    members: ["Odiase P"],
+    journal: "World Neurosurgery",
+    year: 2025,
+    doi: "10.1016/j.wneu.2025.124284",
+    pmid: "40653011",
+    summary:
+      "Compares two nerve-pain drugs around lumbar spine surgery; neither clearly lowered next-day pain, though gabapentin reduced opioid use.",
+    tags: ["Spine", "Pain", "Meta-analysis"],
+  },
+  {
+    title: "Stereotactic laser ablation for pediatric central nervous system tumors: a systematic review and meta-analysis of the literature",
+    authors: "O'Leary S, Haider MA, Truong N, … Odiase P, … Price AV",
+    members: ["Odiase P"],
+    journal: "Journal of Neurosurgery: Pediatrics",
+    year: 2025,
+    doi: "10.3171/2025.1.PEDS24387",
+    pmid: "40344762",
+    summary:
+      "Pooled evidence suggests laser thermal therapy shrinks most pediatric brain tumors treated with it; the authors call for prospective trials.",
+    tags: ["Pediatric neurosurgery", "Meta-analysis"],
+  },
+  {
+    title: "Presentation, management and outcomes of ruptured intracranial aneurysms in Africa: A systematic review and meta-analysis",
+    authors: "Darko K, Simmons G, Elorm Yevudza W, … Odiase P, … Totimeh T",
+    members: ["Odiase P"],
+    journal: "Journal of Clinical Neuroscience",
+    year: 2025,
+    doi: "10.1016/j.jocn.2025.111054",
+    pmid: "39826293",
+    summary:
+      "Reviews how ruptured brain aneurysms present and are treated across African studies, where surgical clipping was most common.",
+    tags: ["Cerebrovascular", "Global neurosurgery"],
+  },
+  {
+    title: "Craniosynostosis in Africa: Insights from 8 Countries-A Systematic Review and Meta-Analysis",
+    authors: "Darko K, Pulido S, Haider MA, … Odiase P, … Totimeh T",
+    members: ["Odiase P"],
+    journal: "World Neurosurgery",
+    year: 2025,
+    doi: "10.1016/j.wneu.2024.11.116",
+    pmid: "39622285",
+    summary:
+      "Reviews craniosynostosis care across African countries; nearly all reported patients had surgery, with few complications.",
+    tags: ["Pediatric neurosurgery", "Global neurosurgery"],
+  },
+  {
+    title: "Presentation, management, and outcomes of central nervous system metastases in Africa: Systematic review and meta-analysis",
+    authors: "O'Leary S, Yevudza WE, Odiase P, … Totimeh T",
+    members: ["Odiase P"],
+    journal: "Neuro-Oncology Advances",
+    year: 2024,
+    doi: "10.1093/noajnl/vdae219",
+    pmid: "39925636",
+    summary:
+      "Reviews African studies of brain and spinal metastases, which mostly came from breast and lung cancer.",
+    tags: ["Neuro-oncology", "Global neurosurgery"],
+  },
+  {
+    title: "Presentation, management, and outcome of traumatic spine injuries in Africa: a systematic review and meta-analysis",
+    authors: "Darko K, Shukla I, Hassan T, … Odiase P, … Totimeh T",
+    members: ["Odiase P"],
+    journal: "Journal of Neurosurgery: Spine",
+    year: 2024,
+    doi: "10.3171/2024.8.SPINE24614",
+    pmid: "39705701",
+    summary:
+      "Across African studies, spine injuries most often came from road traffic accidents, often with long delays to care.",
+    tags: ["Spine trauma", "Global neurosurgery"],
+  },
+);
+
+// Newest first; ties keep file order.
+publications.sort((a, b) => b.year - a.year);
 
 export const doiUrl = (doi: string) => `https://doi.org/${doi}`;
 

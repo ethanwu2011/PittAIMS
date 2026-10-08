@@ -15,7 +15,7 @@ Most edits are in `src/data/`. You shouldn't need to touch page markup.
 | Officers, past officers, founders, faculty | `src/data/people.ts`. Add earlier boards to `pastOfficers`. Incoming officers start as "Announced soon" placeholders in `incomingOfficers`; swap in names as they're announced, then make them the current board. |
 | Meetings and events ("Coming up" on the homepage) | `src/data/events.ts`. Leave `date` out and it shows "TBA". |
 | Headshots | Add a square photo (~480px JPG) to `public/images/people/` and set `photo` in `people.ts`. Anyone without one gets a colored initials tile. |
-| Research groups: who's in each, plus abstracts, tools, and which papers to show | `src/data/research.ts` |
+| Research: "Coming out" items (under review, preprints, submitted abstracts), and the groups (who's in each, example papers, abstracts) | `src/data/research.ts`. Keep the writing plain and skip statistics. |
 | Research highlights (homepage and /research) | `src/data/spotlights.ts` |
 | Papers | `src/data/publications.ts` (newest first; put member names in `members` to highlight them). A paper shows up on /research once its DOI is listed in a group in `research.ts`. |
 | Course dates, schedule, status | `src/data/course.ts` (set `status` to `"Open"`, `"In session"`, or `"Completed"`) |

@@ -1,13 +1,13 @@
 ---
 import Base from "../layouts/Base.astro";
 import Avatar from "../components/Avatar.astro";
-import ToolCard from "../components/ToolCard.astro";
+import PipelineCard from "../components/PipelineCard.astro";
 import { site, press, joinHref, mailto } from "../data/site";
 import { course } from "../data/course";
 import { officers, officersTerm, incomingTerm, incomingOfficers } from "../data/people";
 import { events } from "../data/events";
 import { spotlights } from "../data/spotlights";
-import { groups, celtic } from "../data/research";
+import { groups, pipeline } from "../data/research";
 import { publications, doiUrl } from "../data/publications";
 import PublicationList from "../components/PublicationList.astro";
 
@@ -67,7 +67,15 @@ const faqs = [
   },
 ];
 
-const latest = publications.slice(0, 4);
+// Most recent paper from each member, so the list shows a range of people.
+const seen = new Set<string>();
+const latest = publications
+  .filter((p) => {
+    const fresh = p.members.some((m) => !seen.has(m));
+    p.members.forEach((m) => seen.add(m));
+    return fresh;
+  })
+  .slice(0, 4);
 ---
 
 <Base>
@@ -116,7 +124,8 @@ const latest = publications.slice(0, 4);
         <h2 class="title" id="research-h">Research</h2>
         <p class="lede">
           Research is a big part of what we do. Members work with faculty at Pitt, UPMC, and other
-          schools, and share it as papers, conference abstracts, and tools people can use.
+          schools, in AI and well beyond it, and share it as papers, conference abstracts, and tools
+          people can use.
         </p>
       </div>
 
@@ -139,9 +148,18 @@ const latest = publications.slice(0, 4);
         </div>
       </article>
 
-      <div class="tool-wrap">
-        <ToolCard tool={celtic} />
+      <div class="coming-head">
+        <h3>Coming out</h3>
       </div>
+      <ul class="coming">
+        {
+          pipeline.map((item) => (
+            <li>
+              <PipelineCard item={item} compact />
+            </li>
+          ))
+        }
+      </ul>
 
       <div class="groups-head">
         <h3>Research groups</h3>
@@ -578,8 +596,26 @@ const latest = publications.slice(0, 4);
 
 
 
-  .tool-wrap {
-    margin-top: 24px;
+  .coming-head {
+    margin: 48px 0 14px;
+  }
+
+  .coming-head h3 {
+    font-size: 1.4rem;
+  }
+
+  .coming {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+  }
+
+  @media (min-width: 760px) {
+    .coming {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   .groups-head {

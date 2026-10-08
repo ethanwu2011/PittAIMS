@@ -17,7 +17,7 @@ export const spotlights: Spotlight[] = [
     member: "Isuru Herath",
     photo: "/images/people/isuru.jpg",
     headline: "Asking a neural network which drugs would make a sick cell healthy again",
-    body: "Most models predict how a drug will change a cell. PDGrapher, a causally inspired graph neural network, solves the inverse problem: given a diseased cell's state, it predicts the combination of therapeutic targets that would push it back toward healthy. Across nine cell lines it found effective targets in more test samples than competing methods, and it trains up to 25 times faster.",
+    body: "Most models predict how a drug will change a cell. PDGrapher, a causally inspired graph neural network, solves the inverse problem: given a diseased cell's state, it predicts the combination of therapeutic targets that would push it back toward healthy. It found effective targets more often than competing methods, and trains much faster.",
     paper: {
       title: "Combinatorial prediction of therapeutic perturbations using causally inspired neural networks",
       journal: "Nature Biomedical Engineering",
@@ -35,23 +35,22 @@ export const spotlights: Spotlight[] = [
     },
   },
   {
-    member: "Ethan Wu",
-    photo: "/images/people/ethan.jpg",
-    headline: "Spotting who gets macular degeneration early, from health records alone",
-    body: "Using comorbidities diagnosed before age 55, interpretable models predicted early-onset AMD with about 76% accuracy. The strongest signals (hypertension, hyperlipidemia, and rheumatoid arthritis) held up in the NIH All of Us cohort.",
+    member: "Peace Odiase",
+    headline: "Mapping neurosurgical care across Africa",
+    body: "Peace has co-authored a series of reviews that pull together studies from across Africa on spina bifida, spine trauma, brain aneurysms, and craniosynostosis, to show how care and outcomes differ from place to place.",
     paper: {
-      title: "Predicting Early Onset of Age-Related Macular Degeneration: A Machine Learning Approach",
-      journal: "American Journal of Ophthalmology",
-      year: 2025,
-      doi: "10.1016/j.ajo.2025.07.020",
+      title: "Spina bifida in Africa: A systematic review and Meta-Analysis of Presentation, Management, and outcomes",
+      journal: "Journal of Clinical Neuroscience",
+      year: 2026,
+      doi: "10.1016/j.jocn.2026.111986",
     },
-    role: "First author",
+    role: "Co-author",
   },
   {
     member: "Josh Pantanowitz",
     photo: "/images/people/josh.jpg",
     headline: "Can a panel of chatbots stand in for a panel of pathologists?",
-    body: "Josh re-ran a published 180-question Delphi study on the future of pathology with ChatGPT-3.5, ChatGPT-4, and Llama 3. Every model reached consensus on more questions than the human experts did. It's an early proof of concept that AI might one day help run expert surveys like these.",
+    body: "Josh re-ran a published Delphi study on the future of pathology, with ChatGPT and Llama in place of the expert panel. The models reached consensus more often than the humans did. It's an early proof of concept that AI might one day help run expert surveys like these.",
     paper: {
       title:
         "How does AI perform compared to human expert panels in medical Delphi studies? A pilot study through the lens of pathology",
