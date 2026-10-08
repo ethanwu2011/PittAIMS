@@ -11,6 +11,9 @@ import PublicationList from "../components/PublicationList.astro";
 
 const isuru = groups.find((g) => g.id === "drug-discovery")!.feature!.image!;
 
+// The newest story gets the big treatment; any older ones are listed under it.
+const [featured, ...morePress] = press;
+
 const activities = [
   {
     tone: "sky",
@@ -93,6 +96,11 @@ const latest = publications
           <a class="btn" href={joinHref}>Join us</a>
           <a class="btn light" href="#research">Our research</a>
         </div>
+        {featured && (
+          <a class="as-seen" href="#news">
+            Featured by the <strong>{featured.outlet}</strong>
+          </a>
+        )}
       </div>
 
       <div class="collage" aria-label="Member research and officers">
@@ -112,6 +120,33 @@ const latest = publications
       </div>
     </div>
   </section>
+
+  <!-- Press -->
+  {
+    featured && (
+      <section class="band press-band" id="news" aria-labelledby="news-h">
+        <div class="wrap">
+          <h2 class="kicker" id="news-h">In the news</h2>
+          <a class="clipping" href={featured.url}>
+            <span class="clip-outlet">{featured.outlet}</span>
+            <span class="clip-title">“{featured.title}”</span>
+            <span class="btn">Read the story</span>
+          </a>
+          {
+            morePress.length > 0 && (
+              <ul class="more-press">
+                {morePress.map((item) => (
+                  <li>
+                    <a href={item.url}>{item.title}</a>, {item.outlet}
+                  </li>
+                ))}
+              </ul>
+            )
+          }
+        </div>
+      </section>
+    )
+  }
 
 
   <!-- Research -->
@@ -258,26 +293,15 @@ const latest = publications
     </div>
   </section>
 
-  <!-- Press + CTA -->
-  <section class="band blue" aria-labelledby="news-h">
-    <div class="wrap news-grid">
+  <!-- CTA -->
+  <section class="band blue" aria-labelledby="cta-h">
+    <div class="wrap cta">
       <div>
-        <h2 class="news-h" id="news-h">In the news</h2>
-        {
-          press.map((item) => (
-            <a class="press" href={item.url}>
-              <span class="press-title">“{item.title}”</span>
-              <span class="press-outlet">{item.outlet}</span>
-            </a>
-          ))
-        }
-      </div>
-      <div class="cta">
-        <h2 class="title">Come to a meeting</h2>
+        <h2 class="title" id="cta-h">Come to a meeting</h2>
         <p class="lede">Email us and we'll tell you when the next one is.</p>
-        <div class="actions">
-          <a class="btn" href={joinHref}>Join us</a>
-        </div>
+      </div>
+      <div class="actions">
+        <a class="btn" href={joinHref}>Join us</a>
       </div>
     </div>
   </section>
@@ -331,12 +355,12 @@ const latest = publications
     color: var(--navy);
     padding: 10px 10px 8px;
     border: 2px solid var(--navy);
-    border-radius: 14px;
+    border-radius: var(--radius);
     box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.28);
   }
 
   .snap img {
-    border-radius: 8px;
+    border-radius: var(--radius);
     width: 100%;
     height: auto;
   }
@@ -503,7 +527,7 @@ const latest = publications
     height: 100%;
     padding: 20px;
     border: 2px solid var(--line);
-    border-radius: 16px;
+    border-radius: var(--radius);
     color: var(--navy);
     text-decoration: none;
   }
@@ -565,12 +589,6 @@ const latest = publications
     color: var(--gold-soft);
   }
 
-  .news-h {
-    font-size: 1.1rem;
-    color: var(--gold);
-    margin-bottom: 14px;
-  }
-
 
   /* Events */
   .events {
@@ -603,7 +621,7 @@ const latest = publications
     align-self: start;
     aspect-ratio: 1;
     border: 2px solid var(--line);
-    border-radius: 16px;
+    border-radius: var(--radius);
     background: var(--gold);
     font-weight: 800;
     font-stretch: 118%;
@@ -688,7 +706,7 @@ const latest = publications
     margin-top: 28px;
     padding: 16px 20px;
     border: 2px dashed var(--line);
-    border-radius: 16px;
+    border-radius: var(--radius);
     background: var(--white);
     color: var(--ink-2);
   }
@@ -717,7 +735,7 @@ const latest = publications
 
   details {
     border: 2px solid var(--line);
-    border-radius: 16px;
+    border-radius: var(--radius);
     background: var(--cream);
   }
 
@@ -745,7 +763,7 @@ const latest = publications
     height: 28px;
     display: grid;
     place-items: center;
-    border-radius: 50%;
+    border-radius: var(--radius);
     background: var(--gold);
     border: 2px solid var(--navy);
     font-weight: 800;
@@ -761,52 +779,103 @@ const latest = publications
     color: var(--ink-2);
   }
 
-  /* News + CTA */
-  .news-grid {
-    display: grid;
-    gap: 48px;
-    align-items: center;
+  /* Press */
+  .as-seen {
+    justify-self: start;
+    padding-top: 18px;
+    border-top: 2px solid rgba(255, 255, 255, 0.25);
+    color: var(--gold-soft);
+    font-size: 15px;
+    text-decoration: none;
   }
 
-  @media (min-width: 900px) {
-    .news-grid {
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: 64px;
-    }
+  .as-seen strong {
+    color: var(--white);
   }
 
-  .press {
+  .as-seen:hover strong {
+    text-decoration: underline;
+  }
+
+  .press-band {
+    background: var(--gold);
+    border-top: 2px solid var(--navy);
+    border-bottom: 2px solid var(--navy);
+  }
+
+  .kicker {
+    font-size: 14px;
+    font-weight: 800;
+    font-stretch: 118%;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 20px;
+  }
+
+  .clipping {
     display: grid;
-    gap: 14px;
-    padding: 28px;
-    border-radius: var(--radius);
+    justify-items: start;
+    gap: 20px;
+    max-width: 860px;
+    padding: clamp(24px, 4vw, 44px);
     background: var(--white);
     color: var(--navy);
     text-decoration: none;
     border: 2px solid var(--navy);
-    box-shadow: 6px 6px 0 var(--gold);
-    transition: transform 0.12s ease;
+    border-radius: var(--radius);
+    box-shadow: 8px 8px 0 var(--navy);
+    transform: rotate(-0.6deg);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
   }
 
-  .press:hover {
-    transform: translate(-2px, -2px);
+  .clipping:hover {
+    transform: rotate(-0.6deg) translate(-2px, -2px);
+    box-shadow: 10px 10px 0 var(--navy);
   }
 
-  .press-title {
-    font-size: clamp(1.3rem, 2.4vw, 1.75rem);
-    font-weight: 800;
-    font-stretch: 110%;
-    line-height: 1.2;
-  }
-
-  .press-outlet {
-    font-size: 15px;
-    font-weight: 600;
+  .clip-outlet {
+    justify-self: stretch;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--navy);
+    font-size: 14px;
+    font-weight: 700;
+    font-stretch: 112%;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     color: var(--blue);
   }
 
+  .clip-title {
+    font-size: clamp(1.7rem, 4vw, 3rem);
+    font-weight: 800;
+    font-stretch: 116%;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .more-press {
+    margin: 28px 0 0;
+    padding-left: 1.2em;
+    color: var(--navy);
+  }
+
+  .more-press a {
+    color: inherit;
+    font-weight: 700;
+  }
+
+  /* CTA */
   .cta {
-    display: grid;
-    gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 24px 48px;
+  }
+
+  .cta .lede {
+    margin-top: 12px;
   }
 </style>
