@@ -5,7 +5,8 @@ import { site, press, joinHref, mailto } from "../data/site";
 import { course } from "../data/course";
 import { officers, officersTerm, incomingTerm, incomingOfficers } from "../data/people";
 import { events } from "../data/events";
-import { groups } from "../data/research";
+import { groups, spotlight } from "../data/research";
+import { person } from "../data/people";
 import { publications } from "../data/publications";
 import PublicationList from "../components/PublicationList.astro";
 
@@ -13,6 +14,8 @@ const isuru = groups.find((g) => g.id === "drug-discovery")!.feature!.image!;
 
 // The newest story gets the big treatment; any older ones are listed under it.
 const [featured, ...morePress] = press;
+
+const leading = spotlight();
 
 const activities = [
   {
@@ -79,6 +82,19 @@ const latest = publications
 ---
 
 <Base>
+  <!-- News strip -->
+  {
+    featured && (
+      <a class="news-strip" href={featured.url}>
+        <span class="wrap strip-inner">
+          <span class="strip-kicker">In the news</span>
+          <span class="strip-title">“{featured.title}”</span>
+          <span class="strip-more">Read the story</span>
+        </span>
+      </a>
+    )
+  }
+
   <!-- Hero -->
   <section class="hero band blue">
     <div class="wrap hero-grid">
@@ -96,11 +112,6 @@ const latest = publications
           <a class="btn" href={joinHref}>Join us</a>
           <a class="btn light" href="#research">Our research</a>
         </div>
-        {featured && (
-          <a class="as-seen" href="#news">
-            Featured by the <strong>{featured.outlet}</strong>
-          </a>
-        )}
       </div>
 
       <div class="collage" aria-label="Member research and officers">
@@ -117,6 +128,59 @@ const latest = publications
           <figcaption>Isuru</figcaption>
         </figure>
         <p class="sticker"><span>No coding experience needed</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Research -->
+  <section class="band white" id="research" aria-labelledby="research-h">
+    <div class="wrap">
+      <div class="intro">
+        <h2 class="title" id="research-h">Research</h2>
+        <p class="lede">
+          Research is a big part of what we do. Members lead their own projects, with faculty
+          mentors at Pitt, UPMC, and other schools. Here's what people are working on right now.
+        </p>
+      </div>
+
+      <ul class="leading">
+        {
+          leading.map((p, i) => (
+            <li>
+              <a class:list={["lead-card", p.group.tone]} href={`/research/#${p.group.id}`}>
+                <span class="lead-top">
+                  <span class="lead-pic">
+                    <Avatar person={person(p.leads[0])} index={i} size="sm" />
+                  </span>
+                  <span class="lead-name">{p.leads[0]}</span>
+                </span>
+                <span class="lead-q">{p.question}</span>
+                <span class="lead-group">{p.group.name}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="group-links">
+        <h3 class="group-links-h">Research groups</h3>
+        <ul>
+          {
+            groups.map((g) => (
+              <li>
+                <a class:list={["group-link", g.tone]} href={`/research/#${g.id}`}>
+                  {g.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <p class="see-all"><a class="more" href="/research/">See all research</a></p>
+
+      <div class="latest">
+        <h3>A few recent papers</h3>
+        <PublicationList items={latest} compact />
       </div>
     </div>
   </section>
@@ -147,40 +211,6 @@ const latest = publications
       </section>
     )
   }
-
-
-  <!-- Research -->
-  <section class="band white" id="research" aria-labelledby="research-h">
-    <div class="wrap">
-      <div class="intro">
-        <h2 class="title" id="research-h">Research</h2>
-        <p class="lede">
-          Research is a big part of what we do. Members work with faculty at Pitt, UPMC, and other
-          schools, in AI and well beyond it. Here's who's working on what.
-        </p>
-      </div>
-
-      <ul class="group-grid">
-        {
-          groups.map((g) => (
-            <li>
-              <a class:list={["group-card", g.tone]} href={`/research/#${g.id}`}>
-                <span class="group-name">{g.name}</span>
-                <span class="group-blurb">{g.blurb}</span>
-                <span class="group-people">{g.people.join(", ")}</span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-      <p class="see-all"><a class="more" href="/research/">See all research</a></p>
-
-      <div class="latest">
-        <h3>A few recent papers</h3>
-        <PublicationList items={latest} compact />
-      </div>
-    </div>
-  </section>
 
   <!-- What we do -->
   <section class="band" id="what-we-do" aria-labelledby="do-h">
@@ -500,76 +530,174 @@ const latest = publications
     font-size: 1.4rem;
   }
 
-  .group-grid {
+  .leading {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 12px;
+    gap: 14px;
+  }
+
+  /* Phones: a row you swipe through instead of a long stack. */
+  @media (max-width: 639px) {
+    .leading {
+      grid-auto-flow: column;
+      grid-auto-columns: 78%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      margin: 0 calc(-1 * var(--gutter));
+      padding: 0 var(--gutter) 10px;
+      scroll-padding: 0 var(--gutter);
+    }
+
+    .leading li {
+      scroll-snap-align: start;
+    }
   }
 
   @media (min-width: 640px) {
-    .group-grid {
+    .leading {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   @media (min-width: 1000px) {
-    .group-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+    .leading {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 
-  .group-card {
+  @media (min-width: 1180px) {
+    .leading {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+
+  .lead-card {
     display: grid;
     align-content: start;
-    gap: 8px;
+    grid-template-rows: auto 1fr auto;
+    gap: 12px;
     height: 100%;
-    padding: 20px;
+    padding: 16px;
     border: 2px solid var(--line);
     border-radius: var(--radius);
     color: var(--navy);
     text-decoration: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
   }
 
-  .group-card:hover {
+  .lead-card:hover {
     transform: translate(-2px, -2px);
     box-shadow: 4px 4px 0 var(--navy);
   }
 
-  .group-card.sky {
+  .lead-card.sky {
     background: var(--sky);
   }
 
-  .group-card.gold {
+  .lead-card.gold {
     background: var(--gold-soft);
   }
 
-  .group-card.coral {
+  .lead-card.coral {
     background: var(--coral-soft);
   }
 
-  .group-card.mint {
+  .lead-card.mint {
     background: var(--mint);
   }
 
-  .group-name {
-    font-weight: 800;
-    font-stretch: 106%;
-    font-size: 1.15rem;
-    line-height: 1.2;
+  .lead-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  .group-blurb {
+  .lead-pic {
+    width: 44px;
+    flex: none;
+  }
+
+  .lead-pic :global(.avatar) {
+    background: var(--white);
+  }
+
+  .lead-pic :global(.tile.sm) {
     font-size: 15px;
+  }
+
+  .lead-name {
+    font-weight: 800;
+    font-stretch: 108%;
+    font-size: 16px;
+    line-height: 1.15;
+  }
+
+  .lead-q {
+    font-size: 15px;
+    line-height: 1.45;
     color: var(--ink-2);
   }
 
-  .group-people {
-    margin-top: auto;
-    padding-top: 4px;
+  .lead-group {
+    font-size: 12.5px;
+    font-weight: 700;
+    font-stretch: 112%;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .group-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    margin-top: 28px;
+  }
+
+  .group-links-h {
+    font-size: 1rem;
+  }
+
+  .group-links ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .group-link {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 2px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--navy);
     font-size: 14.5px;
     font-weight: 700;
+    text-decoration: none;
+  }
+
+  .group-link:hover {
+    text-decoration: underline;
+  }
+
+  .group-link.sky {
+    background: var(--sky);
+  }
+
+  .group-link.gold {
+    background: var(--gold-soft);
+  }
+
+  .group-link.coral {
+    background: var(--coral-soft);
+  }
+
+  .group-link.mint {
+    background: var(--mint);
   }
 
   .see-all {
@@ -780,20 +908,48 @@ const latest = publications
   }
 
   /* Press */
-  .as-seen {
-    justify-self: start;
-    padding-top: 18px;
-    border-top: 2px solid rgba(255, 255, 255, 0.25);
-    color: var(--gold-soft);
-    font-size: 15px;
+  .news-strip {
+    display: block;
+    background: var(--gold);
+    color: var(--navy);
     text-decoration: none;
+    border-bottom: 2px solid var(--navy);
   }
 
-  .as-seen strong {
-    color: var(--white);
+  .strip-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
 
-  .as-seen:hover strong {
+  .strip-kicker {
+    font-size: 12.5px;
+    font-weight: 800;
+    font-stretch: 118%;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .strip-title {
+    font-weight: 700;
+    font-size: 15.5px;
+    line-height: 1.35;
+  }
+
+  .strip-more {
+    font-weight: 800;
+    font-size: 15px;
+    white-space: nowrap;
+  }
+
+  .strip-more::after {
+    content: " →";
+  }
+
+  .news-strip:hover .strip-title {
     text-decoration: underline;
   }
 
