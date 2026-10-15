@@ -1,11 +1,13 @@
 // Research groups, shown on /research and the homepage.
 //
-// Each group lists the members in it, an optional feature (a short
-// write-up of one project, with an optional image), example papers by DOI
-// from publications.ts, and any presented abstracts.
+// Each group lists its faculty mentors, the projects members are leading
+// (with the lead named first), an optional feature (a short write-up of one
+// published project, with an optional image), and example papers by DOI from
+// publications.ts.
 //
-// Only list work that's already public (published, posted as a preprint,
-// or presented). Keep the writing plain and skip statistics.
+// Projects that aren't published yet show only the question, the people,
+// and where it was submitted. Don't add results, numbers, or the real
+// abstract title until the work is out, so we don't scoop ourselves.
 
 export type Tone = "sky" | "gold" | "coral" | "mint";
 
@@ -24,10 +26,16 @@ export interface Feature {
   };
 }
 
-export interface Abstract {
-  meeting: string;
-  /** Fill in once you have it; until then the entry shows the meeting. */
-  title?: string;
+export interface Project {
+  /** Short name, if the project has one. */
+  name?: string;
+  /** The question in plain words. No results. */
+  question: string;
+  /** Who's leading it. Usually one person. */
+  leads: string[];
+  team?: string[];
+  /** e.g. "Submitted to ARVO". */
+  status: string;
 }
 
 export interface ResearchGroup {
@@ -35,18 +43,151 @@ export interface ResearchGroup {
   name: string;
   blurb: string;
   tone: Tone;
-  people: string[];
+  mentors?: string[];
+  /** Anyone in the group who isn't already on one of its projects. */
+  people?: string[];
+  projects?: Project[];
   feature?: Feature;
   papers?: string[];
-  abstracts?: Abstract[];
 }
 
 export const groups: ResearchGroup[] = [
   {
+    id: "critical-care",
+    name: "Critical care",
+    blurb:
+      "Questions from the ICU: whose blood pressure is about to drop, who is stuck on a ventilator, and which treatment fits which patient.",
+    tone: "coral",
+    mentors: ["Dr. Sumit Kapoor", "Dr. Eric Xing"],
+    projects: [
+      {
+        question:
+          "Which patients on a ventilator are stuck, not getting worse but not getting off it, and might have something fixable holding them back?",
+        leads: ["Ronit Deshpande"],
+        team: ["Ethan Wu", "Joseph Yap", "Rehan Ghanta", "Peace Odiase", "Mina Kim"],
+        status: "Submitted to the Critical Care Congress",
+      },
+      {
+        question:
+          "Can we tell, before feeding starts, which ICU patients will develop refeeding syndrome and how bad it will get?",
+        leads: ["Peace Odiase"],
+        status: "Submitted to the Critical Care Congress",
+      },
+      {
+        question:
+          "Does a patient's sodium level decide whether mannitol or hypertonic saline does more to lower pressure in the brain?",
+        leads: ["Mina Kim"],
+        status: "Submitted to the Critical Care Congress",
+      },
+      {
+        name: "HemoArc",
+        question:
+          "Can a model that learns from a patient's first day in the ICU tell whose blood pressure is about to drop?",
+        leads: ["Ethan Wu"],
+        team: ["Joseph Yap", "Mina Kim", "Rehan Ghanta", "Peace Odiase", "Ronit Deshpande"],
+        status: "Submitted to the Critical Care Congress",
+      },
+    ],
+  },
+  {
+    id: "dermatology",
+    name: "Dermatology",
+    blurb:
+      "Skin problems in hospitalized patients: drug reactions that turn serious, and rashes that look like infection but aren't.",
+    tone: "gold",
+    mentors: ["Dr. Melissa Pugliano-Mauro", "Dr. Eric Xing"],
+    projects: [
+      {
+        question:
+          "Are there severe drug reactions that get missed because they don't fit any of the named syndromes?",
+        leads: ["Aya Youssef"],
+        team: ["Alice Lee", "Ethan Wu", "Eric Mason"],
+        status: "Abstract submitted",
+      },
+      {
+        name: "CELTIC",
+        question:
+          "Can a simple model that doctors can follow tell cellulitis apart from the conditions that mimic it?",
+        leads: ["Alice Lee"],
+        team: ["Aya Youssef", "Ethan Wu"],
+        status: "Abstract submitted",
+      },
+      {
+        name: "DermState",
+        question:
+          "Can we flag patients whose drug rash is about to turn serious, before the rash is even written down?",
+        leads: ["Ethan Wu"],
+        team: ["Aya Youssef", "Alice Lee", "Eric Mason"],
+        status: "Abstract submitted",
+      },
+    ],
+  },
+  {
+    id: "ophthalmology",
+    name: "Ophthalmology",
+    blurb:
+      "What the eyes can tell us about the rest of the body, using large health record datasets like NIH All of Us.",
+    tone: "sky",
+    mentors: ["Dr. Jay Chhablani"],
+    projects: [
+      {
+        question: "Which eye conditions are linked to how people rate their own mental health?",
+        leads: ["Katherine Du"],
+        team: ["Ethan Wu", "Justin Navidzadeh", "Jessica Jiang", "Joanna Yao"],
+        status: "Submitted to ARVO",
+      },
+      {
+        question:
+          "Can a patient's other health conditions predict whether dry macular degeneration turns into wet?",
+        leads: ["Joanna Yao"],
+        team: ["Ethan Wu", "Tanner Thomas", "Jessica Jiang", "Justin Navidzadeh", "Nasiq Hasan"],
+        status: "Submitted to ARVO",
+      },
+      {
+        question:
+          "When a hospitalized patient has eye inflammation, does anyone look for the disease that might be causing it?",
+        leads: ["Ethan Wu", "Jessica Jiang"],
+        status: "Paper submitted",
+      },
+    ],
+    feature: {
+      headline: "Spotting who gets macular degeneration early, from health records alone",
+      body: "Interpretable models trained on patients' earlier diagnoses predicted who develops age-related macular degeneration early. Hypertension, hyperlipidemia, and rheumatoid arthritis stood out, and held up in the NIH All of Us cohort.",
+      doi: "10.1016/j.ajo.2025.07.020",
+    },
+    papers: [
+      "10.1016/j.xops.2026.101124",
+      "10.1016/j.ajo.2025.07.020",
+      "10.1371/journal.pone.0335615",
+    ],
+  },
+  {
+    id: "womens-health",
+    name: "Women's health",
+    blurb: "What smartwatches and symptom diaries can and can't tell people about their cycle.",
+    tone: "mint",
+    mentors: ["Dr. Vanathi Gopalakrishnan"],
+    projects: [
+      {
+        question:
+          "Can a smartwatch pick up period symptoms beyond what a period-tracking app already knows?",
+        leads: ["Carly Marble"],
+        team: ["Ethan Wu", "Soo Kang", "Ryan McConnell", "Neha Devineni"],
+        status: "Submitted to ACOG",
+      },
+      {
+        question: "Can smartwatch and symptom-diary data tell someone when they're fertile?",
+        leads: ["Soo Kang"],
+        team: ["Ethan Wu", "Carly Marble", "Neha Devineni"],
+        status: "Submitted to ACOG",
+      },
+    ],
+  },
+  {
     id: "drug-discovery",
     name: "Drug discovery",
     blurb: "Graph neural networks that predict which drug targets could push a diseased cell back toward health.",
-    tone: "gold",
+    tone: "sky",
     people: ["Isuru Herath"],
     feature: {
       headline: "Asking a neural network which drugs would make a sick cell healthy again",
@@ -92,7 +233,7 @@ export const groups: ResearchGroup[] = [
     name: "Pathology",
     blurb:
       "Cytopathology and surgical pathology, what chatbots like ChatGPT and Llama can and can't do in the field, and reviews that explain AI to clinicians.",
-    tone: "sky",
+    tone: "coral",
     people: ["Josh Pantanowitz"],
     feature: {
       headline: "Can a panel of chatbots stand in for a panel of pathologists?",
@@ -119,24 +260,10 @@ export const groups: ResearchGroup[] = [
     ],
   },
   {
-    id: "clinical-prediction",
-    name: "Clinical prediction",
-    blurb:
-      "Interpretable models on large clinical datasets like NIH All of Us, aimed at questions that come up at the bedside.",
-    tone: "coral",
-    people: ["Ethan Wu"],
-    feature: {
-      headline: "Spotting who gets macular degeneration early, from health records alone",
-      body: "Interpretable models trained on patients' earlier diagnoses predicted who develops age-related macular degeneration early. Hypertension, hyperlipidemia, and rheumatoid arthritis stood out, and held up in the NIH All of Us cohort.",
-      doi: "10.1016/j.ajo.2025.07.020",
-    },
-    papers: ["10.1016/j.xops.2026.101124", "10.1016/j.ajo.2025.07.020"],
-  },
-  {
     id: "operating-room",
     name: "Humans and AI in the operating room",
     blurb: "Pairing clinicians with AI models to watch for problems during surgery.",
-    tone: "mint",
+    tone: "gold",
     people: ["Yash Raka"],
     feature: {
       headline: "Novices and AI, together, watching for stroke during surgery",
@@ -145,27 +272,23 @@ export const groups: ResearchGroup[] = [
     },
     papers: ["10.64898/2026.08.01.26359457"],
   },
-  {
-    id: "critical-care",
-    name: "Critical care",
-    blurb: "Research questions from the ICU.",
-    tone: "coral",
-    people: ["Peace Odiase", "Rehan Gupta", "Ronit Deshpande"],
-  },
-  {
-    id: "obgyn",
-    name: "Obstetrics and gynecology",
-    blurb: "Members bringing their work to the ACOG annual meeting.",
-    tone: "gold",
-    people: ["Carly Mable", "Soo Kang"],
-    abstracts: [{ meeting: "ACOG Annual Clinical and Scientific Meeting" }],
-  },
-  {
-    id: "imaging",
-    name: "Medical imaging",
-    blurb: "Deep learning on retinal OCT scans.",
-    tone: "sky",
-    people: ["Ethan Wu"],
-    papers: ["10.1371/journal.pone.0335615"],
-  },
 ];
+
+/** Everyone in a group: project leads first, then teammates, then anyone else listed. */
+export const groupPeople = (g: ResearchGroup): string[] => [
+  ...new Set([
+    ...(g.projects ?? []).flatMap((p) => p.leads),
+    ...(g.projects ?? []).flatMap((p) => p.team ?? []),
+    ...(g.people ?? []),
+  ]),
+];
+
+/** One project per lead, in group order, so the homepage shows a range of people. */
+export const spotlight = (): (Project & { group: ResearchGroup })[] => {
+  const seen = new Set<string>();
+  return groups.flatMap((g) =>
+    (g.projects ?? [])
+      .filter((p) => !seen.has(p.leads[0]) && seen.add(p.leads[0]))
+      .map((p) => ({ ...p, group: g })),
+  );
+};

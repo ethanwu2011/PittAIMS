@@ -22,7 +22,8 @@
 
   --wrap: 1180px;
   --gutter: clamp(16px, 4vw, 40px);
-  --radius: 20px;
+  /* Square corners on every box, button, and tag. */
+  --radius: 0;
   --pop: 4px 4px 0 var(--navy);
 
   color-scheme: light;
@@ -186,7 +187,7 @@ a {
   color: var(--navy);
   background: var(--gold);
   border: 2px solid var(--navy);
-  border-radius: 999px;
+  border-radius: var(--radius);
   box-shadow: var(--pop);
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
@@ -246,7 +247,7 @@ a {
   font-weight: 600;
   line-height: 1;
   padding: 6px 10px;
-  border-radius: 999px;
+  border-radius: var(--radius);
   background: var(--sky);
   color: var(--navy);
 }

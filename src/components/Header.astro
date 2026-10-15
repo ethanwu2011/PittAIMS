@@ -95,7 +95,7 @@ const isActive = (href: string) => !href.includes("#") && path.startsWith(href);
   nav a:not(.btn) {
     display: block;
     padding: 8px 12px;
-    border-radius: 999px;
+    border-radius: var(--radius);
     font-size: 15.5px;
     font-weight: 600;
     color: var(--navy);
@@ -140,7 +140,7 @@ const isActive = (href: string) => !href.includes("#") && path.startsWith(href);
       cursor: pointer;
       padding: 9px 16px;
       border: 2px solid var(--line);
-      border-radius: 999px;
+      border-radius: var(--radius);
       font-weight: 700;
       font-size: 15px;
     }

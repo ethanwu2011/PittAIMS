@@ -11,22 +11,24 @@ import {
   pastOfficers,
   faculty,
 } from "../data/people";
-import { groups } from "../data/research";
+import { groups, groupPeople } from "../data/research";
 
 // Everyone in a research group, with the groups they're in.
 const researchers = new Map<string, { id: string; name: string }[]>();
 for (const g of groups) {
-  for (const n of g.people) {
+  for (const n of groupPeople(g)) {
     researchers.set(n, [...(researchers.get(n) ?? []), { id: g.id, name: g.name }]);
   }
 }
+
+const mentors = [...new Set(groups.flatMap((g) => g.mentors ?? []))];
 
 const incomingPending = incomingOfficers.some((p) => p.placeholder);
 ---
 
 <Base
   title="People"
-  description={`The officers, founders, and faculty instructors of Pitt AI in Medicine, a student-run club at the University of Pittsburgh.`}
+  description={`The officers, founders, researchers, and faculty mentors of Pitt AI in Medicine, a student-run club at the University of Pittsburgh.`}
 >
   <header class="page-head sky-head">
     <div class="wrap">
@@ -111,9 +113,9 @@ const incomingPending = incomingOfficers.some((p) => p.placeholder);
   <section class="band" aria-labelledby="researchers-h">
     <div class="wrap">
       <div class="intro">
-        <h2 class="title" id="researchers-h">Members in research groups</h2>
+        <h2 class="title" id="researchers-h">People in our research groups</h2>
         <p class="lede">
-          Who's working on what. See their work on the <a href="/research/">research page</a>.
+          Who's working on what. See the projects on the <a href="/research/">research page</a>.
         </p>
       </div>
       <ul class="researchers">
@@ -139,12 +141,17 @@ const incomingPending = incomingOfficers.some((p) => p.placeholder);
   <section class="band white" aria-labelledby="faculty-h">
     <div class="wrap">
       <div class="intro">
-        <h2 class="title" id="faculty-h">Faculty and instructors</h2>
+        <h2 class="title" id="faculty-h">Faculty and mentors</h2>
         <p class="lede">
-          Faculty and staff who have taught in our summer course, Applied Machine Learning in
-          Medicine.
+          Faculty who mentor our research groups, and faculty and staff who have taught in our
+          summer course, Applied Machine Learning in Medicine.
         </p>
       </div>
+      <h3 class="board-h">Research mentors</h3>
+      <ul class="faculty">
+        {mentors.map((n) => <li>{n}</li>)}
+      </ul>
+      <h3 class="board-h course-h">Summer course instructors</h3>
       <ul class="faculty">
         {faculty.map((p) => <li>{p.name}</li>)}
       </ul>
@@ -237,6 +244,10 @@ const incomingPending = incomingOfficers.some((p) => p.placeholder);
     color: var(--ink-2);
   }
 
+  .course-h {
+    margin-top: 36px;
+  }
+
   .faculty {
     list-style: none;
     margin: 0;
@@ -249,7 +260,7 @@ const incomingPending = incomingOfficers.some((p) => p.placeholder);
   .faculty li {
     padding: 12px 18px;
     border: 2px solid var(--line);
-    border-radius: 999px;
+    border-radius: var(--radius);
     background: var(--white);
     font-weight: 700;
   }
